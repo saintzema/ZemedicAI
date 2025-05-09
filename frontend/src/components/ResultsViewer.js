@@ -227,7 +227,7 @@ const ResultsViewer = ({
       
       <div className={`flex flex-col ${showSideBySide ? 'lg:flex-row' : ''} gap-1`}>
         {/* Left side - Image */}
-        <div className={\`\${showSideBySide ? 'lg:w-1/2' : 'w-full'} bg-black p-2 rounded-t-lg \${showSideBySide ? 'lg:rounded-l-lg lg:rounded-t-none' : ''}\`}>
+        <div className={`${showSideBySide ? 'lg:w-1/2' : 'w-full'} bg-black p-2 rounded-t-lg ${showSideBySide ? 'lg:rounded-l-lg lg:rounded-t-none' : ''}`}>
           <div className="flex justify-between items-center mb-2 px-2">
             <h3 className="text-lg font-semibold text-purple-300">{analysisType} Image</h3>
             <div className="flex items-center space-x-3">
