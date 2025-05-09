@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaSolarPanel, FaWifi, FaCloudMedical, FaMobileAlt } from 'react-icons/fa';
+import { FaSolarPanel, FaWifi, FaCloud, FaMobileAlt } from 'react-icons/fa';
 
 const SolarBoothSection = () => {
   const deploymentOptions = [
@@ -25,7 +25,7 @@ const SolarBoothSection = () => {
       title: "Cloud API Integration",
       description: "Integrate our powerful diagnostic algorithms directly into your existing healthcare systems through our secure cloud API.",
       image: "https://images.unsplash.com/photo-1631563020241-09beac7791b7",
-      icon: <FaCloudMedical className="h-6 w-6 text-indigo-500" />,
+      icon: <FaCloud className="h-6 w-6 text-indigo-500" />,
       features: ["FHIR/HL7 compatible", "End-to-end encryption", "Custom workflows", "HIPAA/GDPR compliant"]
     },
     {

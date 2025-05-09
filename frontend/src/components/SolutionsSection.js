@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaLungs, FaBrain, FaHeartbeat, FaSkin } from 'react-icons/fa';
+import { FaLungs, FaBrain, FaHeartbeat, FaStethoscope } from 'react-icons/fa';
 
 const SolutionsSection = () => {
   const solutions = [
@@ -14,7 +14,7 @@ const SolutionsSection = () => {
     },
     {
       id: 2,
-      icon: <FaSkin className="h-7 w-7" />,
+      icon: <FaStethoscope className="h-7 w-7" />,
       title: 'Skin Lesion Detection',
       description: 'Identify melanoma and other skin conditions from images with 97% accuracy, providing early diagnosis for improved outcomes.',
       color: 'bg-purple-100 text-purple-600',
