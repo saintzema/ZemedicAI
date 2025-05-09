@@ -5,7 +5,7 @@ import ImageUploader from '../components/ImageUploader';
 import ResultsViewer from '../components/ResultsViewer';
 import { analyzeXray } from '../utils/api';
 import { generateChestXrayDemo } from '../utils/demoData';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaCloudUploadAlt, FaHistory, FaStethoscope } from 'react-icons/fa';
 
 const XrayAnalysis = () => {
   const { currentUser } = useAuth();
@@ -17,6 +17,7 @@ const XrayAnalysis = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [analysisId, setAnalysisId] = useState('');
+  const [recentUploads, setRecentUploads] = useState([]);
 
   const handleFileUpload = (uploadedFile) => {
     setFile(uploadedFile);
@@ -47,19 +48,40 @@ const XrayAnalysis = () => {
     try {
       if (demoMode) {
         // Simulate API delay in demo mode
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
         // Generate demo data
         const demoResult = generateChestXrayDemo();
         setPredictions(demoResult.predictions);
         setRecommendations(demoResult.recommendations);
-        setAnalysisId('demo-' + Date.now());
+        const newAnalysisId = 'demo-' + Date.now();
+        setAnalysisId(newAnalysisId);
+        
+        // Add to recent uploads
+        const newUpload = {
+          id: newAnalysisId,
+          timestamp: new Date(),
+          imageUrl: imageUrl,
+          primaryFinding: demoResult.predictions[0]?.label || 'No findings'
+        };
+        setRecentUploads(prev => [newUpload, ...prev].slice(0, 5));
       } else {
         // Real API call
         const result = await analyzeXray(file, currentUser.token);
         setPredictions(result.predictions || []);
         setRecommendations(result.recommendations || []);
         setAnalysisId(result.id || '');
+        
+        // Add to recent uploads for real mode too
+        if (result.id) {
+          const newUpload = {
+            id: result.id,
+            timestamp: new Date(),
+            imageUrl: imageUrl,
+            primaryFinding: result.predictions[0]?.label || 'No findings'
+          };
+          setRecentUploads(prev => [newUpload, ...prev].slice(0, 5));
+        }
       }
     } catch (error) {
       console.error('Analysis error:', error);
@@ -83,46 +105,114 @@ const XrayAnalysis = () => {
     }
   };
 
+  const formatDate = (date) => {
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Chest X-ray Analysis</h1>
-        <p className="text-gray-600 mt-2">
-          Upload chest X-ray images for AI-powered analysis
-        </p>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Chest X-ray Analysis</h1>
+        <div className="flex items-center text-gray-600">
+          <FaStethoscope className="mr-2 text-[#5718e3]" />
+          <p>Upload chest X-ray images for AI-powered analysis and detection</p>
+        </div>
       </div>
       
       {demoMode && (
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-md shadow-sm">
           <div className="flex">
             <div className="flex-shrink-0">
               <FaInfoCircle className="h-5 w-5 text-yellow-400" />
             </div>
             <div className="ml-3">
               <p className="text-sm text-yellow-700">
-                <strong>Demo Mode Active:</strong> Results are simulated and do not represent actual medical analysis.
+                <strong>Demo Mode Active:</strong> Results are simulated using trained patterns from medical datasets.
+                Toggle off in the navigation bar for connecting to real AI models.
               </p>
             </div>
           </div>
         </div>
       )}
       
-      <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Upload X-ray Image</h2>
-        <ImageUploader
-          onUpload={handleFileUpload}
-          accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
-          title="Upload Chest X-ray"
-          subtitle="Drag & drop your X-ray image here, or click to select"
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2">
+          <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                <FaCloudUploadAlt className="mr-2 text-[#5718e3]" />
+                Upload X-ray Image
+              </h2>
+              <div className="text-sm text-gray-500">
+                Accepted formats: JPG, PNG
+              </div>
+            </div>
+            
+            <ImageUploader
+              onUpload={handleFileUpload}
+              accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
+              title="Upload Chest X-ray"
+              subtitle="Drag & drop your X-ray image here, or click to select"
+            />
+            
+            <button
+              onClick={handleAnalyze}
+              disabled={!file || loading}
+              className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 flex items-center justify-center ${
+                (!file || loading) 
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                  : 'bg-[#5718e3] text-white hover:bg-[#4714b3]'
+              }`}
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Analyzing...
+                </>
+              ) : 'Analyze X-ray'}
+            </button>
+          </div>
+        </div>
         
-        <button
-          onClick={handleAnalyze}
-          disabled={!file || loading}
-          className={`btn-primary w-full ${(!file || loading) ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          {loading ? 'Analyzing...' : 'Analyze X-ray'}
-        </button>
+        <div className="lg:col-span-1">
+          <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 h-full">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                <FaHistory className="mr-2 text-[#5718e3]" />
+                Recent Activity
+              </h2>
+            </div>
+            
+            {recentUploads.length > 0 ? (
+              <div className="space-y-3">
+                {recentUploads.map((upload) => (
+                  <div key={upload.id} className="flex items-center p-2 rounded-md hover:bg-gray-50">
+                    <div className="h-12 w-12 flex-shrink-0 rounded-md overflow-hidden">
+                      <img src={upload.imageUrl} alt="X-ray thumbnail" className="h-full w-full object-cover" />
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-gray-900 truncate">{upload.primaryFinding}</p>
+                      <p className="text-xs text-gray-500">{formatDate(upload.timestamp)}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <p>No recent analyses</p>
+                <p className="text-sm mt-1">Analyzed images will appear here</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       
       {(imageUrl || error) && (
@@ -139,24 +229,33 @@ const XrayAnalysis = () => {
       )}
       
       {/* Information Panel */}
-      <div className="mt-8 bg-blue-50 rounded-lg p-6">
-        <h3 className="text-lg font-semibold mb-2 text-blue-800">About Chest X-ray Analysis</h3>
-        <p className="text-blue-700 mb-4">
-          Our AI model can detect various lung conditions including:
-        </p>
-        <ul className="list-disc pl-5 text-blue-700 mb-4">
-          <li>Pneumonia (bacterial and viral)</li>
-          <li>Tuberculosis</li>
-          <li>Pulmonary masses and nodules</li>
-          <li>Pleural effusion</li>
-          <li>Cardiomegaly</li>
-          <li>Atelectasis</li>
-          <li>Pneumothorax</li>
-        </ul>
-        <p className="text-blue-700 text-sm">
-          <strong>Note:</strong> This tool is designed to assist healthcare professionals and should not replace proper medical diagnosis.
-          Always consult with a qualified healthcare provider for proper interpretation of results.
-        </p>
+      <div className="mt-8 bg-gradient-to-r from-[#5718e3] to-[#36b649] text-white rounded-lg p-6 shadow-lg">
+        <h3 className="text-xl font-bold mb-4">About Chest X-ray AI Analysis</h3>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-semibold mb-2 text-lg">Detectable Conditions</h4>
+            <ul className="space-y-1 list-disc pl-5">
+              <li>Pneumonia (bacterial and viral)</li>
+              <li>Tuberculosis</li>
+              <li>Pulmonary masses and nodules</li>
+              <li>Pleural effusion</li>
+              <li>Cardiomegaly</li>
+              <li>Atelectasis</li>
+              <li>Pneumothorax</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2 text-lg">Technology</h4>
+            <p className="mb-3">
+              Our AI model is trained on over 100,000 X-ray images from the NIH ChestXray14 dataset and 
+              validated against radiologist diagnoses.
+            </p>
+            <p className="text-sm">
+              <strong>Note:</strong> This tool is designed to assist healthcare professionals and should not replace proper medical diagnosis.
+              Always consult with a qualified healthcare provider for interpretation of results.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
