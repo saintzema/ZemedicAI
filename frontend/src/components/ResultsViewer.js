@@ -204,7 +204,7 @@ const ResultsViewer = ({
         {heatmapPoints.map((point, index) => (
           <div 
             key={index}
-            className={\`absolute rounded-full opacity-70 \${pulseHighlight && point.pulse ? 'animate-pulse' : ''}\`}
+            className={`absolute rounded-full opacity-70 ${pulseHighlight && point.pulse ? 'animate-pulse' : ''}`}
             style={{
               left: \`\${point.x}%\`,
               top: \`\${point.y}%\`,
