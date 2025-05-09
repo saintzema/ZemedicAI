@@ -239,7 +239,7 @@ const ResultsViewer = ({
               </button>
               <button 
                 onClick={() => setPulseHighlight(!pulseHighlight)}
-                className={\`text-xs px-2 py-1 rounded \${pulseHighlight ? 'bg-purple-600' : 'bg-gray-700'}\`}
+                className={`text-xs px-2 py-1 rounded ${pulseHighlight ? 'bg-purple-600' : 'bg-gray-700'}`}
               >
                 {pulseHighlight ? 'Static View' : 'Dynamic View'}
               </button>
