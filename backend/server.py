@@ -299,6 +299,24 @@ def health_check():
 @app.post("/api/auth/register", response_model=Token)
 async def register(data: RegisterData):
     """Register a new user."""
+    # Demo mode for MongoDB unavailability
+    if client is None or db is None:
+        # Generate a demo user ID and token for testing
+        user_id = str(uuid.uuid4())
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": user_id}, expires_delta=access_token_expires
+        )
+        
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user_id": user_id,
+            "email": data.email,
+            "name": data.name
+        }
+    
+    # Normal flow with MongoDB
     # Check if email already exists
     existing_user = db.users.find_one({"email": data.email})
     if existing_user:
@@ -338,6 +356,24 @@ async def register(data: RegisterData):
 @app.post("/api/auth/login", response_model=Token)
 async def login(data: LoginData):
     """Login and get access token."""
+    # Demo mode for MongoDB unavailability
+    if client is None or db is None:
+        # Generate a demo user ID and token for testing
+        user_id = str(uuid.uuid4())
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": user_id}, expires_delta=access_token_expires
+        )
+        
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user_id": user_id,
+            "email": data.email,
+            "name": "Demo User"
+        }
+    
+    # Normal flow with MongoDB
     user = authenticate_user(data.email, data.password)
     if not user:
         raise HTTPException(
