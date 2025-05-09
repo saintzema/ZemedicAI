@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
+const login = async (email, password) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
         method: 'POST',
@@ -33,9 +33,16 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem('zemedic-user', JSON.stringify(data));
-      setCurrentUser(data);
-      return data;
+      
+      // Ensure token is stored correctly
+      const userData = {
+        ...data,
+        token: data.access_token, // Add token field for easier access
+      };
+      
+      localStorage.setItem('zemedic-user', JSON.stringify(userData));
+      setCurrentUser(userData);
+      return userData;
     } catch (error) {
       console.error('Login error:', error);
       throw error;
