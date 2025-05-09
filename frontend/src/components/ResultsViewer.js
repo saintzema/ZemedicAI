@@ -214,7 +214,7 @@ const ResultsViewer = ({
               transform: 'translate(-50%, -50%)',
               boxShadow: `0 0 ${point.radius / 2}px ${point.color}`
             }}
-            title={\`\${point.label}: \${(point.confidence * 100).toFixed(1)}% confidence\`}
+            title={`${point.label}: ${(point.confidence * 100).toFixed(1)}% confidence`}
           />
         ))}
       </div>
