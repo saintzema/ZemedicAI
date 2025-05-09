@@ -294,7 +294,7 @@ const ResultsViewer = ({
               Metrics
             </button>
             <button 
-              className={\`px-4 py-2 text-sm font-medium \${activeTab === 'recommendations' ? 'text-purple-300 border-b-2 border-purple-500' : 'text-gray-400 hover:text-gray-300'}\`}
+              className={`px-4 py-2 text-sm font-medium ${activeTab === 'recommendations' ? 'text-purple-300 border-b-2 border-purple-500' : 'text-gray-400 hover:text-gray-300'}`}
               onClick={() => setActiveTab('recommendations')}
             >
               Recommendations
