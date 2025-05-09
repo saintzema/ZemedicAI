@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
 // Pages
@@ -26,68 +26,66 @@ function App() {
   return (
     <AuthProvider>
       <DemoModeProvider>
-        <Router>
-          <div className="App flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/analysis/xray" 
-                  element={
-                    <ProtectedRoute>
-                      <XrayAnalysis />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/analysis/skin" 
-                  element={
-                    <ProtectedRoute>
-                      <SkinAnalysis />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/analysis/ct-scan" 
-                  element={
-                    <ProtectedRoute>
-                      <CTScanAnalysis />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/history" 
-                  element={
-                    <ProtectedRoute>
-                      <HistoryPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
+        <div className="App flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                 path="/dashboard"
+                 element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+               />
+              <Route
+                 path="/analysis/xray"
+                 element={
+                  <ProtectedRoute>
+                    <XrayAnalysis />
+                  </ProtectedRoute>
+                }
+               />
+              <Route
+                 path="/analysis/skin"
+                 element={
+                  <ProtectedRoute>
+                    <SkinAnalysis />
+                  </ProtectedRoute>
+                }
+               />
+              <Route
+                 path="/analysis/ct-scan"
+                 element={
+                  <ProtectedRoute>
+                    <CTScanAnalysis />
+                  </ProtectedRoute>
+                }
+               />
+              <Route
+                 path="/profile"
+                 element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+               />
+              <Route
+                 path="/history"
+                 element={
+                  <ProtectedRoute>
+                    <HistoryPage />
+                  </ProtectedRoute>
+                }
+               />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </DemoModeProvider>
     </AuthProvider>
   );
