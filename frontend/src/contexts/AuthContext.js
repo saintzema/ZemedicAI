@@ -10,11 +10,25 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check if user is already logged in (from localStorage)
-    const user = JSON.parse(localStorage.getItem('zemedic-user'));
-    if (user) {
-      setCurrentUser(user);
+    try {
+      const userJson = localStorage.getItem('zemedic-user');
+      if (userJson) {
+        const user = JSON.parse(userJson);
+        
+        // Add token field if not already present (for backward compatibility)
+        if (user.access_token && !user.token) {
+          user.token = user.access_token;
+        }
+        
+        setCurrentUser(user);
+      }
+    } catch (error) {
+      console.error('Error loading user from localStorage:', error);
+      // Clear corrupted data
+      localStorage.removeItem('zemedic-user');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
 const login = async (email, password) => {
