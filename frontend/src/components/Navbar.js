@@ -58,12 +58,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <div className="flex items-center">
-                <div className="h-8 w-8 bg-gradient-to-r from-[#5718e3] to-[#36b649] rounded-md flex items-center justify-center text-white font-bold text-lg mr-2">
-                  Z
-                </div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-[#5718e3] to-[#36b649] bg-clip-text text-transparent">
-                  ZemedicAI
-                </h1>
+                <img src={ZemedicLogo} alt="ZemedicAI Logo" className="h-12 md:h-14 w-auto" />
               </div>
             </Link>
           </div>
