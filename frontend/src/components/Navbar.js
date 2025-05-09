@@ -58,7 +58,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <div className="flex items-center">
-                <img src={ZemedicLogo} alt="ZemedicAI Logo" className="h-12 md:h-14 w-auto" />
+                <img src={`data:image/png;base64,${logoBase64}`} alt="ZemedicAI Logo" className="h-12 md:h-14 w-auto" />
               </div>
             </Link>
           </div>
