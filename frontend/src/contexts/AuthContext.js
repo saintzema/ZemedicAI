@@ -65,9 +65,16 @@ const login = async (email, password) => {
       }
 
       const data = await response.json();
-      localStorage.setItem('zemedic-user', JSON.stringify(data));
-      setCurrentUser(data);
-      return data;
+      
+      // Ensure token is stored correctly
+      const userData = {
+        ...data,
+        token: data.access_token, // Add token field for easier access
+      };
+      
+      localStorage.setItem('zemedic-user', JSON.stringify(userData));
+      setCurrentUser(userData);
+      return userData;
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
