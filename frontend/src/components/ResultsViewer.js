@@ -73,7 +73,7 @@ const ResultsViewer = ({
       tooltip: {
         callbacks: {
           label: function(context) {
-            return \`\${context.raw.toFixed(1)}% confidence\`;
+            return `${context.raw.toFixed(1)}% confidence`;
           }
         }
       }
