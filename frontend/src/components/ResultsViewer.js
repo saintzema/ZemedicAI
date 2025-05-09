@@ -212,7 +212,7 @@ const ResultsViewer = ({
               height: `${point.radius}px`,
               backgroundColor: point.color,
               transform: 'translate(-50%, -50%)',
-              boxShadow: \`0 0 \${point.radius / 2}px \${point.color}\`
+              boxShadow: `0 0 ${point.radius / 2}px ${point.color}`
             }}
             title={\`\${point.label}: \${(point.confidence * 100).toFixed(1)}% confidence\`}
           />
