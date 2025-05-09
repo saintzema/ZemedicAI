@@ -244,7 +244,7 @@ const Navbar = () => {
                   />
                   <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#5718e3]"></div>
                 </label>
-                <span className="ml-1 text-xs font-medium text-gray-600">
+                <span className={`ml-1 text-xs font-medium ${scrolled ? 'text-gray-600' : 'text-white'}`}>
                   {demoMode ? 'Demo' : 'Live'}
                 </span>
               </div>
