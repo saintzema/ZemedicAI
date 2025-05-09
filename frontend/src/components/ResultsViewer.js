@@ -206,10 +206,10 @@ const ResultsViewer = ({
             key={index}
             className={`absolute rounded-full opacity-70 ${pulseHighlight && point.pulse ? 'animate-pulse' : ''}`}
             style={{
-              left: \`\${point.x}%\`,
-              top: \`\${point.y}%\`,
-              width: \`\${point.radius}px\`,
-              height: \`\${point.radius}px\`,
+              left: `${point.x}%`,
+              top: `${point.y}%`,
+              width: `${point.radius}px`,
+              height: `${point.radius}px`,
               backgroundColor: point.color,
               transform: 'translate(-50%, -50%)',
               boxShadow: \`0 0 \${point.radius / 2}px \${point.color}\`
