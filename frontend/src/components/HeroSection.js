@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const HeroSection = () => {
@@ -39,12 +38,12 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Link to="/register" className="btn btn-secondary text-center">
+              <a href="#" className="btn btn-secondary text-center">
                 Get Started
-              </Link>
-              <Link to="/#solutions" className="btn bg-white text-indigo-900 hover:bg-gray-100 text-center">
+              </a>
+              <a href="#solutions" className="btn bg-white text-indigo-900 hover:bg-gray-100 text-center">
                 Explore Solutions
-              </Link>
+              </a>
             </motion.div>
           </div>
           
