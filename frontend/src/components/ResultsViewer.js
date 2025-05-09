@@ -337,8 +337,8 @@ const ResultsViewer = ({
                           </div>
                           <div className="w-full bg-gray-700 rounded-full h-1.5 mb-4">
                             <div 
-                              className={\`h-1.5 rounded-full \${getConfidenceStyle(prediction.confidence)}\`}
-                              style={{ width: \`\${prediction.confidence * 100}%\` }}
+                              className={`h-1.5 rounded-full ${getConfidenceStyle(prediction.confidence)}`}
+                              style={{ width: `${prediction.confidence * 100}%` }}
                             ></div>
                           </div>
                           
