@@ -46,8 +46,17 @@ app.add_middleware(
 MONGO_URL = os.environ.get("MONGO_URL")
 DB_NAME = os.environ.get("DB_NAME", "zemedic_db")
 
-client = MongoClient(MONGO_URL)
-db = client[DB_NAME]
+try:
+    client = MongoClient(MONGO_URL)
+    # Test the connection
+    client.admin.command('ping')
+    db = client[DB_NAME]
+    logger.info("Successfully connected to MongoDB")
+except Exception as e:
+    logger.error(f"Failed to connect to MongoDB: {str(e)}")
+    # For demo purposes, we'll still initialize the app but won't use the database
+    client = None
+    db = None
 
 # JWT Configuration
 SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key")  # Should be properly secured in production
