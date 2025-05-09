@@ -6,13 +6,13 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="container-custom py-16">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-12 gap-8 mb-8">
           {/* Column 1 - About */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-5">
             <Link to="/" className="inline-block mb-6">
               <ZemedicLogo className="h-10 w-auto" />
             </Link>
-            <p className="text-gray-400 mb-6 max-w-md">
+            <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
               ZemedicAI delivers cutting-edge AI-powered medical diagnostic tools 
               designed specifically for the unique healthcare challenges across Africa.
             </p>
@@ -41,8 +41,8 @@ const Footer = () => {
           </div>
           
           {/* Column 2 - Solutions */}
-          <div>
-            <h3 className="text-white font-semibold text-lg mb-4">Solutions</h3>
+          <div className="md:col-span-2">
+            <h3 className="text-white font-semibold text-lg mb-5">Solutions</h3>
             <ul className="space-y-3">
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">X-Ray Analysis</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Skin Lesion Detection</a></li>
@@ -53,22 +53,54 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Column 3 - Company */}
-          <div>
-            <h3 className="text-white font-semibold text-lg mb-4">Company</h3>
+          {/* Column 3 - Deployment */}
+          <div className="md:col-span-2">
+            <h3 className="text-white font-semibold text-lg mb-5">Deployment</h3>
+            <ul className="space-y-3">
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Solar Booths</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Telehealth</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Cloud API</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Mobile SDK</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Custom Solutions</a></li>
+            </ul>
+          </div>
+          
+          {/* Column 4 - Company */}
+          <div className="md:col-span-3">
+            <h3 className="text-white font-semibold text-lg mb-5">Company</h3>
             <ul className="space-y-3">
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Partners</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Case Studies</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Careers</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">News & Press</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
             </ul>
           </div>
         </div>
         
+        {/* Newsletter */}
+        <div className="border-t border-gray-800 pt-8 pb-12">
+          <div className="flex flex-col md:flex-row md:items-center justify-between">
+            <div className="mb-6 md:mb-0">
+              <h4 className="text-white font-semibold text-lg mb-2">Stay updated</h4>
+              <p className="text-gray-400">Subscribe to our newsletter for the latest updates</p>
+            </div>
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
+              <input 
+                type="email" 
+                placeholder="Your email address" 
+                className="px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-64"
+              />
+              <button className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+        
         {/* Bottom section */}
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm">
             &copy; {new Date().getFullYear()} ZemedicAI. All rights reserved.
           </p>
