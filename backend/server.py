@@ -601,15 +601,61 @@ async def get_user_history(
     current_user: User = Depends(get_current_user)
 ):
     """Get user's analysis history."""
-    analyses = db.analyses.find({"user_id": current_user.id}).sort("date", -1)
+    # Demo mode for MongoDB unavailability
+    if client is None or db is None:
+        # Return demo data
+        demo_history = [
+            {
+                "id": "demo1",
+                "user_id": current_user.id,
+                "type": "xray",
+                "date": datetime.utcnow() - timedelta(days=2),
+                "findings": ["Pneumonia", "Pleural Effusion"],
+                "image_url": "https://images.unsplash.com/photo-1584555684040-bad07f46a21f",
+                "predictions": [
+                    {"label": "Pneumonia", "confidence": 0.82},
+                    {"label": "Pleural Effusion", "confidence": 0.67}
+                ]
+            },
+            {
+                "id": "demo2",
+                "user_id": current_user.id,
+                "type": "skin",
+                "date": datetime.utcnow() - timedelta(days=5),
+                "findings": ["Melanoma"],
+                "image_url": "https://images.unsplash.com/photo-1606501190025-f3ad6d3ea6ae",
+                "predictions": [
+                    {"label": "Melanoma", "confidence": 0.75}
+                ]
+            },
+            {
+                "id": "demo3",
+                "user_id": current_user.id,
+                "type": "ct-scan",
+                "date": datetime.utcnow() - timedelta(days=7),
+                "findings": ["Brain Tumor"],
+                "image_url": "https://images.unsplash.com/photo-1631563019676-dade0dbdb8fc",
+                "predictions": [
+                    {"label": "Brain Tumor", "confidence": 0.68}
+                ]
+            }
+        ]
+        return demo_history
     
-    result = []
-    for analysis in analyses:
-        analysis["id"] = str(analysis["_id"])
-        del analysis["_id"]
-        result.append(analysis)
-    
-    return result
+    # Normal flow with MongoDB
+    try:
+        analyses = db.analyses.find({"user_id": current_user.id}).sort("date", -1)
+        
+        result = []
+        for analysis in analyses:
+            analysis["id"] = str(analysis["_id"])
+            del analysis["_id"]
+            result.append(analysis)
+        
+        return result
+    except Exception as e:
+        logger.error(f"Error retrieving history: {str(e)}")
+        return []
 
 @app.get("/api/analysis/{analysis_id}")
 async def get_analysis_by_id(
@@ -617,24 +663,95 @@ async def get_analysis_by_id(
     current_user: User = Depends(get_current_user)
 ):
     """Get a specific analysis by ID."""
-    analysis = db.analyses.find_one({"_id": ObjectId(analysis_id)})
+    # Demo mode for MongoDB unavailability
+    if client is None or db is None or analysis_id.startswith("demo"):
+        # Return demo data
+        if analysis_id == "demo1":
+            return {
+                "id": "demo1",
+                "user_id": current_user.id,
+                "type": "xray",
+                "date": datetime.utcnow() - timedelta(days=2),
+                "image_url": "https://images.unsplash.com/photo-1584555684040-bad07f46a21f",
+                "predictions": [
+                    {"label": "Pneumonia", "confidence": 0.82},
+                    {"label": "Pleural Effusion", "confidence": 0.67}
+                ],
+                "recommendations": [
+                    "Consult with a healthcare professional for proper diagnosis",
+                    "Consider follow-up imaging to monitor any changes",
+                    "Complete the full course of prescribed antibiotics",
+                    "Rest and hydrate properly"
+                ]
+            }
+        elif analysis_id == "demo2":
+            return {
+                "id": "demo2",
+                "user_id": current_user.id,
+                "type": "skin",
+                "date": datetime.utcnow() - timedelta(days=5),
+                "image_url": "https://images.unsplash.com/photo-1606501190025-f3ad6d3ea6ae",
+                "predictions": [
+                    {"label": "Melanoma", "confidence": 0.75},
+                    {"label": "Seborrheic Keratosis", "confidence": 0.15}
+                ],
+                "recommendations": [
+                    "Schedule a follow-up with a dermatologist",
+                    "Protect your skin from sun exposure",
+                    "Monitor any changes in size, shape, or color of the lesion",
+                    "Apply prescribed topical treatments as directed"
+                ]
+            }
+        elif analysis_id == "demo3":
+            return {
+                "id": "demo3",
+                "user_id": current_user.id,
+                "type": "ct-scan",
+                "date": datetime.utcnow() - timedelta(days=7),
+                "image_url": "https://images.unsplash.com/photo-1631563019676-dade0dbdb8fc",
+                "predictions": [
+                    {"label": "Brain Tumor", "confidence": 0.68},
+                    {"label": "Normal Findings", "confidence": 0.22}
+                ],
+                "recommendations": [
+                    "Immediate neurosurgery consultation",
+                    "MRI with contrast for further characterization",
+                    "Discuss biopsy options if appropriate",
+                    "Consider second opinion from neuro-oncologist"
+                ]
+            }
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail="Analysis not found"
+            )
     
-    if not analysis:
+    # Normal flow with MongoDB
+    try:
+        analysis = db.analyses.find_one({"_id": ObjectId(analysis_id)})
+        
+        if not analysis:
+            raise HTTPException(
+                status_code=404,
+                detail="Analysis not found"
+            )
+        
+        if analysis["user_id"] != current_user.id:
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to access this analysis"
+            )
+        
+        analysis["id"] = str(analysis["_id"])
+        del analysis["_id"]
+        
+        return analysis
+    except Exception as e:
+        logger.error(f"Error retrieving analysis: {str(e)}")
         raise HTTPException(
-            status_code=404,
-            detail="Analysis not found"
+            status_code=500,
+            detail=f"Error retrieving analysis: {str(e)}"
         )
-    
-    if analysis["user_id"] != current_user.id:
-        raise HTTPException(
-            status_code=403,
-            detail="Not authorized to access this analysis"
-        )
-    
-    analysis["id"] = str(analysis["_id"])
-    del analysis["_id"]
-    
-    return analysis
 
 @app.get("/api/user/profile")
 async def get_user_profile(
