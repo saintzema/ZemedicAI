@@ -16,13 +16,14 @@ export function AuthProvider({ children }) {
       // In a real app, you would make an API call to your backend
       setTimeout(() => {
         if (email && password) {
-          setCurrentUser({
+          const user = {
             email,
-            name: 'Test User',
+            name: email.split('@')[0],
             id: '123456'
-          });
-          localStorage.setItem('user', JSON.stringify({ email, name: 'Test User', id: '123456' }));
-          resolve();
+          };
+          setCurrentUser(user);
+          localStorage.setItem('user', JSON.stringify(user));
+          resolve(user);
         } else {
           reject(new Error('Invalid email or password'));
         }
@@ -36,13 +37,14 @@ export function AuthProvider({ children }) {
       // In a real app, you would make an API call to your backend
       setTimeout(() => {
         if (email && password && name) {
-          setCurrentUser({
+          const user = {
             email,
             name,
             id: '123456'
-          });
-          localStorage.setItem('user', JSON.stringify({ email, name, id: '123456' }));
-          resolve();
+          };
+          setCurrentUser(user);
+          localStorage.setItem('user', JSON.stringify(user));
+          resolve(user);
         } else {
           reject(new Error('Invalid registration details'));
         }
