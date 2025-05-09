@@ -32,11 +32,11 @@ const AfricanMapSection = () => {
   }
 
   return (
-    <section className="py-20 md:py-32 bg-white">
+    <section className="py-20 md:py-32 bg-black text-white">
       <div className="container-custom">
         <div className="text-center mb-16">
           <motion.span
-            className="section-tag"
+            className="section-tag-dark"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -46,7 +46,7 @@ const AfricanMapSection = () => {
           </motion.span>
           
           <motion.h2 
-            className="section-heading mb-4"
+            className="section-heading-light mt-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -56,7 +56,7 @@ const AfricanMapSection = () => {
           </motion.h2>
           
           <motion.p 
-            className="section-subheading"
+            className="section-subheading text-gray-300"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -67,13 +67,13 @@ const AfricanMapSection = () => {
           </motion.p>
         </div>
 
-        <div className="relative aspect-[4/3] md:aspect-[16/9] rounded-3xl overflow-hidden shadow-xl" style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)' }}>
+        <div className="relative aspect-[4/3] md:aspect-[16/9] rounded-3xl overflow-hidden shadow-xl dark-purple-gradient">
           {/* Map background */}
-          <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 opacity-50">
             <img 
               src="https://media.istockphoto.com/id/1232510116/vector/africa-map-network-bright-mesh-on-dark-blue-background.jpg?s=1024x1024&w=is&k=20&c=O8hdLzNDkOYK0zyCaq1kVPc4jCKu0PqomIEEjf9O4x0=" 
               alt="Africa Network Map"
-              className="w-full h-full object-cover opacity-90"
+              className="w-full h-full object-cover"
             />
           </div>
 
@@ -86,7 +86,7 @@ const AfricanMapSection = () => {
                 y1={line.point1.y}
                 x2={line.point2.x}
                 y2={line.point2.y}
-                stroke="rgba(168, 85, 247, 0.3)"
+                stroke="rgba(168, 85, 247, 0.4)"
                 strokeWidth="1"
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
@@ -119,31 +119,31 @@ const AfricanMapSection = () => {
               }}
             >
               <div className="map-point"></div>
-              <div className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium shadow-sm text-indigo-800 whitespace-nowrap">
+              <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium shadow-sm text-white whitespace-nowrap border border-gray-800">
                 {point.label}
               </div>
             </motion.div>
           ))}
 
           {/* Stats overlay - annalise.ai style */}
-          <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl max-w-sm">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Impact at a glance</h3>
+          <div className="absolute bottom-6 right-6 bg-black/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl max-w-sm border border-gray-800">
+            <h3 className="text-2xl font-bold text-white mb-6">Impact at a glance</h3>
             <div className="grid grid-cols-2 gap-y-8 gap-x-12">
               <div>
-                <p className="text-purple-600 text-4xl font-bold mb-1">12+</p>
-                <p className="text-gray-700">Countries</p>
+                <p className="text-purple-400 text-4xl font-bold mb-1">12+</p>
+                <p className="text-gray-300">Countries</p>
               </div>
               <div>
-                <p className="text-purple-600 text-4xl font-bold mb-1">300+</p>
-                <p className="text-gray-700">Hospitals</p>
+                <p className="text-purple-400 text-4xl font-bold mb-1">300+</p>
+                <p className="text-gray-300">Hospitals</p>
               </div>
               <div>
-                <p className="text-purple-600 text-4xl font-bold mb-1">1M+</p>
-                <p className="text-gray-700">Scans Analyzed</p>
+                <p className="text-purple-400 text-4xl font-bold mb-1">1M+</p>
+                <p className="text-gray-300">Scans Analyzed</p>
               </div>
               <div>
-                <p className="text-purple-600 text-4xl font-bold mb-1">98%</p>
-                <p className="text-gray-700">Accuracy</p>
+                <p className="text-purple-400 text-4xl font-bold mb-1">98%</p>
+                <p className="text-gray-300">Accuracy</p>
               </div>
             </div>
           </div>
@@ -158,9 +158,9 @@ const AfricanMapSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="h-0.5 w-16 bg-purple-200 mr-6"></span>
-            <h3 className="text-2xl font-bold text-gray-900">What clinicians are saying</h3>
-            <span className="h-0.5 w-16 bg-purple-200 ml-6"></span>
+            <span className="h-0.5 w-16 bg-purple-900 mr-6"></span>
+            <h3 className="text-2xl font-bold text-white">What clinicians are saying</h3>
+            <span className="h-0.5 w-16 bg-purple-900 ml-6"></span>
           </motion.div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -186,17 +186,17 @@ const AfricanMapSection = () => {
             ].map((testimonial, index) => (
               <motion.div
                 key={index}
-                className="testimonial-card"
+                className="testimonial-card-dark"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <p className="text-gray-700 mb-8 relative z-10">{testimonial.quote}</p>
+                <p className="text-gray-300 mb-8 relative z-10">{testimonial.quote}</p>
                 <div>
-                  <p className="font-bold text-gray-900">{testimonial.author}</p>
-                  <p className="text-gray-600 text-sm">{testimonial.title}</p>
-                  <p className="text-purple-600 text-sm">{testimonial.organization}</p>
+                  <p className="font-bold text-white">{testimonial.author}</p>
+                  <p className="text-gray-400 text-sm">{testimonial.title}</p>
+                  <p className="text-purple-400 text-sm">{testimonial.organization}</p>
                 </div>
               </motion.div>
             ))}
