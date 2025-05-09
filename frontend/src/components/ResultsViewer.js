@@ -233,7 +233,7 @@ const ResultsViewer = ({
             <div className="flex items-center space-x-3">
               <button 
                 onClick={() => setShowHeatmap(!showHeatmap)}
-                className={\`text-xs px-2 py-1 rounded \${showHeatmap ? 'bg-purple-600' : 'bg-gray-700'}\`}
+                className={`text-xs px-2 py-1 rounded ${showHeatmap ? 'bg-purple-600' : 'bg-gray-700'}`}
               >
                 {showHeatmap ? 'Hide Markers' : 'Show Markers'}
               </button>
