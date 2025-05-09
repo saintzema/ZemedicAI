@@ -167,6 +167,26 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    
+    # Demo mode for MongoDB unavailability
+    if client is None or db is None:
+        try:
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            user_id: str = payload.get("sub")
+            if user_id is None:
+                raise credentials_exception
+                
+            # Create a demo user
+            return User(
+                id=user_id,
+                email="demo@example.com",
+                name="Demo User",
+                created_at=datetime.utcnow()
+            )
+        except jwt.PyJWTError:
+            raise credentials_exception
+    
+    # Normal flow with MongoDB
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
