@@ -268,7 +268,7 @@ const ResultsViewer = ({
         </div>
 
         {/* Right side - Results */}
-        <div className={\`\${showSideBySide ? 'lg:w-1/2' : 'w-full'} p-4 bg-gray-800\`}>
+        <div className={`${showSideBySide ? 'lg:w-1/2' : 'w-full'} p-4 bg-gray-800`}>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-semibold text-purple-300">Analysis Results</h3>
             <button 
