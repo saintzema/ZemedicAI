@@ -249,7 +249,7 @@ const ResultsViewer = ({
           <div className="heat-map-container mb-4 rounded overflow-hidden relative">
             <img 
               src={imageUrl} 
-              alt={\`\${analysisType} Analysis\`} 
+              alt={`${analysisType} Analysis`} 
               className="rounded w-full"
               style={{ maxHeight: '500px', objectFit: 'contain' }}
             />
