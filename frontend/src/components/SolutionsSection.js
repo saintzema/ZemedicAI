@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaLungs, FaBrain, FaHeartbeat, FaStethoscope } from 'react-icons/fa';
+import { FaLungs, FaBrain, FaHeartbeat, FaStethoscope, FaUserMd, FaChartLine, FaHospital, FaClock, FaShieldAlt } from 'react-icons/fa';
 
 const SolutionsSection = () => {
   const solutions = [
@@ -38,21 +38,44 @@ const SolutionsSection = () => {
     }
   ];
 
+  // Professional solution attributes with icons instead of emojis
+  const solutionAttributes = [
+    { 
+      title: "Clinician friendly", 
+      icon: <FaUserMd className="h-8 w-8 text-purple-500" />, 
+      description: "Designed by clinicians for clinicians with intuitive workflows" 
+    },
+    { 
+      title: "Diagnostically valuable", 
+      icon: <FaChartLine className="h-8 w-8 text-purple-500" />, 
+      description: "Enhanced detection with fewer false positives" 
+    },
+    { 
+      title: "Patient focused", 
+      icon: <FaHospital className="h-8 w-8 text-purple-500" />, 
+      description: "Improving patients' lives through faster, accurate diagnosis" 
+    },
+    { 
+      title: "Cost effective", 
+      icon: <FaShieldAlt className="h-8 w-8 text-purple-500" />, 
+      description: "Helping clinicians make fast, accurate decisions with less stress" 
+    },
+    { 
+      title: "Time efficient", 
+      icon: <FaClock className="h-8 w-8 text-purple-500" />, 
+      description: "Faster reporting frees up time for patient care" 
+    }
+  ];
+
   return (
-    <section id="solutions" className="py-24 bg-gray-50">
+    <section id="solutions" className="py-24 dark-purple-gradient text-white">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="section-heading">Our solutions are</h2>
+          <h2 className="section-heading-light">Our solutions are</h2>
         </div>
 
         <div className="grid md:grid-cols-5 gap-8 mb-20">
-          {[
-            { title: "Clinician friendly", icon: "👨‍⚕️", description: "Designed by clinicians for clinicians with intuitive workflows" },
-            { title: "Diagnostically valuable", icon: "🎯", description: "Enhanced detection with fewer false positives" },
-            { title: "Patient focused", icon: "❤️", description: "Improving patients' lives through faster, accurate diagnosis" },
-            { title: "Cost effective", icon: "💰", description: "Helping clinicians make fast, accurate decisions with less stress" },
-            { title: "Time efficient", icon: "⏱️", description: "Faster reporting frees up time for patient care" }
-          ].map((feature, index) => (
+          {solutionAttributes.map((feature, index) => (
             <motion.div
               key={index}
               className="flex flex-col items-center text-center"
@@ -61,9 +84,9 @@ const SolutionsSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.description}</p>
+              <div className="mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
+              <p className="text-gray-300 text-sm">{feature.description}</p>
             </motion.div>
           ))}
         </div>
@@ -71,7 +94,7 @@ const SolutionsSection = () => {
         <div className="mt-24">
           <div className="text-center mb-16">
             <motion.span
-              className="section-tag"
+              className="section-tag-dark"
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -81,7 +104,7 @@ const SolutionsSection = () => {
             </motion.span>
             
             <motion.h2 
-              className="section-heading"
+              className="section-heading-light mt-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -91,7 +114,7 @@ const SolutionsSection = () => {
             </motion.h2>
             
             <motion.p 
-              className="section-subheading"
+              className="section-subheading text-gray-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -106,7 +129,7 @@ const SolutionsSection = () => {
             {solutions.map((solution, index) => (
               <motion.div
                 key={solution.id}
-                className="card p-8 h-full flex flex-col hover:shadow-lg transition-shadow"
+                className="bg-black/30 backdrop-blur-sm p-8 h-full flex flex-col rounded-2xl border border-gray-800 hover:border-purple-800 transition-all duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -116,15 +139,15 @@ const SolutionsSection = () => {
                   {solution.icon}
                 </div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{solution.title}</h3>
+                <h3 className="text-xl font-bold text-white mb-3">{solution.title}</h3>
                 
-                <p className="text-gray-600 mb-6 flex-grow">
+                <p className="text-gray-300 mb-6 flex-grow">
                   {solution.description}
                 </p>
                 
                 <a 
                   href={solution.link} 
-                  className="inline-flex items-center text-purple-600 font-medium hover:text-purple-800 mt-auto"
+                  className="inline-flex items-center text-purple-400 font-medium hover:text-purple-300 mt-auto"
                 >
                   Learn more
                   <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,17 +160,17 @@ const SolutionsSection = () => {
         </div>
 
         {/* Product Showcase - Annalise.ai Style */}
-        <div className="mt-32 bg-gradient-primary text-white rounded-3xl overflow-hidden">
+        <div className="mt-32 bg-black rounded-3xl overflow-hidden shadow-2xl border border-gray-800">
           <div className="grid md:grid-cols-2 items-center">
             <div className="p-12 md:p-16">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-purple-500/20 text-purple-200 rounded-full mb-6">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-purple-900/40 text-purple-300 rounded-full mb-6 border border-purple-700/50">
                 Featured Product
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
                 Diagnose with confidence for better patient outcomes
               </h2>
               
-              <p className="text-gray-200 mb-8">
+              <p className="text-gray-300 mb-8">
                 Our advanced medical imaging AI is specially adapted for the unique healthcare challenges across Africa. Designed to work with limited 
                 bandwidth, intermittent power, and a wide range of imaging equipment quality.
               </p>
@@ -163,12 +186,12 @@ const SolutionsSection = () => {
                     <svg className="h-6 w-6 text-purple-400 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-gray-200">{item}</span>
+                    <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
               </ul>
               
-              <button className="btn btn-white">
+              <button className="btn btn-white uppercase tracking-wide text-sm">
                 Find Out More
               </button>
             </div>
@@ -179,7 +202,7 @@ const SolutionsSection = () => {
                 alt="X-ray analysis in action" 
                 className="w-full h-auto object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/90 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
             </div>
           </div>
         </div>
