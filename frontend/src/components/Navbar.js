@@ -18,25 +18,25 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">
-              Home
-            </Link>
-            <a href="#solutions" className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">
+            <a href="#" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
               Solutions
             </a>
-            <a href="#deployment" className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">
+            <a href="#deployment" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
               Deployment
             </a>
-            <a href="#partners" className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">
+            <a href="#partners" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
               Partners
             </a>
+            <a href="#" className="text-gray-700 hover:text-purple-600 font-medium transition-colors">
+              About Us
+            </a>
             <div className="flex items-center space-x-4">
-              <a href="#" className="btn btn-outline text-sm py-1.5">
+              <Link to="/login" className="btn btn-outline text-sm py-1.5 px-5">
                 Sign In
-              </a>
-              <a href="#" className="btn btn-primary text-sm py-1.5">
+              </Link>
+              <Link to="/register" className="btn btn-primary text-sm py-1.5 px-5">
                 Sign Up
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -44,7 +44,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md text-gray-700 hover:text-indigo-600 hover:bg-gray-100 focus:outline-none"
+              className="p-2 rounded-md text-gray-700 hover:text-purple-600 hover:bg-gray-100 focus:outline-none"
             >
               {isOpen ? <IoClose size={24} /> : <GiHamburgerMenu size={24} />}
             </button>
@@ -55,48 +55,48 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden pt-4 pb-3 border-t border-gray-200">
             <div className="flex flex-col space-y-4">
-              <Link 
-                to="/" 
-                className="px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded"
-                onClick={() => setIsOpen(false)}
-              >
-                Home
-              </Link>
               <a 
-                href="#solutions" 
-                className="px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded"
+                href="#" 
+                className="px-4 py-2 text-gray-700 hover:text-purple-600 hover:bg-gray-100 rounded"
                 onClick={() => setIsOpen(false)}
               >
                 Solutions
               </a>
               <a 
                 href="#deployment" 
-                className="px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded"
+                className="px-4 py-2 text-gray-700 hover:text-purple-600 hover:bg-gray-100 rounded"
                 onClick={() => setIsOpen(false)}
               >
                 Deployment
               </a>
               <a 
                 href="#partners" 
-                className="px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded"
+                className="px-4 py-2 text-gray-700 hover:text-purple-600 hover:bg-gray-100 rounded"
                 onClick={() => setIsOpen(false)}
               >
                 Partners
               </a>
               <a 
                 href="#" 
-                className="px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded"
+                className="px-4 py-2 text-gray-700 hover:text-purple-600 hover:bg-gray-100 rounded"
+                onClick={() => setIsOpen(false)}
+              >
+                About Us
+              </a>
+              <Link 
+                to="/login" 
+                className="px-4 py-2 text-purple-600 hover:text-purple-800 hover:bg-purple-50 rounded"
                 onClick={() => setIsOpen(false)}
               >
                 Sign In
-              </a>
-              <a 
-                href="#" 
-                className="px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded"
+              </Link>
+              <Link 
+                to="/register" 
+                className="px-4 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded"
                 onClick={() => setIsOpen(false)}
               >
                 Sign Up
-              </a>
+              </Link>
             </div>
           </div>
         )}
