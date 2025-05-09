@@ -24,7 +24,8 @@ const Login = () => {
     try {
       setLoading(true);
       await login(email, password);
-      navigate('/dashboard');
+      // Use window.location for a hard redirect if React Router isn't working
+      window.location.href = '/dashboard';
     } catch (error) {
       setError(error.message || 'Failed to log in. Please check your credentials.');
     } finally {
