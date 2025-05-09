@@ -225,7 +225,7 @@ const ResultsViewer = ({
     <div className="bg-gray-900 shadow-xl rounded-lg overflow-hidden text-white">
       {demoMode && <DemoModeBadge />}
       
-      <div className={\`flex flex-col \${showSideBySide ? 'lg:flex-row' : ''} gap-1\`}>
+      <div className={`flex flex-col ${showSideBySide ? 'lg:flex-row' : ''} gap-1`}>
         {/* Left side - Image */}
         <div className={\`\${showSideBySide ? 'lg:w-1/2' : 'w-full'} bg-black p-2 rounded-t-lg \${showSideBySide ? 'lg:rounded-l-lg lg:rounded-t-none' : ''}\`}>
           <div className="flex justify-between items-center mb-2 px-2">
