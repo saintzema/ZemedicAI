@@ -15,11 +15,11 @@ const PartnersSection = () => {
   ];
 
   return (
-    <section id="partners" className="py-24 bg-white">
+    <section id="partners" className="py-24 bg-black text-white">
       <div className="container-custom">
         <div className="text-center mb-16">
           <motion.span
-            className="section-tag"
+            className="section-tag-dark"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -29,7 +29,7 @@ const PartnersSection = () => {
           </motion.span>
           
           <motion.h2 
-            className="section-heading"
+            className="section-heading-light mt-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -39,7 +39,7 @@ const PartnersSection = () => {
           </motion.h2>
           
           <motion.p 
-            className="section-subheading"
+            className="section-subheading text-gray-300"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -55,13 +55,13 @@ const PartnersSection = () => {
           {partners.map((partner, index) => (
             <motion.div
               key={partner.id}
-              className="flex items-center justify-center h-28 px-8 rounded-xl border border-gray-200 hover:border-purple-200 transition-all duration-300 bg-white shadow-sm hover:shadow-md"
+              className="flex items-center justify-center h-28 px-8 rounded-xl border border-gray-800 hover:border-purple-800 transition-all duration-300 bg-gray-900/50"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
-              <span className="text-lg font-medium text-gray-700 text-center">{partner.name}</span>
+              <span className="text-lg font-medium text-gray-300 text-center">{partner.name}</span>
             </motion.div>
           ))}
         </div>
@@ -69,9 +69,9 @@ const PartnersSection = () => {
         {/* Case studies - annalise.ai style */}
         <div className="mb-20">
           <div className="flex items-center justify-center mb-12">
-            <span className="h-0.5 w-16 bg-purple-200 mr-6"></span>
-            <h3 className="text-2xl font-bold text-gray-900">Client success stories</h3>
-            <span className="h-0.5 w-16 bg-purple-200 ml-6"></span>
+            <span className="h-0.5 w-16 bg-purple-900 mr-6"></span>
+            <h3 className="text-2xl font-bold text-white">Client success stories</h3>
+            <span className="h-0.5 w-16 bg-purple-900 ml-6"></span>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -97,7 +97,7 @@ const PartnersSection = () => {
             ].map((study, index) => (
               <motion.div
                 key={index}
-                className="case-study h-80 rounded-2xl overflow-hidden shadow-lg"
+                className="case-study h-80 rounded-2xl overflow-hidden shadow-lg border border-gray-800"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -110,10 +110,10 @@ const PartnersSection = () => {
                 />
                 <div className="case-study-overlay"></div>
                 <div className="case-study-content">
-                  <div className="text-white text-sm mb-2">{study.location}</div>
+                  <div className="text-purple-300 text-sm mb-2">{study.location}</div>
                   <h4 className="text-white text-xl font-bold mb-2">{study.title}</h4>
-                  <p className="text-white/80 text-sm">{study.description}</p>
-                  <a href="#" className="mt-4 inline-flex items-center text-white hover:text-purple-200 text-sm font-medium">
+                  <p className="text-gray-300 text-sm">{study.description}</p>
+                  <a href="#" className="mt-4 inline-flex items-center text-purple-300 hover:text-purple-200 text-sm font-medium">
                     Read case study
                     <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -127,7 +127,7 @@ const PartnersSection = () => {
         
         {/* Final CTA - annalise.ai style */}
         <motion.div
-          className="bg-gradient-secondary rounded-3xl overflow-hidden text-white py-16 px-8 text-center"
+          className="bg-gradient-primary rounded-3xl overflow-hidden text-white py-16 px-8 text-center border border-gray-800"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -135,14 +135,14 @@ const PartnersSection = () => {
         >
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to transform healthcare delivery in Africa?</h2>
-            <p className="text-xl text-white/90 mb-8">
+            <p className="text-xl text-gray-200 mb-8">
               Join hundreds of healthcare providers across Africa who are using ZemedicAI to improve patient outcomes.
             </p>
             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <a href="#" className="btn btn-white text-center">
+              <a href="#" className="btn btn-white text-center uppercase tracking-wide text-sm">
                 Get Started
               </a>
-              <a href="#" className="btn btn-outline border-white text-white hover:bg-white/10 text-center">
+              <a href="#" className="btn btn-outline border-white text-white hover:bg-white/10 text-center uppercase tracking-wide text-sm">
                 Request Demo
               </a>
             </div>
