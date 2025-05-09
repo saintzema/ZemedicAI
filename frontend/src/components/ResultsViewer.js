@@ -282,7 +282,7 @@ const ResultsViewer = ({
           {/* Tabs */}
           <div className="flex border-b border-gray-700 mb-4">
             <button 
-              className={\`px-4 py-2 text-sm font-medium \${activeTab === 'findings' ? 'text-purple-300 border-b-2 border-purple-500' : 'text-gray-400 hover:text-gray-300'}\`}
+              className={`px-4 py-2 text-sm font-medium ${activeTab === 'findings' ? 'text-purple-300 border-b-2 border-purple-500' : 'text-gray-400 hover:text-gray-300'}`}
               onClick={() => setActiveTab('findings')}
             >
               Findings
