@@ -44,7 +44,8 @@ const Register = () => {
     try {
       setLoading(true);
       await register(name, email, password);
-      navigate('/dashboard');
+      // Use window.location for a hard redirect if React Router isn't working
+      window.location.href = '/dashboard';
     } catch (error) {
       setError(error.message || 'Failed to create an account. Please try again.');
     } finally {
