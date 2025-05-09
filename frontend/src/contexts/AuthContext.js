@@ -1,111 +1,80 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if user is already logged in (from localStorage)
-    try {
-      const userJson = localStorage.getItem('zemedic-user');
-      if (userJson) {
-        const user = JSON.parse(userJson);
-        
-        // Add token field if not already present (for backward compatibility)
-        if (user.access_token && !user.token) {
-          user.token = user.access_token;
+  // Mock login function
+  function login(email, password) {
+    return new Promise((resolve, reject) => {
+      // In a real app, you would make an API call to your backend
+      setTimeout(() => {
+        if (email && password) {
+          setCurrentUser({
+            email,
+            name: 'Test User',
+            id: '123456'
+          });
+          localStorage.setItem('user', JSON.stringify({ email, name: 'Test User', id: '123456' }));
+          resolve();
+        } else {
+          reject(new Error('Invalid email or password'));
         }
-        
-        setCurrentUser(user);
-      }
-    } catch (error) {
-      console.error('Error loading user from localStorage:', error);
-      // Clear corrupted data
-      localStorage.removeItem('zemedic-user');
-    } finally {
-      setLoading(false);
+      }, 1000);
+    });
+  }
+
+  // Mock register function
+  function register(email, password, name) {
+    return new Promise((resolve, reject) => {
+      // In a real app, you would make an API call to your backend
+      setTimeout(() => {
+        if (email && password && name) {
+          setCurrentUser({
+            email,
+            name,
+            id: '123456'
+          });
+          localStorage.setItem('user', JSON.stringify({ email, name, id: '123456' }));
+          resolve();
+        } else {
+          reject(new Error('Invalid registration details'));
+        }
+      }, 1000);
+    });
+  }
+
+  // Mock logout function
+  function logout() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setCurrentUser(null);
+        localStorage.removeItem('user');
+        resolve();
+      }, 500);
+    });
+  }
+
+  // Check if user is stored in localStorage on page load
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setCurrentUser(user);
     }
+    setLoading(false);
   }, []);
-
-const login = async (email, password) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Login failed');
-      }
-
-      const data = await response.json();
-      
-      // Ensure token is stored correctly
-      const userData = {
-        ...data,
-        token: data.access_token, // Add token field for easier access
-      };
-      
-      localStorage.setItem('zemedic-user', JSON.stringify(userData));
-      setCurrentUser(userData);
-      return userData;
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    }
-  };
-
-  const register = async (name, email, password) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Registration failed');
-      }
-
-      const data = await response.json();
-      
-      // Ensure token is stored correctly
-      const userData = {
-        ...data,
-        token: data.access_token, // Add token field for easier access
-      };
-      
-      localStorage.setItem('zemedic-user', JSON.stringify(userData));
-      setCurrentUser(userData);
-      return userData;
-    } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem('zemedic-user');
-    setCurrentUser(null);
-  };
 
   const value = {
     currentUser,
     login,
     register,
-    logout,
-    loading
+    logout
   };
 
   return (
@@ -113,4 +82,4 @@ const login = async (email, password) => {
       {!loading && children}
     </AuthContext.Provider>
   );
-};
+}
