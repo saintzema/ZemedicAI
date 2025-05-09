@@ -313,7 +313,7 @@ const ResultsViewer = ({
                         onClick={() => setExpandedFinding(expandedFinding === index ? null : index)}
                       >
                         <div className="flex items-center">
-                          <div className={\`w-3 h-3 rounded-full \${getConfidenceStyle(prediction.confidence)} mr-2\`}></div>
+                          <div className={`w-3 h-3 rounded-full ${getConfidenceStyle(prediction.confidence)} mr-2`}></div>
                           <span className="font-medium">{prediction.label}</span>
                         </div>
                         <div className="flex items-center">
