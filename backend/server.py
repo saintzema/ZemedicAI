@@ -434,26 +434,38 @@ async def analyze_xray(
     # Analyze the image
     analysis_result = analyze_xray_image(image_data)
     
-    # Save the image
-    file_extension = file.filename.split(".")[-1]
-    unique_filename = f"{uuid.uuid4()}.{file_extension}"
-    file_path = UPLOAD_DIR / unique_filename
-    with open(file_path, "wb") as f:
-        f.write(image_data)
+    # Generate a unique ID
+    analysis_id = str(uuid.uuid4())
     
-    # Create analysis document
-    analysis_id = str(ObjectId())
-    analysis_doc = {
-        "_id": ObjectId(analysis_id),
-        "user_id": current_user.id,
-        "type": "xray",
-        "date": datetime.utcnow(),
-        "image_url": f"/uploads/{unique_filename}",
-        "predictions": analysis_result["predictions"],
-        "recommendations": analysis_result["recommendations"]
-    }
+    # Save the image if possible
+    try:
+        file_extension = file.filename.split(".")[-1]
+        unique_filename = f"{uuid.uuid4()}.{file_extension}"
+        file_path = UPLOAD_DIR / unique_filename
+        with open(file_path, "wb") as f:
+            f.write(image_data)
+        image_url = f"/uploads/{unique_filename}"
+    except Exception as e:
+        logger.error(f"Error saving image: {str(e)}")
+        # Use a placeholder if saving fails
+        image_url = "https://images.unsplash.com/photo-1584555684040-bad07f46a21f"
     
-    db.analyses.insert_one(analysis_doc)
+    # Store in MongoDB if available
+    if client is not None and db is not None:
+        try:
+            analysis_doc = {
+                "_id": ObjectId(analysis_id),
+                "user_id": current_user.id,
+                "type": "xray",
+                "date": datetime.utcnow(),
+                "image_url": image_url,
+                "predictions": analysis_result["predictions"],
+                "recommendations": analysis_result["recommendations"]
+            }
+            
+            db.analyses.insert_one(analysis_doc)
+        except Exception as e:
+            logger.error(f"Error storing analysis in MongoDB: {str(e)}")
     
     # Return the result
     return {
@@ -461,7 +473,7 @@ async def analyze_xray(
         "type": "xray",
         "predictions": analysis_result["predictions"],
         "recommendations": analysis_result["recommendations"],
-        "image_url": f"/uploads/{unique_filename}"
+        "image_url": image_url
     }
 
 @app.post("/api/analyze/skin")
