@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from 'react-icons/io5';
@@ -8,12 +8,12 @@ import ZemedicLogo from './ZemedicLogo';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { currentUser, logout } = useAuth();
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/login');
+      history.push('/login');
     } catch (error) {
       console.error('Failed to log out', error);
     }
