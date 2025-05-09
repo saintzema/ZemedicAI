@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useDemoMode } from '../contexts/DemoModeContext';
 import { FaBars, FaTimes, FaUser, FaHistory, FaSignOutAlt, FaCog, FaFlask, FaBell } from 'react-icons/fa';
+import ZemedicLogo from '../assets/zemedic-logo.png';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
