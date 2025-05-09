@@ -265,7 +265,7 @@ const ctScanConditions = [
     description: 'Loss of brain cells or shrinkage',
     recommendations: [
       'Neurological evaluation for cognitive assessment',
-      'Consider underlying causes like Alzheimer's or other dementias',
+      'Consider underlying causes like Alzheimer\'s or other dementias',
       'Cognitive exercises and mental stimulation',
       'Regular follow-up to monitor progression'
     ]
