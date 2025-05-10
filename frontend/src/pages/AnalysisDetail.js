@@ -287,7 +287,7 @@ const AnalysisDetail = () => {
               
               {/* Analysis Metadata */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
-                <div className="p-5 border-b border-gray-800">
+                <div className="p-5 border-b border-gray-800 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
                   <h2 className="text-lg font-semibold text-white">Analysis Information</h2>
                 </div>
                 <div className="p-5">
