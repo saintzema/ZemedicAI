@@ -51,7 +51,7 @@ const AnalysisDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       <Navbar />
-      <main className="flex-grow py-8 px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow py-8 px-4 sm:px-6 lg:px-8 page-transition">
         <div className="container-custom">
           <div className="flex items-center mb-8">
             <Link to="/analysis" className="text-purple-400 hover:text-purple-300 mr-4 flex items-center">
