@@ -94,13 +94,6 @@ const Footer = () => {
           <p className="text-gray-500 text-sm">
             &copy; {new Date().getFullYear()} ZemedicAI. All rights reserved.
           </p>
-          <div className="mt-4 md:mt-0">
-            <ul className="flex space-x-6 text-sm">
-              <li><Link to="/privacy" className="text-gray-500 hover:text-purple-400 transition-colors">Privacy</Link></li>
-              <li><Link to="/terms" className="text-gray-500 hover:text-purple-400 transition-colors">Terms</Link></li>
-              <li><Link to="/cookies" className="text-gray-500 hover:text-purple-400 transition-colors">Cookies</Link></li>
-            </ul>
-          </div>
         </div>
       </div>
     </footer>
