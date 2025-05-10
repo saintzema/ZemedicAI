@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import SolutionsSection from '../components/SolutionsSection';
+import HowItWorksSection from '../components/HowItWorksSection';
 import AfricanMapSection from '../components/AfricanMapSection';
 import SolarBoothSection from '../components/SolarBoothSection';
 import PartnersSection from '../components/PartnersSection';
