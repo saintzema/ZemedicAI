@@ -1,280 +1,282 @@
-# ZemedicAI - AI-Powered Medical Diagnostics for Africa
+# ZemedicAI - AI-Powered Medical Diagnostics Platform
 
-ZemedicAI is a cutting-edge platform that delivers AI-powered medical diagnostic tools designed specifically for the unique healthcare challenges across Africa, bringing advanced medical imaging analysis to areas that need it most.
+ZemedicAI is a full-stack application featuring a React frontend and FastAPI backend that provides AI-powered medical diagnostics for X-ray analysis, skin lesion detection, and CT scan interpretation.
 
-![ZemedicAI Platform](https://images.unsplash.com/photo-1631651363531-fd29aec4cb5c)
+## Table of Contents
+
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Local Development Setup](#local-development-setup)
+- [Deployment Guide](#deployment-guide)
+  - [Deploying to Hostinger](#deploying-to-hostinger)
+  - [Deploying to Other Platforms](#deploying-to-other-platforms)
+- [Environment Variables](#environment-variables)
+- [API Documentation](#api-documentation)
+- [Troubleshooting](#troubleshooting)
 
 ## Features
 
-- 🏥 **AI Diagnostic Analysis**: X-ray, CT scan, and skin lesion analysis with high accuracy
-- 🌍 **African-Focused Solutions**: Designed specifically for the healthcare needs of Africa
-- 🔋 **Flexible Deployment Options**: Solar-powered booths, telehealth integration, cloud API, and mobile SDK
-- 📊 **Comprehensive Reporting**: Detailed analysis results with professional medical reporting
-- 🔒 **Secure Authentication**: User authentication and data protection
-- 📱 **Responsive Design**: Works on desktop and mobile devices
+- **AI-Powered Diagnostics**: Analysis for X-rays, skin lesions, and CT scans
+- **Dark Theme UI**: Professional clinical interface with purple/indigo gradients
+- **Responsive Design**: Works on all device sizes
+- **Interactive Visualizations**: Confidence indicators and region highlighting
+- **Comprehensive Content**: Detailed product pages and company information
 
-## Tech Stack
+## Project Structure
 
-- **Frontend**: React, React Router, Tailwind CSS, Framer Motion
-- **Backend**: FastAPI (Python)
-- **Database**: MongoDB
-- **Authentication**: JWT-based auth system
-- **Deployment**: Docker, Supervisor
+```
+/app/
+├── backend/             # FastAPI backend
+│   ├── server.py        # Main API server
+│   ├── requirements.txt # Python dependencies
+│   └── .env             # Backend environment variables
+├── frontend/            # React frontend
+│   ├── public/          # Static assets
+│   ├── src/             # React source code
+│   │   ├── components/  # Reusable UI components
+│   │   ├── contexts/    # React contexts (Auth, etc.)
+│   │   ├── pages/       # Application pages
+│   │   ├── utils/       # Utility functions
+│   │   └── App.js       # Main application component
+│   ├── package.json     # Node.js dependencies
+│   └── .env             # Frontend environment variables
+└── README.md            # This file
+```
 
 ## Local Development Setup
 
 ### Prerequisites
 
-- Node.js (v14+ recommended)
-- Python 3.8+
-- MongoDB
-- Git
-
-### Frontend Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/zemedic-ai.git
-cd zemedic-ai/frontend
-
-# Install dependencies
-yarn install
-
-# Create .env file
-cp .env.example .env
-# Edit .env file to add your backend URL
-# REACT_APP_BACKEND_URL=http://localhost:8001
-
-# Start development server
-yarn start
-```
+- Node.js (v14+)
+- Python (3.7+)
+- MongoDB (local or remote)
 
 ### Backend Setup
 
-```bash
-# Navigate to backend directory
-cd ../backend
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
 
-# Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Create .env file
-cp .env.example .env
-# Edit .env to configure MongoDB
-# MONGO_URL=mongodb://localhost:27017
-# DB_NAME=zemedic
+4. Create a `.env` file in the backend directory:
+   ```
+   MONGO_URL="mongodb://localhost:27017"
+   DB_NAME="zemedic_database"
+   ```
 
-# Start development server
-uvicorn server:app --host 0.0.0.0 --port 8001 --reload
-```
+5. Start the backend server:
+   ```bash
+   uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+   ```
 
-## Production Deployment
+### Frontend Setup
 
-### Option 1: Traditional Server Deployment
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
 
-1. **Build the Frontend**
+2. Install dependencies:
+   ```bash
+   yarn install
+   ```
 
-```bash
-cd frontend
-yarn build
-```
+3. Create a `.env` file in the frontend directory:
+   ```
+   REACT_APP_BACKEND_URL="http://localhost:8001/api"
+   ```
 
-2. **Set up Nginx or Apache**
+4. Start the frontend development server:
+   ```bash
+   yarn start
+   ```
 
-Configure your web server to serve the built frontend from `/frontend/build` and proxy API requests to the backend.
+5. Open your browser and navigate to `http://localhost:3000`
 
-Example Nginx configuration:
+### Using Docker Compose (Optional)
 
-```nginx
-server {
-    listen 80;
-    server_name yourdomain.com;
-    
-    # Serve frontend
-    location / {
-        root /path/to/zemedic-ai/frontend/build;
-        try_files $uri $uri/ /index.html;
-    }
-    
-    # Proxy API requests to backend
-    location /api {
-        proxy_pass http://localhost:8001;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-3. **Set up the Backend**
+If you have Docker and Docker Compose installed, you can run the entire application stack with:
 
 ```bash
-cd backend
-# Install production dependencies
-pip install gunicorn
-# Start the backend with gunicorn
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker server:app
+docker-compose up
 ```
 
-4. **Set up Supervisor**
+## Deployment Guide
 
-Create a supervisor configuration file to manage your processes:
+### Deploying to Hostinger
 
-```ini
-[program:frontend]
-command=nginx
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/supervisor/frontend.err.log
-stdout_logfile=/var/log/supervisor/frontend.out.log
+#### Backend Deployment
 
-[program:backend]
-command=/path/to/venv/bin/gunicorn -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8001 server:app
-directory=/path/to/zemedic-ai/backend
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/supervisor/backend.err.log
-stdout_logfile=/var/log/supervisor/backend.out.log
+1. Log in to your Hostinger account and create a new website.
 
-[program:mongodb]
-command=mongod --dbpath /var/lib/mongodb
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/supervisor/mongodb.err.log
-stdout_logfile=/var/log/supervisor/mongodb.out.log
-```
+2. Set up a Python environment:
+   - Go to the Hostinger control panel
+   - Enable Python in the "Website" > "Python" section
+   - Choose Python 3.9+ version
 
-### Option 2: Docker Deployment
+3. Upload backend files via SSH or FTP:
+   ```bash
+   scp -r backend/* user@your-hostinger-domain.com:/path/to/backend/
+   ```
 
-1. **Build and push Docker images**
+4. Install dependencies on the server:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-# Build frontend image
-docker build -t zemedic-frontend:latest -f frontend.Dockerfile .
+5. Configure environment variables in Hostinger control panel:
+   - Go to "Website" > "Environment Variables"
+   - Add:
+     - MONGO_URL="mongodb://your-mongo-uri"
+     - DB_NAME="your_database_name"
 
-# Build backend image
-docker build -t zemedic-backend:latest -f backend.Dockerfile .
+6. Set up a production server with Gunicorn:
+   ```bash
+   pip install gunicorn
+   gunicorn -w 4 -k uvicorn.workers.UvicornWorker server:app
+   ```
 
-# Push to your registry
-docker push yourusername/zemedic-frontend:latest
-docker push yourusername/zemedic-backend:latest
-```
+7. Configure Hostinger to start this Python application automatically.
 
-2. **Deploy with Docker Compose**
+#### Frontend Deployment
 
-Create a `docker-compose.yml` file:
+1. Build the production version of the frontend:
+   ```bash
+   cd frontend
+   yarn build
+   ```
 
-```yaml
-version: '3'
-services:
-  mongodb:
-    image: mongo:latest
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - zemedic-network
+2. Upload the build directory to Hostinger via SSH or FTP:
+   ```bash
+   scp -r build/* user@your-hostinger-domain.com:/path/to/public_html/
+   ```
 
-  backend:
-    image: yourusername/zemedic-backend:latest
-    depends_on:
-      - mongodb
-    environment:
-      - MONGO_URL=mongodb://mongodb:27017
-      - DB_NAME=zemedic
-    networks:
-      - zemedic-network
+3. Configure environment variables for production:
+   - Create a `.env.production` file before building:
+   ```
+   REACT_APP_BACKEND_URL="https://api.your-hostinger-domain.com/api"
+   ```
 
-  frontend:
-    image: yourusername/zemedic-frontend:latest
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - zemedic-network
+4. Set up URL rewriting for React Router:
+   - Create an `.htaccess` file in the public_html directory:
+   ```
+   RewriteEngine On
+   RewriteBase /
+   RewriteRule ^index\.html$ - [L]
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteRule . /index.html [L]
+   ```
 
-networks:
-  zemedic-network:
+### Deploying to Other Platforms
 
-volumes:
-  mongodb_data:
-```
+#### Deploying Backend to Heroku
 
-3. **Deploy with docker-compose**
+1. Create a Heroku account and install the Heroku CLI.
 
-```bash
-docker-compose up -d
-```
+2. Initialize a Git repository (if not already done):
+   ```bash
+   cd backend
+   git init
+   git add .
+   git commit -m "Initial commit"
+   ```
 
-### Option 3: Cloud Deployment (AWS, Azure, GCP)
+3. Create a Heroku app:
+   ```bash
+   heroku create your-app-name
+   ```
 
-1. **AWS Elastic Beanstalk**
+4. Add a Procfile for Heroku:
+   ```
+   web: gunicorn -k uvicorn.workers.UvicornWorker server:app
+   ```
 
-   - Create a new application and environment
-   - Configure your environment with the necessary environment variables
-   - Deploy your application code
+5. Configure environment variables:
+   ```bash
+   heroku config:set MONGO_URL="mongodb://your-mongo-uri"
+   heroku config:set DB_NAME="your_database_name"
+   ```
 
-2. **Azure App Service**
+6. Deploy to Heroku:
+   ```bash
+   git push heroku master
+   ```
 
-   - Create a new App Service
-   - Configure deployment settings
-   - Set up environment variables
-   - Deploy your application
+#### Deploying Frontend to Netlify
 
-3. **Google Cloud Run**
+1. Create a Netlify account.
 
-   - Build your Docker images
-   - Push to Google Container Registry
-   - Create a new Cloud Run service
-   - Configure environment variables
-   - Deploy your containers
+2. Create a `netlify.toml` file in the frontend directory:
+   ```toml
+   [build]
+     command = "yarn build"
+     publish = "build"
 
-## Project Structure
+   [[redirects]]
+     from = "/*"
+     to = "/index.html"
+     status = 200
+   ```
 
-```
-/app
-├── backend/
-│   ├── requirements.txt      # Python dependencies
-│   ├── server.py             # Main FastAPI application
-│   └── .env                  # Environment variables
-├── frontend/
-│   ├── package.json          # Node.js dependencies
-│   ├── public/               # Static assets
-│   └── src/                  # React source code
-│       ├── components/       # Reusable UI components
-│       ├── contexts/         # React contexts for state management
-│       ├── pages/            # Page components
-│       ├── assets/           # Images, fonts, etc.
-│       ├── App.js            # Main React component
-│       └── index.js          # React entry point
-└── README.md                 # Project documentation
-```
+3. Configure environment variables in Netlify UI or with a `.env.production` file.
+
+4. Deploy using the Netlify UI or CLI:
+   ```bash
+   netlify deploy --prod
+   ```
 
 ## Environment Variables
 
-### Frontend (.env)
+### Backend Variables
 
-```
-REACT_APP_BACKEND_URL=https://api.yourdomain.com
-```
+- `MONGO_URL`: MongoDB connection string
+- `DB_NAME`: MongoDB database name
 
-### Backend (.env)
+### Frontend Variables
 
-```
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=zemedic_db
-```
+- `REACT_APP_BACKEND_URL`: URL of the backend API (must include `/api` suffix)
 
-## License
+## API Documentation
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Once the backend is running, Swagger documentation is available at:
+- Local: http://localhost:8001/docs
+- Production: https://your-backend-domain.com/docs
 
-## Contributors
+## Troubleshooting
 
-- The ZemedicAI Team
+### Common Issues
+
+1. **Backend can't connect to MongoDB**
+   - Check if MongoDB is running
+   - Verify the MONGO_URL in .env is correct
+   - Make sure network allows connection to MongoDB
+
+2. **Frontend can't connect to Backend**
+   - Verify REACT_APP_BACKEND_URL is correctly set
+   - Check if backend server is running
+   - Ensure CORS is properly configured in backend
+
+3. **Deployment Issues**
+   - Make sure all environment variables are set in production
+   - Check server logs for specific errors
+   - Verify build process completed successfully
+
+### Getting Help
+
+If you encounter issues not covered in this guide, please open an issue on our GitHub repository or contact our support team at support@zemedic.ai.
+
+---
+
+© 2023 ZemedicAI. All Rights Reserved.
