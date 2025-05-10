@@ -62,6 +62,10 @@ const Navbar = () => {
               )}
             </div>
 
+            <Link to="/how-it-works" className="text-gray-300 hover:text-purple-400 font-medium transition-colors">
+              How It Works
+            </Link>
+
             <Link to="/deployment" className="text-gray-300 hover:text-purple-400 font-medium transition-colors">
               Deployment
             </Link>
