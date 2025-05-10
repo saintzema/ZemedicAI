@@ -114,9 +114,9 @@ const AnalysisDetail = () => {
             <div className="md:col-span-5 space-y-8">
               {/* Patient Information */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
-                <div className="p-5 border-b border-gray-800 flex justify-between items-center">
+                <div className="p-5 border-b border-gray-800 flex justify-between items-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
                   <h2 className="text-lg font-semibold text-white">Patient Information</h2>
-                  <FaInfoCircle className="text-gray-400" />
+                  <FaInfoCircle className="text-purple-400" />
                 </div>
                 <div className="p-5 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -138,8 +138,8 @@ const AnalysisDetail = () => {
                     </div>
                   </div>
                   
-                  <div>
-                    <p className="text-sm text-gray-400">Clinical Notes</p>
+                  <div className="bg-gray-800/70 p-3 rounded-lg">
+                    <p className="text-sm text-purple-400">Clinical Notes</p>
                     <p className="text-white mt-1">{analysis.patient.clinical_notes}</p>
                   </div>
                   
