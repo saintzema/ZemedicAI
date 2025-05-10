@@ -5,13 +5,18 @@ ZemedicAI is a full-stack application featuring a React frontend and FastAPI bac
 ## Table of Contents
 
 - [Features](#features)
+- [Technology Stack](#technology-stack)
 - [Project Structure](#project-structure)
+- [Screenshots](#screenshots)
 - [Local Development Setup](#local-development-setup)
 - [Deployment Guide](#deployment-guide)
   - [Deploying to Hostinger](#deploying-to-hostinger)
   - [Deploying to Other Platforms](#deploying-to-other-platforms)
 - [Environment Variables](#environment-variables)
 - [API Documentation](#api-documentation)
+- [Security Considerations](#security-considerations)
+- [Contributing](#contributing)
+- [License](#license)
 - [Troubleshooting](#troubleshooting)
 
 ## Features
@@ -21,6 +26,26 @@ ZemedicAI is a full-stack application featuring a React frontend and FastAPI bac
 - **Responsive Design**: Works on all device sizes
 - **Interactive Visualizations**: Confidence indicators and region highlighting
 - **Comprehensive Content**: Detailed product pages and company information
+
+## Technology Stack
+
+### Frontend
+- **React**: UI library for building the interface
+- **React Router**: For client-side routing
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **Context API**: For state management (Auth, etc.)
+
+### Backend
+- **FastAPI**: Modern Python web framework for building APIs
+- **MongoDB**: NoSQL database for storing user and analysis data
+- **Pydantic**: Data validation and settings management
+- **Uvicorn**: ASGI server for serving the FastAPI application
+- **JWT**: For authentication and authorization
+
+### AI & Machine Learning
+- **TensorFlow/PyTorch**: For serving AI diagnostic models
+- **OpenCV**: For image processing and visualization
+- **Scikit-learn**: For additional data processing and analysis
 
 ## Project Structure
 
@@ -42,6 +67,24 @@ ZemedicAI is a full-stack application featuring a React frontend and FastAPI bac
 │   └── .env             # Frontend environment variables
 └── README.md            # This file
 ```
+
+## Screenshots
+
+### X-Ray Analysis
+![X-Ray Analysis](/screenshots/xray-analysis.png)
+*The X-Ray Analysis page with diagnostic visualization.*
+
+### Skin Lesion Detection
+![Skin Analysis](/screenshots/skin-analysis.png)
+*Skin lesion detection with confidence indicators.*
+
+### CT Scan Interpretation
+![CT Scan Analysis](/screenshots/ct-scan-analysis.png)
+*CT scan analysis with region highlighting.*
+
+### Dashboard
+![Dashboard](/screenshots/dashboard.png)
+*User dashboard showing analysis history.*
 
 ## Local Development Setup
 
@@ -243,6 +286,9 @@ docker-compose up
 
 - `MONGO_URL`: MongoDB connection string
 - `DB_NAME`: MongoDB database name
+- `SECRET_KEY`: Secret key for JWT token generation
+- `ALGORITHM`: Algorithm for JWT token (default: "HS256")
+- `ACCESS_TOKEN_EXPIRE_MINUTES`: Token expiration time in minutes
 
 ### Frontend Variables
 
@@ -253,6 +299,46 @@ docker-compose up
 Once the backend is running, Swagger documentation is available at:
 - Local: http://localhost:8001/docs
 - Production: https://your-backend-domain.com/docs
+
+## Security Considerations
+
+### Data Privacy
+
+ZemedicAI deals with sensitive medical data and should be used in compliance with relevant healthcare regulations (such as HIPAA in the US, GDPR in Europe, or similar local regulations):
+
+- **Data Encryption**: All data is encrypted in transit and at rest
+- **Authentication**: Secure JWT-based authentication system
+- **Authorization**: Role-based access control for different user types
+- **PII Handling**: Personal Identifiable Information is stored securely and processed according to privacy guidelines
+- **Audit Trails**: All access to medical data is logged for compliance purposes
+
+### Production Deployment Security
+
+When deploying to production:
+
+1. Use HTTPS for all communications
+2. Set up proper firewalls and network security
+3. Implement rate limiting to prevent abuse
+4. Configure secure HTTP headers
+5. Regularly update dependencies to patch security vulnerabilities
+6. Use secrets management for sensitive configuration (not .env files)
+
+## Contributing
+
+We welcome contributions to improve ZemedicAI! Here's how you can help:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+Please ensure your code follows our style guidelines and includes appropriate tests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Troubleshooting
 
