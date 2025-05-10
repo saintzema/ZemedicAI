@@ -14,6 +14,7 @@ import Demo from './pages/Demo';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import Partners from './pages/Partners';
+import HowItWorks from './pages/HowItWorks';
 
 // Solutions Pages
 import Solutions from './pages/Solutions';
@@ -45,6 +46,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
             <Route path="/partners" element={<Partners />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
             
             {/* Analysis Pages */}
             <Route path="/analyze/xray" element={<XrayAnalysis />} />
