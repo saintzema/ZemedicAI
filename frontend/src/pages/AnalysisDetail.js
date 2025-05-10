@@ -245,8 +245,9 @@ const AnalysisDetail = () => {
                             <div className="w-full bg-gray-700 rounded-full h-1.5 mr-3">
                               <div 
                                 className={`h-1.5 rounded-full ${
-                                  finding.probability > 50 ? 'bg-red-500' : 
-                                  finding.probability > 20 ? 'bg-yellow-500' : 'bg-green-500'
+                                  finding.probability > 50 ? 'bg-gradient-to-r from-red-500 to-red-600' : 
+                                  finding.probability > 20 ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 
+                                  'bg-gradient-to-r from-green-500 to-green-600'
                                 }`}
                                 style={{ width: `${finding.probability}%` }}
                               ></div>
