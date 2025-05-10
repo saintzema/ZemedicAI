@@ -23,6 +23,7 @@ const Landing = () => {
       <main className="flex-grow">
         <HeroSection />
         <SolutionsSection />
+        <HowItWorksSection />
         <AfricanMapSection />
         <SolarBoothSection />
         <PartnersSection />
