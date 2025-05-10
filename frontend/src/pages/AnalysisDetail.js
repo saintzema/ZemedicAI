@@ -193,19 +193,38 @@ const AnalysisDetail = () => {
                 <div className="p-5 border-b border-gray-800 flex justify-between items-center">
                   <h2 className="text-lg font-semibold text-white">{analysis.type} Image</h2>
                   <div className="flex space-x-2">
-                    <button className="px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">Zoom</button>
-                    <button className="px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">Contrast</button>
-                    <button className="px-2 py-1 bg-gray-800 rounded text-xs text-gray-300">Annotate</button>
+                    <button className="px-3 py-1.5 bg-gray-800 rounded text-xs text-gray-300 hover:bg-gray-700 transition-colors flex items-center">
+                      <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                      Zoom
+                    </button>
+                    <button className="px-3 py-1.5 bg-gray-800 rounded text-xs text-gray-300 hover:bg-gray-700 transition-colors flex items-center">
+                      <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Contrast
+                    </button>
+                    <button className="px-3 py-1.5 bg-gray-800 rounded text-xs text-gray-300 hover:bg-gray-700 transition-colors flex items-center">
+                      <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
+                      Annotate
+                    </button>
                   </div>
                 </div>
-                <div className="bg-black flex justify-center items-center p-2">
+                <div className="bg-black flex justify-center items-center p-2 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-indigo-900/30"></div>
                   <img 
                     src={analysis.image} 
                     alt={analysis.type} 
-                    className="w-full max-h-[400px] object-contain"
+                    className="w-full max-h-[400px] object-contain relative z-10" 
                   />
+                  {analysis.result === 'Abnormal' && (
+                    <div className="absolute top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-red-500/70 shadow-[0_0_15px_rgba(239,68,68,0.5)] animate-pulse"></div>
+                  )}
                 </div>
-                <div className="p-3 bg-black/50 text-center text-sm text-gray-400">
+                <div className="p-3 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-center text-sm text-gray-400">
                   {analysis.type} - {analysis.date}
                 </div>
               </div>
