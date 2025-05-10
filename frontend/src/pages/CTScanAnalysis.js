@@ -175,7 +175,7 @@ const CTScanAnalysis = () => {
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       <Navbar />
-      <main className="flex-grow py-10">
+      <main className="flex-grow py-10 page-transition">
         <div className="container-custom">
           <div className="flex items-center mb-8">
             <Link to="/analysis" className="text-purple-400 hover:text-purple-300 mr-4 flex items-center">
