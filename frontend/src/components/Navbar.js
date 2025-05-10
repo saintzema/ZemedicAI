@@ -57,12 +57,6 @@ const Navbar = () => {
                     <Link to="/solutions/ct-scan" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-purple-400 rounded-md">
                       CT Scan Interpretation
                     </Link>
-                    <Link to="/solutions/for-hospitals" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-purple-400 rounded-md">
-                      For Hospitals
-                    </Link>
-                    <Link to="/solutions/for-clinics" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-purple-400 rounded-md">
-                      For Clinics
-                    </Link>
                   </div>
                 </div>
               )}
