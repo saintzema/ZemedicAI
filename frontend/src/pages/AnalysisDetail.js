@@ -169,8 +169,9 @@ const AnalysisDetail = () => {
                     <div className="w-full bg-gray-800 rounded-full h-2.5">
                       <div 
                         className={`h-2.5 rounded-full ${
-                          analysis.confidence > 90 ? 'bg-green-500' : 
-                          analysis.confidence > 70 ? 'bg-yellow-500' : 'bg-red-500'
+                          analysis.confidence > 90 ? 'bg-gradient-to-r from-green-500 to-green-600' : 
+                          analysis.confidence > 70 ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 
+                          'bg-gradient-to-r from-red-500 to-red-600'
                         }`}
                         style={{ width: `${analysis.confidence}%` }}
                       ></div>
