@@ -133,20 +133,6 @@ const Navbar = () => {
                     >
                       CT Scan Interpretation
                     </Link>
-                    <Link
-                      to="/solutions/for-hospitals"
-                      className="block py-2 text-sm text-gray-400 hover:text-purple-400"
-                      onClick={closeMobileMenu}
-                    >
-                      For Hospitals
-                    </Link>
-                    <Link
-                      to="/solutions/for-clinics"
-                      className="block py-2 text-sm text-gray-400 hover:text-purple-400"
-                      onClick={closeMobileMenu}
-                    >
-                      For Clinics
-                    </Link>
                   </div>
                 )}
               </div>
