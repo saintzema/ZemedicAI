@@ -142,6 +142,14 @@ const Navbar = () => {
               </div>
 
               <Link
+                to="/how-it-works"
+                className="px-4 py-2 text-gray-300 hover:text-purple-400 hover:bg-gray-800 rounded"
+                onClick={closeMobileMenu}
+              >
+                How It Works
+              </Link>
+
+              <Link
                 to="/deployment"
                 className="px-4 py-2 text-gray-300 hover:text-purple-400 hover:bg-gray-800 rounded"
                 onClick={closeMobileMenu}
