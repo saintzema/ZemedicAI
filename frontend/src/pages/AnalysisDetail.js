@@ -152,18 +152,21 @@ const AnalysisDetail = () => {
               
               {/* AI Analysis Results */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
-                <div className="p-5 border-b border-gray-800">
-                  <h2 className="text-lg font-semibold text-white">AI Analysis Results</h2>
+                <div className="p-5 border-b border-gray-800 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
+                  <h2 className="text-lg font-semibold text-white flex items-center">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">AI</span>
+                    <span className="ml-1">Analysis Results</span>
+                  </h2>
                 </div>
                 <div className="p-5">
                   <div className="mb-6">
-                    <h3 className="text-sm text-gray-400 mb-2">Overall Findings</h3>
+                    <h3 className="text-sm text-purple-400 mb-2">Overall Findings</h3>
                     <p className="text-white">{analysis.findings}</p>
                   </div>
                   
                   <div className="mb-6">
                     <div className="flex justify-between mb-1">
-                      <h3 className="text-sm text-gray-400">AI Confidence</h3>
+                      <h3 className="text-sm text-purple-400">AI Confidence</h3>
                       <span className="text-sm text-gray-400">{analysis.confidence}%</span>
                     </div>
                     <div className="w-full bg-gray-800 rounded-full h-2.5">
@@ -178,8 +181,8 @@ const AnalysisDetail = () => {
                     </div>
                   </div>
                   
-                  <div>
-                    <h3 className="text-sm text-gray-400 mb-3">Recommendations</h3>
+                  <div className="bg-gray-800/70 p-4 rounded-lg border-l-2 border-purple-500">
+                    <h3 className="text-sm text-purple-400 mb-3">Recommendations</h3>
                     <p className="text-white">{analysis.recommendations}</p>
                   </div>
                 </div>
