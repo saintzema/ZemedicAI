@@ -56,25 +56,10 @@ function App() {
             <Route path="/solutions/xray" element={<SolutionsXray />} />
             <Route path="/solutions/skin" element={<SolutionsSkin />} />
             <Route path="/solutions/ct-scan" element={<SolutionsCTScan />} />
-            <Route path="/solutions/ecg" element={<SolutionsECG />} />
-            <Route path="/solutions/for-hospitals" element={<SolutionsForHospitals />} />
-            <Route path="/solutions/for-clinics" element={<SolutionsForClinics />} />
             
             {/* Deployment Pages */}
             <Route path="/deployment" element={<Deployment />} />
             <Route path="/deployment/solar-booths" element={<DeploymentSolarBooths />} />
-            <Route path="/deployment/telehealth" element={<DeploymentTelehealth />} />
-            <Route path="/deployment/cloud-api" element={<DeploymentCloudAPI />} />
-            <Route path="/deployment/mobile-sdk" element={<DeploymentMobileSDK />} />
-            <Route path="/deployment/custom-solutions" element={<DeploymentCustomSolutions />} />
-            
-            {/* Company Pages */}
-            <Route path="/case-studies" element={<CaseStudies />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/cookies" element={<Cookies />} />
             
             <Route path="*" element={<Landing />} />
           </Routes>
