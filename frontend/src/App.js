@@ -20,25 +20,10 @@ import Solutions from './pages/Solutions';
 import SolutionsXray from './pages/solutions/SolutionsXray';
 import SolutionsSkin from './pages/solutions/SolutionsSkin';
 import SolutionsCTScan from './pages/solutions/SolutionsCTScan';
-import SolutionsECG from './pages/solutions/SolutionsECG';
-import SolutionsForHospitals from './pages/solutions/SolutionsForHospitals';
-import SolutionsForClinics from './pages/solutions/SolutionsForClinics';
 
 // Deployment Pages
 import Deployment from './pages/Deployment';
 import DeploymentSolarBooths from './pages/deployment/DeploymentSolarBooths';
-import DeploymentTelehealth from './pages/deployment/DeploymentTelehealth';
-import DeploymentCloudAPI from './pages/deployment/DeploymentCloudAPI';
-import DeploymentMobileSDK from './pages/deployment/DeploymentMobileSDK';
-import DeploymentCustomSolutions from './pages/deployment/DeploymentCustomSolutions';
-
-// Company Pages
-import CaseStudies from './pages/CaseStudies';
-import Careers from './pages/Careers';
-import News from './pages/News';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
-import Cookies from './pages/Cookies';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import { AuthProvider } from './contexts/AuthContext';
