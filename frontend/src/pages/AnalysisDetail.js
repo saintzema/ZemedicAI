@@ -220,8 +220,10 @@ const AnalysisDetail = () => {
                     {findingDetails.map((finding, index) => (
                       <div 
                         key={index}
-                        className={`p-3 rounded-lg flex items-start ${
-                          finding.primaryFinding ? 'bg-purple-900/20 border-l-2 border-purple-500' : 'bg-gray-800/50'
+                        className={`p-3 rounded-lg flex items-start transition-all duration-300 ${
+                          finding.primaryFinding 
+                            ? 'bg-purple-900/20 border-l-2 border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.15)]' 
+                            : 'bg-gray-800/50 hover:bg-gray-800'
                         }`}
                       >
                         <div className="pt-1">
