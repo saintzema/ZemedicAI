@@ -47,9 +47,6 @@ const Footer = () => {
               <li><Link to="/solutions/xray" className="text-gray-400 hover:text-purple-400 transition-colors">X-Ray Analysis</Link></li>
               <li><Link to="/solutions/skin" className="text-gray-400 hover:text-purple-400 transition-colors">Skin Lesion Detection</Link></li>
               <li><Link to="/solutions/ct-scan" className="text-gray-400 hover:text-purple-400 transition-colors">CT Scan Interpretation</Link></li>
-              <li><Link to="/solutions/ecg" className="text-gray-400 hover:text-purple-400 transition-colors">ECG Analysis</Link></li>
-              <li><Link to="/solutions/for-hospitals" className="text-gray-400 hover:text-purple-400 transition-colors">For Hospitals</Link></li>
-              <li><Link to="/solutions/for-clinics" className="text-gray-400 hover:text-purple-400 transition-colors">For Clinics</Link></li>
             </ul>
           </div>
           
