@@ -16,6 +16,16 @@ const Footer = () => {
               ZemedicAI delivers cutting-edge AI-powered medical diagnostic tools 
               designed specifically for the unique healthcare challenges across Africa.
             </p>
+            <div className="mb-6">
+              <p className="text-gray-400 flex items-center">
+                <svg className="h-5 w-5 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <a href="mailto:hello@zemaai.com" className="hover:text-purple-400 transition-colors">
+                  hello@zemaai.com
+                </a>
+              </p>
+            </div>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-500 hover:text-purple-400 transition-colors">
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -52,9 +62,11 @@ const Footer = () => {
           
           {/* Column 3 - Deployment */}
           <div className="md:col-span-2">
-            <h3 className="text-white font-semibold text-lg mb-5">Deployment</h3>
+            <h3 className="text-white font-semibold text-lg mb-5">Products</h3>
             <ul className="space-y-3">
-              <li><Link to="/deployment/solar-booths" className="text-gray-400 hover:text-purple-400 transition-colors">Solar Booths</Link></li>
+              <li><Link to="/preorder" className="text-gray-400 hover:text-purple-400 transition-colors">Solar-Powered Booths</Link></li>
+              <li><Link to="/preorder" className="text-gray-400 hover:text-purple-400 transition-colors">SDK Integration</Link></li>
+              <li><Link to="/deployment/solar-booths" className="text-gray-400 hover:text-purple-400 transition-colors">Deployment Options</Link></li>
             </ul>
           </div>
           
