@@ -103,9 +103,9 @@ class ZemedicAPITester:
     
     def login_user(self):
         """Login and get authentication token"""
-        logger.info(f"Logging in as: {self.test_user}")
+        logger.info(f"Logging in as: {self.test_email}")
         data = {
-            "username": self.test_user,
+            "email": self.test_email,
             "password": self.test_password
         }
         
