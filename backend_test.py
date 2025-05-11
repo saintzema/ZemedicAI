@@ -304,19 +304,22 @@ def main():
     
     # Test user registration and login
     if tester.register_user():
-        if tester.login_user():
-            # Test X-ray analysis with heatmap visualization
-            tester.test_xray_analysis()
-            
-            # Test CT scan analysis with heatmap visualization
-            tester.test_ct_scan_analysis()
-            
-            # Test analysis detail with heatmap visualization
-            tester.test_analysis_detail()
-        else:
+        # If registration didn't provide a token, try login
+        if not tester.token and not tester.login_user():
             logger.error("❌ Login failed, skipping analysis tests")
+            return 1
+        
+        # Test X-ray analysis with heatmap visualization
+        tester.test_xray_analysis()
+        
+        # Test CT scan analysis with heatmap visualization
+        tester.test_ct_scan_analysis()
+        
+        # Test analysis detail with heatmap visualization
+        tester.test_analysis_detail()
     else:
         logger.error("❌ Registration failed, skipping login and analysis tests")
+        return 1
     
     # Print results
     logger.info(f"Tests passed: {tester.tests_passed}/{tester.tests_run}")
