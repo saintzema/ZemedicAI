@@ -262,22 +262,29 @@ class ZemedicAPITester:
             logger.error("❌ Cannot test analysis detail: No authentication token")
             return False
         
-        # If no analysis ID is provided, get one from the user history
+        # If no analysis ID is provided, use the one from the X-ray analysis
         if analysis_id is None:
-            logger.info("Getting analysis ID from user history")
-            success, history = self.run_test(
-                "User History",
-                "GET",
-                "api/user/history",
-                200
-            )
-            
-            if success and history and len(history) > 0:
-                analysis_id = history[0].get('id')
-                logger.info(f"Found analysis ID: {analysis_id}")
+            if hasattr(self, 'analysis_id'):
+                analysis_id = self.analysis_id
+                logger.info(f"Using X-ray analysis ID: {analysis_id}")
+            elif hasattr(self, 'ct_analysis_id'):
+                analysis_id = self.ct_analysis_id
+                logger.info(f"Using CT scan analysis ID: {analysis_id}")
             else:
-                logger.error("❌ No analysis found in user history")
-                return False
+                logger.info("Getting analysis ID from user history")
+                success, history = self.run_test(
+                    "User History",
+                    "GET",
+                    "api/user/history",
+                    200
+                )
+                
+                if success and history and len(history) > 0:
+                    analysis_id = history[0].get('id')
+                    logger.info(f"Found analysis ID: {analysis_id}")
+                else:
+                    logger.error("❌ No analysis found in user history")
+                    return False
         
         logger.info(f"Testing analysis detail with ID {analysis_id}")
         
@@ -293,26 +300,27 @@ class ZemedicAPITester:
             logger.info(f"Analysis detail response: {json.dumps(response, indent=2)}")
             
             # Check for expected fields based on the actual response
-            if 'findings' in response:
-                logger.info("✅ Response contains findings field")
+            if 'predictions' in response:
+                logger.info("✅ Response contains predictions field")
                 
-                # Check if findings have location data for heatmap
-                has_location_data = False
-                for finding in response.get('findings', []):
-                    if 'heatmap_data' in finding:
-                        has_location_data = True
-                        logger.info(f"✅ Finding '{finding.get('name', 'unknown')}' has heatmap data")
+                # Check if predictions have confidence scores for progress bars
+                has_confidence = False
+                for prediction in response.get('predictions', []):
+                    if 'confidence' in prediction:
+                        has_confidence = True
+                        logger.info(f"✅ Prediction '{prediction.get('label', 'unknown')}' has confidence score: {prediction['confidence']}")
                 
-                if not has_location_data:
-                    logger.warning("⚠️ No findings with heatmap data found for visualization")
+                if not has_confidence:
+                    logger.warning("⚠️ No predictions with confidence scores found for progress bars")
             else:
-                logger.error("❌ Response missing 'findings' field needed for visualization")
+                logger.error("❌ Response missing 'predictions' field needed for visualization")
                 success = False
             
-            if 'overall_score' in response:
-                logger.info(f"✅ Response contains overall score: {response['overall_score']}")
+            # Check if the response has an image URL for visualization
+            if 'image_url' in response:
+                logger.info(f"✅ Response contains image URL: {response['image_url']}")
             else:
-                logger.error("❌ Response missing 'overall_score' field needed for progress bars")
+                logger.error("❌ Response missing 'image_url' field needed for visualization")
                 success = False
         
         return success
