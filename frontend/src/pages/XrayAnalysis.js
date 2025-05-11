@@ -58,6 +58,72 @@ const XrayAnalysis = () => {
     }
   };
 
+  // Generate random analysis results based on file name
+  const generateXrayResults = (fileName) => {
+    // Use the file name as a seed for pseudo-randomness
+    const seed = fileName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    
+    // Create a simple deterministic random number generator
+    const random = (min, max) => {
+      const x = Math.sin(seed++) * 10000;
+      return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+    };
+    
+    // Possible findings for X-rays with different probabilities
+    const possibleConditions = [
+      { name: 'Focal airspace opacity', probability: random(85, 95), severity: 'Moderate', location: { x: random(55, 75), y: random(45, 65), radius: random(15, 25) } },
+      { name: 'Multifocal airspace opacity', probability: random(5, 25), severity: 'Mild', location: null },
+      { name: 'Diffuse lower airspace opacity', probability: random(3, 15), severity: 'None', location: null },
+      { name: 'Basal interstitial thickening', probability: random(2, 10), severity: 'None', location: null },
+      { name: 'Lower zone fibrotic volume loss', probability: random(5, 20), severity: 'None', location: null },
+      { name: 'Pleural effusion', probability: random(5, 30), severity: random(1, 10) > 8 ? 'Moderate' : 'Mild', location: random(1, 10) > 8 ? { x: 80, y: 60, radius: 15 } : null },
+      { name: 'Pneumothorax', probability: random(1, 5), severity: 'None', location: null },
+      { name: 'Cardiomegaly', probability: random(1, 10) > 8 ? random(60, 85) : random(3, 10), severity: random(1, 10) > 8 ? 'Moderate' : 'None', location: random(1, 10) > 8 ? { x: 50, y: 65, radius: 20 } : null },
+    ];
+    
+    // Filter to keep probabilities > 0
+    const conditions = possibleConditions.filter(c => c.probability > 0);
+    
+    // Sort by probability descending
+    conditions.sort((a, b) => b.probability - a.probability);
+    
+    // Keep max 5 conditions
+    const topConditions = conditions.slice(0, 5);
+    
+    // Generate findings text
+    const primaryCondition = topConditions[0];
+    let findings = '';
+    
+    if (primaryCondition.name === 'Focal airspace opacity') {
+      findings = `Focal airspace opacity observed in the right ${random(1, 2) === 1 ? 'lower' : 'middle'} lobe. No pleural effusion. Heart size within normal limits.`;
+    } else if (primaryCondition.name === 'Pleural effusion') {
+      findings = `Small to moderate right-sided pleural effusion noted. No focal consolidation or pneumothorax identified. Heart size is ${random(1, 5) > 3 ? 'mildly enlarged' : 'within normal limits'}.`;
+    } else if (primaryCondition.name === 'Cardiomegaly') {
+      findings = `Cardiomegaly is present with cardiothoracic ratio of approximately ${random(52, 65)}%. No focal consolidation. No evidence of pleural effusion or pneumothorax.`;
+    } else {
+      findings = `${primaryCondition.name} observed. No significant additional findings. Heart size within normal limits. No pleural effusion or pneumothorax identified.`;
+    }
+    
+    // Generate recommendation
+    let recommendation = '';
+    if (primaryCondition.severity === 'Moderate' || primaryCondition.probability > 80) {
+      recommendation = `Follow-up imaging recommended in ${random(2, 4)}-${random(5, 8)} weeks to monitor resolution of ${primaryCondition.name.toLowerCase()}. Consider antibiotic therapy if clinically indicated.`;
+    } else {
+      recommendation = 'No urgent intervention required based on these findings. Clinical correlation recommended.';
+    }
+    
+    // Overall confidence
+    const confidence = Math.min(97, Math.max(85, primaryCondition.probability + random(-5, 5)));
+    
+    return {
+      success: true,
+      findings,
+      confidence,
+      conditions: topConditions,
+      recommendation
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -77,20 +143,8 @@ const XrayAnalysis = () => {
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        // Sample result data
-        const mockResult = {
-          success: true,
-          findings: 'Focal airspace opacity observed in the right lower lobe. No pleural effusion. Heart size within normal limits.',
-          confidence: 92,
-          conditions: [
-            { name: 'Focal airspace opacity', probability: 92, severity: 'Moderate', location: { x: 65, y: 55, radius: 20 } },
-            { name: 'Multifocal airspace opacity', probability: 15, severity: 'Mild', location: null },
-            { name: 'Diffuse lower airspace opacity', probability: 8, severity: 'None', location: null },
-            { name: 'Basal interstitial thickening', probability: 4, severity: 'None', location: null },
-            { name: 'Lower zone fibrotic volume loss', probability: 12, severity: 'None', location: null },
-          ],
-          recommendation: 'Follow-up imaging recommended in 3-4 weeks to monitor resolution of opacity. Consider antibiotic therapy if clinically indicated.'
-        };
+        // Generate dynamic results based on file name
+        const mockResult = generateXrayResults(file.name);
         
         setResult(mockResult);
         setActiveCondition(mockResult.conditions[0].name);

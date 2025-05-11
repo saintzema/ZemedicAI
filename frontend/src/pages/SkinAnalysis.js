@@ -16,6 +16,7 @@ const SkinAnalysis = () => {
   const [activeCondition, setActiveCondition] = useState(null);
   const fileInputRef = useRef(null);
   const imageRef = useRef(null);
+  const imageContainerRef = useRef(null);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -59,6 +60,112 @@ const SkinAnalysis = () => {
     }
   };
 
+  // Generate random analysis results based on file name
+  const generateAnalysisResults = (fileName) => {
+    // Use the file name as a seed for pseudo-randomness
+    const seed = fileName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    
+    // Create a simple deterministic random number generator
+    const random = (min, max) => {
+      const x = Math.sin(seed++) * 10000;
+      return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+    };
+    
+    // Possible conditions with different probabilities
+    const possibleConditions = [
+      // Malignant conditions
+      { name: 'Melanoma', severity: 'Malignant' },
+      { name: 'Basal Cell Carcinoma', severity: 'Malignant' },
+      { name: 'Squamous Cell Carcinoma', severity: 'Malignant' },
+      // Benign conditions
+      { name: 'Benign Nevus', severity: 'Benign' },
+      { name: 'Seborrheic Keratosis', severity: 'Benign' },
+      { name: 'Actinic Keratosis', severity: 'Benign' },
+      { name: 'Dermatofibroma', severity: 'Benign' },
+      { name: 'Vascular Lesion', severity: 'Benign' }
+    ];
+    
+    // Select primary condition
+    const primaryConditionIndex = random(0, possibleConditions.length - 1);
+    const primaryCondition = possibleConditions[primaryConditionIndex];
+    const isMalignant = primaryCondition.severity === 'Malignant';
+    
+    // Assign a high probability for the primary condition
+    const primaryProbability = isMalignant 
+      ? random(68, 95) 
+      : random(75, 98);
+    
+    // Create conditions array
+    const conditions = [
+      { 
+        ...primaryCondition, 
+        probability: primaryProbability,
+        location: { 
+          x: random(40, 60), 
+          y: random(40, 60), 
+          radius: random(15, 25) 
+        }
+      }
+    ];
+    
+    // Add some additional conditions with lower probabilities
+    const numAdditionalConditions = random(2, 4);
+    for (let i = 0; i < numAdditionalConditions; i++) {
+      let idx;
+      do {
+        idx = random(0, possibleConditions.length - 1);
+      } while (idx === primaryConditionIndex);
+      
+      const condition = possibleConditions[idx];
+      const probability = random(1, 30);
+      
+      conditions.push({
+        ...condition,
+        probability,
+        // Only add location for higher probability conditions
+        location: probability > 15 ? { 
+          x: random(30, 70), 
+          y: random(30, 70), 
+          radius: random(5, 15) 
+        } : null
+      });
+    }
+    
+    // Sort by probability descending
+    conditions.sort((a, b) => b.probability - a.probability);
+    
+    // Generate findings text
+    let findings = '';
+    if (isMalignant && primaryProbability > 75) {
+      findings = `The lesion appears to have irregular borders and varied pigmentation. Features suggest a ${primaryProbability > 85 ? 'highly ' : ''}concerning ${primaryCondition.name.toLowerCase()} that requires urgent evaluation.`;
+    } else if (isMalignant) {
+      findings = `The lesion shows some concerning features that may be consistent with ${primaryCondition.name.toLowerCase()}. Clinical correlation and possibly biopsy are recommended.`;
+    } else {
+      findings = `The lesion appears to have regular borders and consistent coloration. Features are most consistent with ${primaryCondition.name.toLowerCase()}, which is a benign condition.`;
+    }
+    
+    // Generate recommendation
+    let recommendation = '';
+    if (isMalignant && primaryProbability > 75) {
+      recommendation = 'Urgent dermatological evaluation recommended. Consider biopsy for definitive diagnosis. Continue regular skin self-examinations for any changes.';
+    } else if (isMalignant) {
+      recommendation = 'Dermatological evaluation recommended in the next 1-2 weeks. Consider close monitoring or biopsy if clinically indicated.';
+    } else {
+      recommendation = 'Routine follow-up recommended. No immediate intervention required based on these findings. Continue regular skin examinations.';
+    }
+    
+    // Calculate an overall confidence score
+    const confidence = Math.min(95, Math.max(75, primaryProbability + random(-5, 5)));
+    
+    return {
+      success: true,
+      findings,
+      confidence,
+      conditions,
+      recommendation
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -78,19 +185,8 @@ const SkinAnalysis = () => {
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        // Sample result data
-        const mockResult = {
-          success: true,
-          findings: 'The lesion appears to have irregular borders and varied pigmentation. Features suggest a possibly malignant melanocytic lesion that requires further evaluation.',
-          confidence: 88,
-          conditions: [
-            { name: 'Melanoma', probability: 68, severity: 'Malignant', location: { x: 50, y: 50, radius: 25 } },
-            { name: 'Benign Nevus', probability: 22, severity: 'Benign', location: null },
-            { name: 'Seborrheic Keratosis', probability: 7, severity: 'Benign', location: null },
-            { name: 'Basal Cell Carcinoma', probability: 3, severity: 'Malignant', location: null },
-          ],
-          recommendation: 'Urgent dermatological evaluation recommended. Consider biopsy for definitive diagnosis. Continue regular skin self-examinations for any changes.'
-        };
+        // Generate dynamic result data based on file name
+        const mockResult = generateAnalysisResults(file.name);
         
         setResult(mockResult);
         
@@ -127,34 +223,24 @@ const SkinAnalysis = () => {
     }
   };
 
+  // Improved highlight drawing logic to ensure it's properly positioned over the image
   const drawHighlight = () => {
-    if (!imageRef.current || !activeCondition || !highlights[activeCondition]) return;
+    if (!imageRef.current || !activeCondition || !highlights[activeCondition]) return null;
     
-    const img = imageRef.current;
-    const imgRect = img.getBoundingClientRect();
     const location = highlights[activeCondition];
     
-    // Calculate scaling based on image's displayed size vs natural size
-    const scaleX = imgRect.width / img.naturalWidth;
-    const scaleY = imgRect.height / img.naturalHeight;
-    
-    // Adjust highlight position and size based on scaling
-    const scaledX = location.x * scaleX;
-    const scaledY = location.y * scaleY;
-    const scaledRadius = location.radius * Math.min(scaleX, scaleY);
-    
     return (
-      <div 
-        className="absolute pointer-events-none"
+      <div
+        className="absolute pointer-events-none z-10"
         style={{
-          left: `${scaledX}%`,
-          top: `${scaledY}%`,
-          width: `${scaledRadius * 2}%`,
-          height: `${scaledRadius * 2}%`,
+          left: `${location.x}%`,
+          top: `${location.y}%`,
+          width: `${location.radius * 2}%`,
+          height: `${location.radius * 2}%`,
           transform: 'translate(-50%, -50%)',
-          border: '2px solid rgba(240, 82, 82, 0.8)',
-          boxShadow: '0 0 0 4px rgba(240, 82, 82, 0.3)',
           borderRadius: '50%',
+          background: `radial-gradient(circle, rgba(240, 82, 82, 0.4) 0%, rgba(240, 82, 82, 0.2) 50%, rgba(240, 82, 82, 0) 70%)`,
+          boxShadow: '0 0 0 2px rgba(240, 82, 82, 0.5)',
           animation: 'pulse 2s infinite'
         }}
       />
@@ -173,12 +259,12 @@ const SkinAnalysis = () => {
               </svg>
               <span className="ml-2">Back to Analyses</span>
             </Link>
-            <h1 className="text-3xl font-bold text-white">Skin Lesion Analysis</h1>
+            <h1 className="heading-secondary">Skin Lesion Analysis</h1>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-900 rounded-xl shadow-md overflow-hidden p-6 border border-gray-800">
-              <h2 className="text-xl font-semibold text-white mb-4">Upload Skin Image</h2>
+              <h2 className="heading-subsection mb-4">Upload Skin Image</h2>
               
               {error && (
                 <div className="bg-red-900/30 border-l-4 border-red-500 p-4 mb-4 text-red-400">
@@ -188,16 +274,17 @@ const SkinAnalysis = () => {
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div 
-                  className="border-2 border-dashed border-gray-700 hover:border-purple-500 transition-colors duration-300 rounded-lg p-8 text-center"
+                  ref={imageContainerRef}
+                  className="border-2 border-dashed border-gray-700 hover:border-purple-500 transition-colors duration-300 rounded-lg p-8 text-center" 
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
                 >
                   {preview ? (
                     <div className="mb-4 relative">
-                      <img  
+                      <img 
                         ref={imageRef}
-                        src={preview}  
-                        alt="Skin lesion preview"  
+                        src={preview} 
+                        alt="Skin lesion preview" 
                         className="mx-auto max-h-64 object-contain rounded"
                       />
                       {activeCondition && highlights[activeCondition] && drawHighlight()}
@@ -260,7 +347,7 @@ const SkinAnalysis = () => {
             </div>
             
             <div className="bg-gray-900 rounded-xl shadow-md overflow-hidden p-6 border border-gray-800">
-              <h2 className="text-xl font-semibold text-white mb-4">Analysis Results</h2>
+              <h2 className="heading-subsection mb-4">Analysis Results</h2>
               
               {isAnalyzing ? (
                 <div className="flex flex-col items-center justify-center h-64">
@@ -288,16 +375,16 @@ const SkinAnalysis = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-2">Findings</h3>
+                    <h3 className="heading-card mb-2">Findings</h3>
                     <p className="text-gray-300">{result.findings}</p>
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-2">AI Confidence</h3>
+                    <h3 className="heading-card mb-2">AI Confidence</h3>
                     <div className="relative pt-1">
                       <div className="overflow-hidden h-3 mb-1 text-xs flex rounded-full bg-gray-800">
-                        <div  
-                          style={{ width: `${result.confidence}%` }}  
+                        <div 
+                          style={{ width: `${result.confidence}%` }} 
                           className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center rounded-full ${
                             result.confidence > 90 ? 'bg-gradient-to-r from-green-500 to-green-600' : 
                             result.confidence > 70 ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 
@@ -313,7 +400,7 @@ const SkinAnalysis = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-3">Conditions Detected</h3>
+                    <h3 className="heading-card mb-3">Conditions Detected</h3>
                     <div className="space-y-2">
                       {result.conditions.map((condition, index) => (
                         <div 
@@ -356,7 +443,7 @@ const SkinAnalysis = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-2">Recommendation</h3>
+                    <h3 className="heading-card mb-2">Recommendation</h3>
                     <p className="text-gray-300">{result.recommendation}</p>
                   </div>
                   
@@ -383,7 +470,7 @@ const SkinAnalysis = () => {
           </div>
           
           <div className="mt-8 bg-gray-900 rounded-xl shadow-md overflow-hidden p-6 border border-gray-800">
-            <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+            <h2 className="heading-subsection mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>

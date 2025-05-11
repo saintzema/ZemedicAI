@@ -58,6 +58,164 @@ const CTScanAnalysis = () => {
     }
   };
 
+  // Generate random analysis results based on file name
+  const generateCTResults = (fileName) => {
+    // Use the file name as a seed for pseudo-randomness
+    const seed = fileName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    
+    // Create a simple deterministic random number generator
+    const random = (min, max) => {
+      const x = Math.sin(seed++) * 10000;
+      return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+    };
+    
+    // Decide if this should show a major finding or be relatively normal
+    const hasMajorFinding = random(1, 10) <= 7;  // 70% chance of major finding
+    
+    // Possible major and minor findings for CT scans
+    let conditions = [];
+    
+    if (hasMajorFinding) {
+      // Choose one major finding
+      const majorFindings = [
+        {
+          name: 'Subdural hematoma',
+          probability: random(85, 95),
+          severity: 'Moderate',
+          location: { x: random(30, 40), y: random(40, 50), radius: random(15, 25) }
+        },
+        {
+          name: 'Intraparenchymal hemorrhage',
+          probability: random(82, 94),
+          severity: 'Severe',
+          location: { x: random(40, 50), y: random(40, 50), radius: random(10, 20) }
+        },
+        {
+          name: 'Ischemic stroke',
+          probability: random(80, 92),
+          severity: 'Moderate',
+          location: { x: random(45, 55), y: random(35, 45), radius: random(12, 22) }
+        },
+        {
+          name: 'Mass lesion',
+          probability: random(75, 90),
+          severity: 'Moderate',
+          location: { x: random(35, 60), y: random(30, 50), radius: random(15, 25) }
+        }
+      ];
+      
+      const selectedMajorFinding = majorFindings[random(0, majorFindings.length - 1)];
+      conditions.push(selectedMajorFinding);
+      
+      // Add associated findings based on the major finding
+      if (selectedMajorFinding.name === 'Subdural hematoma' || selectedMajorFinding.name === 'Intraparenchymal hemorrhage') {
+        // Add midline shift with higher probability
+        conditions.push({
+          name: 'Midline shift',
+          probability: random(60, 85),
+          severity: 'Moderate',
+          location: { x: 50, y: 45, radius: 5 }
+        });
+        // Add mass effect
+        conditions.push({
+          name: 'Mass effect',
+          probability: random(70, 90),
+          severity: 'Moderate',
+          location: { x: selectedMajorFinding.location.x + 5, y: selectedMajorFinding.location.y, radius: 10 }
+        });
+      } else if (selectedMajorFinding.name === 'Mass lesion') {
+        // Add edema
+        conditions.push({
+          name: 'Perilesional edema',
+          probability: random(65, 85),
+          severity: 'Moderate',
+          location: { 
+            x: selectedMajorFinding.location.x + random(-5, 5), 
+            y: selectedMajorFinding.location.y + random(-5, 5), 
+            radius: selectedMajorFinding.location.radius + 5 
+          }
+        });
+        // Possible mass effect
+        if (random(1, 10) > 4) {
+          conditions.push({
+            name: 'Mass effect',
+            probability: random(50, 80),
+            severity: 'Moderate',
+            location: { x: 50, y: 45, radius: 8 }
+          });
+        }
+      }
+    } else {
+      // Normal or minor findings
+      conditions.push({
+        name: 'Normal findings',
+        probability: random(85, 97),
+        severity: 'None',
+        location: null
+      });
+    }
+    
+    // Add some additional low-probability findings regardless
+    const minorFindings = [
+      { name: 'Sinusitis', probability: random(0, 25), severity: random(1, 10) > 7 ? 'Mild' : 'None', location: random(1, 10) > 7 ? { x: 30, y: 30, radius: 10 } : null },
+      { name: 'Chronic microvascular changes', probability: random(0, 30), severity: 'Mild', location: null },
+      { name: 'Age-related atrophy', probability: random(0, 35), severity: 'Mild', location: null },
+      { name: 'Calcified granuloma', probability: random(0, 15), severity: 'None', location: null }
+    ];
+    
+    // Add 2-3 minor findings with non-zero probability
+    for (let i = 0; i < random(2, 3); i++) {
+      const finding = minorFindings[random(0, minorFindings.length - 1)];
+      if (finding.probability > 0) {
+        conditions.push(finding);
+      }
+    }
+    
+    // Filter to remove duplicates and sort by probability
+    conditions = conditions.filter((condition, index, self) => 
+      index === self.findIndex(c => c.name === condition.name)
+    );
+    conditions.sort((a, b) => b.probability - a.probability);
+    
+    // Generate findings text and recommendation
+    let findings, recommendation;
+    const primaryCondition = conditions[0];
+    
+    if (hasMajorFinding) {
+      if (primaryCondition.name === 'Subdural hematoma') {
+        findings = `${random(1, 2) === 1 ? 'Mild' : 'Moderate'} ${random(1, 2) === 1 ? 'right' : 'left'}-sided subdural hematoma in the ${random(1, 2) === 1 ? 'frontoparietal' : 'temporoparietal'} region. ${conditions.some(c => c.name === 'Midline shift') ? 'Mild midline shift present.' : 'No significant midline shift.'} Ventricles are ${random(1, 3) === 1 ? 'mildly compressed' : 'normal in size and shape'}. No evidence of intraparenchymal hemorrhage.`;
+        recommendation = `Neurosurgical consultation recommended. Follow-up scan in ${random(24, 48)} hours to assess for progression. Monitor neurological status closely.`;
+      } else if (primaryCondition.name === 'Intraparenchymal hemorrhage') {
+        findings = `Acute intraparenchymal hemorrhage in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'frontal' : random(1, 2) === 1 ? 'parietal' : 'temporal'} lobe, measuring approximately ${random(1, 3)}.${random(0, 9)} cm in maximal dimension. ${conditions.some(c => c.name === 'Midline shift') ? 'Associated midline shift of approximately ' + random(2, 5) + ' mm.' : 'No significant midline shift.'} No evidence of intraventricular extension.`;
+        recommendation = `Immediate neurosurgical evaluation required. Consider repeat imaging in 6-12 hours. Close monitoring in intensive care setting recommended.`;
+      } else if (primaryCondition.name === 'Ischemic stroke') {
+        findings = `Evidence of acute/subacute ischemic infarct in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'middle cerebral artery' : random(1, 2) === 1 ? 'anterior cerebral artery' : 'posterior cerebral artery'} territory. No hemorrhagic transformation. No significant mass effect or midline shift.`;
+        recommendation = `Neurological consultation recommended. Consider vascular imaging to evaluate for arterial occlusion or stenosis. Initiate appropriate stroke management and secondary prevention.`;
+      } else if (primaryCondition.name === 'Mass lesion') {
+        findings = `${random(1, 3) === 1 ? 'Well-defined' : random(1, 2) === 1 ? 'Irregular' : 'Heterogeneous'} mass lesion in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'frontal' : random(1, 2) === 1 ? 'parietal' : 'temporal'} lobe, measuring approximately ${random(2, 4)}.${random(0, 9)} cm. ${conditions.some(c => c.name === 'Perilesional edema') ? 'Moderate surrounding edema present.' : 'Minimal surrounding edema.'} ${conditions.some(c => c.name === 'Mass effect') ? 'Associated mass effect with ' + (random(1, 2) === 1 ? 'mild' : 'moderate') + ' ventricular compression.' : 'No significant mass effect.'}`;
+        recommendation = `Contrast-enhanced MRI recommended for further characterization. Neurosurgical consultation advised for potential biopsy planning. Clinical correlation with patient history suggested.`;
+      }
+    } else {
+      findings = `No acute intracranial hemorrhage, mass effect, or midline shift. Ventricles and cisterns are normal in size and shape. Gray-white matter differentiation is preserved. No evidence of acute territorial infarct. ${
+        conditions.some(c => c.name === 'Sinusitis' && c.probability > 15) ? 'Incidental note of ' + (random(1, 2) === 1 ? 'right' : 'left') + '-sided ' + (random(1, 2) === 1 ? 'maxillary' : 'ethmoid') + ' sinusitis.' : ''
+      } ${
+        conditions.some(c => c.name === 'Chronic microvascular changes' && c.probability > 15) ? 'Mild chronic microvascular changes, appropriate for patient age.' : ''
+      }`;
+      recommendation = `No acute intracranial abnormality identified. No follow-up imaging is required based on these findings.`;
+    }
+    
+    // Calculate overall confidence
+    const confidence = Math.min(97, Math.max(85, primaryCondition.probability + random(-5, 5)));
+    
+    return {
+      success: true,
+      findings,
+      confidence,
+      conditions,
+      recommendation
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -77,19 +235,8 @@ const CTScanAnalysis = () => {
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        // Sample result data
-        const mockResult = {
-          success: true,
-          findings: 'Mild right-sided subdural hematoma in the frontoparietal region. No significant midline shift. Ventricles are normal in size and shape. No evidence of intraparenchymal hemorrhage.',
-          confidence: 95,
-          conditions: [
-            { name: 'Subdural hematoma', probability: 95, severity: 'Moderate', location: { x: 35, y: 45, radius: 20 } },
-            { name: 'Midline shift', probability: 12, severity: 'Mild', location: null },
-            { name: 'Mass effect', probability: 28, severity: 'Mild', location: { x: 40, y: 50, radius: 12 } },
-            { name: 'Intraparenchymal hemorrhage', probability: 5, severity: 'None', location: null },
-          ],
-          recommendation: 'Neurosurgical consultation recommended. Follow-up scan in 24-48 hours to assess for progression. Monitor neurological status closely.'
-        };
+        // Generate dynamic results based on file name
+        const mockResult = generateCTResults(file.name);
         
         setResult(mockResult);
         setActiveCondition(mockResult.conditions[0].name);
