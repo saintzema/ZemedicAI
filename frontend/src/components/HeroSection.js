@@ -15,7 +15,7 @@ const HeroSection = () => {
           {/* Left Column - Text Content */}
           <div className="z-10">
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8"
+              className="heading-primary mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
