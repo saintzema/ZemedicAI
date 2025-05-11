@@ -90,7 +90,7 @@ const EnhancedAnalysisResult = ({
       // CT scan conditions
       'Normal Brain': 'The scan shows brain tissue with normal appearance and no significant abnormalities.',
       'Intracranial Hemorrhage': 'Bleeding inside the skull, which can put pressure on the brain. This appears as a bright white area on CT scans.',
-      'Subarachnoid Hemorrhage': 'Bleeding in the space between the brain and the thin tissues that cover it. This appears as white areas following the brain's surface on CT scans.',
+      'Subarachnoid Hemorrhage': 'Bleeding in the space between the brain and the thin tissues that cover it. This appears as white areas following the brain\'s surface on CT scans.',
       'Subdural Hematoma': 'A collection of blood between the surface of the brain and its tough outer covering. This appears as a crescent-shaped white area on CT scans.',
       'Epidural Hematoma': 'A collection of blood between the skull and the tough outer covering of the brain. This appears as a lens-shaped white area on CT scans.',
       'Intraparenchymal Hemorrhage': 'Bleeding within the brain tissue itself. This appears as an irregular white area within the brain on CT scans.',
