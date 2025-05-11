@@ -86,10 +86,9 @@ class ZemedicAPITester:
         """Register a test user"""
         logger.info(f"Registering test user: {self.test_user}")
         data = {
-            "username": self.test_user,
             "email": self.test_email,
-            "password": self.test_password,
-            "full_name": "Test User"
+            "name": "Test User",
+            "password": self.test_password
         }
         
         success, response = self.run_test(
