@@ -370,7 +370,7 @@ def main():
         tester.test_ct_scan_analysis()
         
         # Test analysis detail with heatmap visualization
-        tester.test_analysis_detail()
+        tester.test_analysis_detail("6820303a231c4726615aaaea")
     else:
         logger.error("❌ Registration failed, skipping login and analysis tests")
         return 1
