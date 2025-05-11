@@ -77,8 +77,8 @@ const HowItWorksSection = () => {
     <section className="py-16 bg-black">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 text-white">
-            How <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">ZemedicAI</span> Works
+          <h2 className="heading-secondary-gradient mb-4">
+            How <span>ZemedicAI</span> Works
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-2">
             Our AI transforms ordinary medical images into powerful diagnostic tools with abnormality detection and region highlighting.
@@ -115,7 +115,7 @@ const HowItWorksSection = () => {
               <div className="bg-gradient-to-br from-purple-600 to-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-xl font-bold">1</span>
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">Image Upload</h3>
+              <h3 className="heading-card mb-2">Image Upload</h3>
               <p className="text-gray-300 text-sm">Upload or capture a medical image using standard equipment</p>
             </div>
             
@@ -123,7 +123,7 @@ const HowItWorksSection = () => {
               <div className="bg-gradient-to-br from-purple-600 to-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-xl font-bold">2</span>
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">AI Analysis</h3>
+              <h3 className="heading-card mb-2">AI Analysis</h3>
               <p className="text-gray-300 text-sm">Advanced neural networks analyze the image in seconds</p>
             </div>
             
@@ -131,7 +131,7 @@ const HowItWorksSection = () => {
               <div className="bg-gradient-to-br from-purple-600 to-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-xl font-bold">3</span>
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">Abnormality Detection</h3>
+              <h3 className="heading-card mb-2">Abnormality Detection</h3>
               <p className="text-gray-300 text-sm">AI identifies and localizes abnormalities with high accuracy</p>
             </div>
             
@@ -139,7 +139,7 @@ const HowItWorksSection = () => {
               <div className="bg-gradient-to-br from-purple-600 to-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-xl font-bold">4</span>
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">Diagnostic Support</h3>
+              <h3 className="heading-card mb-2">Diagnostic Support</h3>
               <p className="text-gray-300 text-sm">Clinicians receive detailed findings to support decision-making</p>
             </div>
           </div>
