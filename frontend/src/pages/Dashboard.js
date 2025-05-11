@@ -59,7 +59,7 @@ const Dashboard = () => {
       <main className="flex-grow py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white">Welcome back, {currentUser?.name || 'User'}</h1>
+            <h1 className="heading-secondary">Welcome back, {currentUser?.name || 'User'}</h1>
             <p className="text-gray-400 mt-1">Here's what's happening with your account</p>
           </div>
           
@@ -81,7 +81,7 @@ const Dashboard = () => {
           {/* Quick Actions */}
           <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden mb-10 border border-gray-800">
             <div className="p-6 bg-gradient-to-r from-purple-900 to-indigo-900 text-white border-b border-gray-800">
-              <h2 className="text-xl font-semibold">Quick Actions</h2>
+              <h2 className="heading-subsection">Quick Actions</h2>
               <p className="text-indigo-200 mt-1">Start a new analysis or view your reports</p>
             </div>
             <div className="p-6">
@@ -125,7 +125,7 @@ const Dashboard = () => {
           {/* Recent Analyses */}
           <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden mb-10 border border-gray-800">
             <div className="p-6 border-b border-gray-800 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-white">Recent Analyses</h2>
+              <h2 className="heading-subsection">Recent Analyses</h2>
               <Link to="/analysis" className="text-sm font-medium text-purple-400 hover:text-purple-300 flex items-center">
                 View all
                 <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +144,7 @@ const Dashboard = () => {
                       </div>
                       <div>
                         <div className="flex items-center space-x-3">
-                          <h3 className="text-lg font-medium text-white">{analysis.type}</h3>
+                          <h3 className="heading-card">{analysis.type}</h3>
                           <div className={`px-2 py-0.5 text-xs font-medium rounded-full ${
                             analysis.priority === 'High' ? 'bg-red-900/30 text-red-400 border border-red-500/30' : 
                             'bg-blue-900/30 text-blue-400 border border-blue-500/30'
@@ -214,7 +214,7 @@ const Dashboard = () => {
           {/* Usage Limits */}
           <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
             <div className="p-6 border-b border-gray-800">
-              <h2 className="text-xl font-semibold text-white">Usage Limits</h2>
+              <h2 className="heading-subsection">Usage Limits</h2>
               <p className="text-gray-400 text-sm mt-1">Your current plan allowances and usage</p>
             </div>
             <div className="p-6 space-y-6">

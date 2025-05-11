@@ -127,12 +127,12 @@ const CTScanAnalysis = () => {
               </svg>
               <span className="ml-2">Back to Analyses</span>
             </Link>
-            <h1 className="text-3xl font-bold text-white">CT Scan Analysis</h1>
+            <h1 className="heading-secondary">CT Scan Analysis</h1>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-900 rounded-xl shadow-md overflow-hidden p-6 border border-gray-800">
-              <h2 className="text-xl font-semibold text-white mb-4">Upload CT Scan Image</h2>
+              <h2 className="heading-subsection mb-4">Upload CT Scan Image</h2>
               
               {error && (
                 <div className="bg-red-900/30 border-l-4 border-red-500 p-4 mb-4 text-red-400">
@@ -212,7 +212,7 @@ const CTScanAnalysis = () => {
             </div>
             
             <div className="bg-gray-900 rounded-xl shadow-md overflow-hidden p-6 border border-gray-800">
-              <h2 className="text-xl font-semibold text-white mb-4">Analysis Results</h2>
+              <h2 className="heading-subsection mb-4">Analysis Results</h2>
               
               {isAnalyzing ? (
                 <div className="flex flex-col items-center justify-center h-64">
@@ -248,7 +248,7 @@ const CTScanAnalysis = () => {
           </div>
           
           <div className="mt-8 bg-gray-900 rounded-xl shadow-md overflow-hidden p-6 border border-gray-800">
-            <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+            <h2 className="heading-subsection mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>

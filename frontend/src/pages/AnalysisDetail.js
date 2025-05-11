@@ -110,7 +110,7 @@ const AnalysisDetail = () => {
               <FaArrowLeft className="mr-2" />
               Back to Analyses
             </Link>
-            <h1 className="text-3xl font-bold text-white">{analysis.type} Analysis</h1>
+            <h1 className="heading-secondary">{analysis.type} Analysis</h1>
             
             <div className="ml-auto flex space-x-3">
               <button className="p-2 bg-gray-900 rounded-lg border border-gray-800 text-gray-300 hover:bg-gray-800 transition-colors">
@@ -167,7 +167,7 @@ const AnalysisDetail = () => {
               {/* Patient Information */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
                 <div className="p-5 border-b border-gray-800 flex justify-between items-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-                  <h2 className="text-lg font-semibold text-white">Patient Information</h2>
+                  <h2 className="heading-subsection">Patient Information</h2>
                   <FaInfoCircle className="text-purple-400" />
                 </div>
                 <div className="p-5 space-y-4">
@@ -205,9 +205,9 @@ const AnalysisDetail = () => {
               {/* AI Analysis Results */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
                 <div className="p-5 border-b border-gray-800 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-                  <h2 className="text-lg font-semibold text-white flex items-center">
+                  <h2 className="heading-subsection-gradient flex items-center">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">AI</span>
-                    <span className="ml-1">Analysis Results</span>
+                    <span className="ml-1 text-white">Analysis Results</span>
                   </h2>
                 </div>
                 <div className="p-5">
@@ -246,7 +246,7 @@ const AnalysisDetail = () => {
               {/* Image Viewer with AI Heatmap */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
                 <div className="p-5 border-b border-gray-800 flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-white">{analysis.type} Analysis</h2>
+                  <h2 className="heading-subsection">{analysis.type} Analysis</h2>
                   <div className="flex space-x-2">
                     <button 
                       onClick={() => setShowHeatmap(!showHeatmap)}
@@ -310,7 +310,7 @@ const AnalysisDetail = () => {
               {/* Detailed Findings */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
                 <div className="p-5 border-b border-gray-800 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-                  <h2 className="text-lg font-semibold text-white">Detailed Findings</h2>
+                  <h2 className="heading-subsection">Detailed Findings</h2>
                 </div>
                 <div className="p-5">
                   <div className="space-y-4">
@@ -365,7 +365,7 @@ const AnalysisDetail = () => {
               {/* Analysis Metadata */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
                 <div className="p-5 border-b border-gray-800 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-                  <h2 className="text-lg font-semibold text-white">Analysis Information</h2>
+                  <h2 className="heading-subsection">Analysis Information</h2>
                 </div>
                 <div className="p-5">
                   <div className="grid grid-cols-2 gap-6">
