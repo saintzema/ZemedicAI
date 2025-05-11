@@ -19,6 +19,8 @@ class ZemedicAPITester:
         self.test_user = f"test_user_{datetime.now().strftime('%H%M%S')}"
         self.test_password = "TestPass123!"
         self.test_email = f"{self.test_user}@example.com"
+        self.analysis_id = None
+        self.ct_analysis_id = None
 
     def run_test(self, name, method, endpoint, expected_status, data=None, headers=None, files=None):
         """Run a single API test"""
