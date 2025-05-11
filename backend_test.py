@@ -223,26 +223,35 @@ class ZemedicAPITester:
             logger.info(f"CT scan analysis response: {json.dumps(response, indent=2)}")
             
             # Check for expected fields based on the actual response
-            if 'findings' in response:
-                logger.info("✅ Response contains findings field")
+            if 'predictions' in response:
+                logger.info("✅ Response contains predictions field")
                 
-                # Check if findings have location data for heatmap
-                has_location_data = False
-                for finding in response.get('findings', []):
-                    if 'heatmap_data' in finding:
-                        has_location_data = True
-                        logger.info(f"✅ Finding '{finding.get('name', 'unknown')}' has heatmap data")
+                # Check if predictions have confidence scores for progress bars
+                has_confidence = False
+                for prediction in response.get('predictions', []):
+                    if 'confidence' in prediction:
+                        has_confidence = True
+                        logger.info(f"✅ Prediction '{prediction.get('label', 'unknown')}' has confidence score: {prediction['confidence']}")
                 
-                if not has_location_data:
-                    logger.warning("⚠️ No findings with heatmap data found for visualization")
+                if not has_confidence:
+                    logger.warning("⚠️ No predictions with confidence scores found for progress bars")
             else:
-                logger.error("❌ Response missing 'findings' field needed for visualization")
+                logger.error("❌ Response missing 'predictions' field needed for visualization")
                 success = False
             
-            if 'overall_score' in response:
-                logger.info(f"✅ Response contains overall score: {response['overall_score']}")
+            # Check if the response has an image URL for visualization
+            if 'image_url' in response:
+                logger.info(f"✅ Response contains image URL: {response['image_url']}")
             else:
-                logger.error("❌ Response missing 'overall_score' field needed for progress bars")
+                logger.error("❌ Response missing 'image_url' field needed for visualization")
+                success = False
+            
+            # Store the analysis ID for later use
+            if 'id' in response:
+                self.ct_analysis_id = response['id']
+                logger.info(f"✅ CT Analysis ID stored: {self.ct_analysis_id}")
+            else:
+                logger.error("❌ Response missing 'id' field")
                 success = False
         
         return success
