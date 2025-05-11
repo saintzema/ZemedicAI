@@ -65,6 +65,34 @@ const EnhancedBeforeAfterSlider = ({ beforeImage, afterImage, title, description
     };
   }, [isDragging]);
 
+  // Create SVG masks for the heatmap overlay
+  const createHeatmapMask = () => {
+    const maskSvg = `
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          ${aiBoundingBoxes.map((box, idx) => `
+            <radialGradient id="heatGradient${idx}" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+              <stop offset="0%" stop-color="${box.color}" stop-opacity="0.6" />
+              <stop offset="70%" stop-color="${box.color}" stop-opacity="0.3" />
+              <stop offset="100%" stop-color="${box.color}" stop-opacity="0" />
+            </radialGradient>
+          `).join('')}
+        </defs>
+        ${aiBoundingBoxes.map((box, idx) => `
+          <ellipse 
+            cx="${box.x + box.width/2}%" 
+            cy="${box.y + box.height/2}%" 
+            rx="${box.width/1.5}%" 
+            ry="${box.height/1.5}%" 
+            fill="url(#heatGradient${idx})" 
+          />
+        `).join('')}
+      </svg>
+    `;
+    
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(maskSvg)}`;
+  };
+
   return (
     <div className="bg-gray-900 rounded-xl p-6 border border-gray-800 shadow-lg">
       {title && <h3 className="text-xl font-bold text-white mb-3">{title}</h3>}
@@ -81,40 +109,29 @@ const EnhancedBeforeAfterSlider = ({ beforeImage, afterImage, title, description
           style={{ backgroundImage: `url(${beforeImage})` }}
         />
 
-        {/* Heat Map Layer */}
+        {/* After Image with Heatmap Overlay */}
         <div 
-          className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+          className="absolute top-0 left-0 w-full h-full"
           style={{ 
-            backgroundImage: `linear-gradient(transparent, transparent)`,
             clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
           }}
         >
-          {/* Heat Map Overlay Effect */}
-          {aiBoundingBoxes.map((box, idx) => (
-            <div
-              key={idx}
-              className="absolute" 
-              style={{
-                left: `${box.x}%`,
-                top: `${box.y}%`,
-                width: `${box.width}%`,
-                height: `${box.height}%`,
-                background: `radial-gradient(ellipse at center, ${box.color}99 0%, ${box.color}66 30%, ${box.color}33 60%, transparent 80%)`,
-                opacity: sliderPosition > 0 ? 1 : 0,
-                transition: 'opacity 0.3s ease'
-              }}
-            />
-          ))}
+          {/* Base Image */}
+          <div 
+            className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${afterImage})` }}
+          />
+          
+          {/* Heatmap Overlay - SVG Mask */}
+          <div 
+            className="absolute top-0 left-0 w-full h-full bg-cover bg-center mix-blend-screen"
+            style={{ 
+              backgroundImage: `url("${createHeatmapMask()}")`,
+              opacity: sliderPosition > 10 ? 1 : 0,
+              transition: 'opacity 0.3s ease'
+            }}
+          />
         </div>
-
-        {/* After Image with findings highlighted (Top Layer with clip) */}
-        <div 
-          className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
-          style={{ 
-            backgroundImage: `url(${afterImage})`,
-            clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
-          }}
-        />
 
         {/* Confidence Labels for findings - only shown when slider is moved */}
         <div 
@@ -124,7 +141,7 @@ const EnhancedBeforeAfterSlider = ({ beforeImage, afterImage, title, description
           {aiBoundingBoxes.map((box, idx) => (
             <div
               key={`label-${idx}`}
-              className="absolute bg-black/70 px-2 py-1 rounded text-sm text-white border-l-2 font-mono"
+              className="absolute bg-black/70 px-2 py-1 rounded text-sm text-white border-l-2 font-mono z-20"
               style={{
                 left: `${box.x + (box.labelPosition?.x || 0)}%`,
                 top: `${box.y + (box.labelPosition?.y || 0)}%`,
@@ -141,7 +158,7 @@ const EnhancedBeforeAfterSlider = ({ beforeImage, afterImage, title, description
 
         {/* Slider Handle */}
         <div 
-          className="absolute top-0 bottom-0 w-[4px] bg-white cursor-ew-resize"
+          className="absolute top-0 bottom-0 w-[4px] bg-white cursor-ew-resize z-30"
           style={{ 
             left: `${sliderPosition}%`,
             transform: 'translateX(-50%)',
@@ -162,12 +179,12 @@ const EnhancedBeforeAfterSlider = ({ beforeImage, afterImage, title, description
         </div>
 
         {/* Labels */}
-        <div className="absolute bottom-2 left-2 bg-black/50 text-white text-sm px-2 py-1 rounded">Original Scan</div>
-        <div className="absolute bottom-2 right-2 bg-black/50 text-white text-sm px-2 py-1 rounded">AI Analysis</div>
+        <div className="absolute bottom-2 left-2 bg-black/50 text-white text-sm px-2 py-1 rounded z-20">Original Scan</div>
+        <div className="absolute bottom-2 right-2 bg-black/50 text-white text-sm px-2 py-1 rounded z-20">AI Analysis</div>
         
         {/* AI Status Indicator */}
         <div 
-          className="absolute top-2 right-2 bg-black/70 text-white text-sm px-3 py-1 rounded-full flex items-center"
+          className="absolute top-2 right-2 bg-black/70 text-white text-sm px-3 py-1 rounded-full flex items-center z-20"
           style={{ 
             opacity: sliderPosition > 10 ? 1 : 0,
             transition: 'opacity 0.3s ease'

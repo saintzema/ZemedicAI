@@ -10,13 +10,13 @@ const HowItWorksSection = () => {
   const cthBeforeImage = "/images/cth-before.jpg";
   const cthAfterImage = "/images/cth-after.jpg";
 
-  // AI Detection box data for CT brain scan
+  // AI Detection box data for CT brain scan - revised to be more accurate to image
   const brainAIDetections = [
     {
-      x: 60,
-      y: 40,
-      width: 30,
-      height: 30,
+      x: 45,
+      y: 35,
+      width: 20,
+      height: 20,
       color: '#FFCC00', // Yellow
       label: 'Temporal Lobe Lesion',
       confidence: 96,
@@ -24,10 +24,10 @@ const HowItWorksSection = () => {
       labelPosition: { x: -5, y: -5 }
     },
     {
-      x: 72,
-      y: 45,
-      width: 15,
-      height: 15,
+      x: 50,
+      y: 40,
+      width: 12,
+      height: 12,
       color: '#00CCFF', // Blue
       label: 'Mass Effect',
       confidence: 92,
@@ -35,10 +35,10 @@ const HowItWorksSection = () => {
       labelPosition: { x: 5, y: 8 }
     },
     {
-      x: 55,
-      y: 52,
-      width: 12,
-      height: 12,
+      x: 42,
+      y: 48,
+      width: 10,
+      height: 10,
       color: '#FF3366', // Red
       label: 'Edema',
       confidence: 88,
@@ -47,13 +47,13 @@ const HowItWorksSection = () => {
     }
   ];
 
-  // AI Detection box data for chest X-ray
+  // AI Detection box data for chest X-ray - revised to be more accurate to image
   const chestAIDetections = [
     {
-      x: 35,
-      y: 30,
-      width: 25,
-      height: 25,
+      x: 45,
+      y: 40,
+      width: 20,
+      height: 20,
       color: '#FF3366', // Red
       label: 'Infiltrate',
       confidence: 94,
@@ -61,10 +61,10 @@ const HowItWorksSection = () => {
       labelPosition: { x: 0, y: -5 }
     },
     {
-      x: 40,
-      y: 55,
-      width: 20,
-      height: 20,
+      x: 50,
+      y: 58,
+      width: 15,
+      height: 15,
       color: '#FFCC00', // Yellow
       label: 'Consolidation',
       confidence: 89,

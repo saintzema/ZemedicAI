@@ -12,13 +12,13 @@ const Landing = () => {
   useEffect(() => {
     // Scroll to top when landing page is loaded
     window.scrollTo(0, 0);
-    
+     
     // Set page title
     document.title = 'ZemedicAI - AI-Powered Medical Diagnostics for Africa';
   }, []);
 
   return (
-    <div className="bg-white min-h-screen flex flex-col">
+    <div className="bg-black min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">
         <HeroSection />
