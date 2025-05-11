@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class ZemedicAPITester:
-    def __init__(self, base_url="https://719aa599-875d-4e6d-bb88-7a222149f050.preview.emergentagent.com"):
+    def __init__(self, base_url="https://d88c44bf-7ab5-498a-a550-70bea3468f85.preview.emergentagent.com"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
