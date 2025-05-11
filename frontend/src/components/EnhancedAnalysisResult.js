@@ -104,7 +104,7 @@ const EnhancedAnalysisResult = ({
       'Brain Atrophy': 'Shrinkage of brain tissue, which can occur with aging or certain diseases. This appears as enlarged dark spaces around and within the brain on CT scans.',
       'Cerebral Edema': 'Swelling in the brain caused by excess fluid. This appears as areas of decreased density (darker) with loss of the normal gray-white differentiation on CT scans.',
       'Sinusitis': 'Inflammation of the sinuses, which are air-filled spaces in the skull. This appears as white areas filling normally dark air spaces on CT scans.',
-      'Chronic Microvascular Changes': 'Small changes in the brain's tiny blood vessels, often due to high blood pressure or diabetes over time. These appear as small dark spots or areas on specialized CT scans.',
+      'Chronic Microvascular Changes': 'Small changes in the brain\'s tiny blood vessels, often due to high blood pressure or diabetes over time. These appear as small dark spots or areas on specialized CT scans.',
       'Calcifications': 'Deposits of calcium in brain tissue, which can be normal or caused by various conditions. These appear as very bright white spots on CT scans.',
       
       // Skin conditions
