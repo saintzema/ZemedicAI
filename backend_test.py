@@ -3,6 +3,7 @@ import requests
 import sys
 import logging
 from datetime import datetime
+import os
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -41,6 +42,23 @@ class ZemedicAPITester:
         except Exception as e:
             logger.error(f"❌ Failed - Error: {str(e)}")
             return False, {}
+    
+    def test_image_availability(self, image_paths):
+        """Test if images are available at the specified paths"""
+        for image_path in image_paths:
+            self.tests_run += 1
+            url = f"{self.base_url}{image_path}"
+            logger.info(f"Testing image availability: {image_path}")
+            
+            try:
+                response = requests.head(url)
+                if response.status_code == 200:
+                    self.tests_passed += 1
+                    logger.info(f"✅ Image found: {image_path}")
+                else:
+                    logger.error(f"❌ Image not found: {image_path} (Status: {response.status_code})")
+            except Exception as e:
+                logger.error(f"❌ Error checking image: {image_path} - {str(e)}")
 
 def main():
     # Setup
@@ -60,6 +78,16 @@ def main():
         return 1
     
     logger.info(f"Health check response: {response}")
+    
+    # Test image availability
+    logger.info("Testing image availability...")
+    image_paths = [
+        "/images/cxr-before.jpg",
+        "/images/cxr-after.jpg",
+        "/images/cth-before.jpg",
+        "/images/cth-after.jpg"
+    ]
+    tester.test_image_availability(image_paths)
     
     # Print results
     logger.info(f"Tests passed: {tester.tests_passed}/{tester.tests_run}")
