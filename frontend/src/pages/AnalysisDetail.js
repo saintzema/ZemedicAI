@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -6,6 +6,8 @@ import { FaArrowLeft, FaDownload, FaShare, FaPrint, FaInfoCircle } from 'react-i
 
 const AnalysisDetail = () => {
   const { id } = useParams();
+  const [showHeatmap, setShowHeatmap] = useState(true);
+  const [activeCondition, setActiveCondition] = useState(null);
   
   // In a real app, you would fetch the analysis data from your API
   // This is mock data for demonstration purposes
@@ -17,7 +19,7 @@ const AnalysisDetail = () => {
     priority: id === '2' ? 'High' : 'Normal',
     result: id === '2' ? 'Abnormal' : 'Normal',
     findings: id === '2' ? 
-      'Extra-axial haematoma detected on the right side with significant mass effect. Acute subdural hemorrhage along the right frontoparietal convexity. Midline shift of approximately 4mm to the left. Early signs of uncal herniation.' :
+      'Extra-axial haematoma detected on the right side with significant mass effect. Acute subdural hemorrhage along the right frontoparietal convexity. Midline shift of approximately 4mm to the left. Early signs of uncal herniation.' : 
       'No significant abnormalities detected. Lung fields clear bilaterally. Heart size within normal limits. No pleural effusion or pneumothorax. Costophrenic angles are sharp.',
     confidence: id === '2' ? 94 : 98,
     recommendations: id === '2' ?
@@ -35,18 +37,68 @@ const AnalysisDetail = () => {
   };
 
   const findingDetails = id === '2' ? [
-    { condition: 'Extra-axial haematoma', probability: 94, severity: 'Severe', primaryFinding: true },
-    { condition: 'Acute subdural', probability: 87, severity: 'Moderate', primaryFinding: false },
-    { condition: 'Midline shift', probability: 82, severity: 'Moderate', primaryFinding: false },
-    { condition: 'Uncal herniation', probability: 76, severity: 'Moderate', primaryFinding: false },
-    { condition: 'Intraparenchymal hemorrhage', probability: 8, severity: 'None', primaryFinding: false }
+    { name: 'Extra-axial haematoma', probability: 94, severity: 'Severe', primaryFinding: true, location: { x: 37, y: 42, radius: 18 } },
+    { name: 'Acute subdural', probability: 87, severity: 'Moderate', primaryFinding: false, location: { x: 30, y: 45, radius: 12 } },
+    { name: 'Midline shift', probability: 82, severity: 'Moderate', primaryFinding: false, location: null },
+    { name: 'Uncal herniation', probability: 76, severity: 'Moderate', primaryFinding: false, location: { x: 45, y: 50, radius: 10 } },
+    { name: 'Intraparenchymal hemorrhage', probability: 8, severity: 'None', primaryFinding: false, location: null }
   ] : [
-    { condition: 'Pneumonia', probability: 2, severity: 'None', primaryFinding: false },
-    { condition: 'Pleural Effusion', probability: 1, severity: 'None', primaryFinding: false },
-    { condition: 'Cardiomegaly', probability: 3, severity: 'None', primaryFinding: false },
-    { condition: 'Pulmonary Edema', probability: 2, severity: 'None', primaryFinding: false },
-    { condition: 'Atelectasis', probability: 2, severity: 'None', primaryFinding: false }
+    { name: 'Pneumonia', probability: 2, severity: 'None', primaryFinding: false, location: null },
+    { name: 'Pleural Effusion', probability: 1, severity: 'None', primaryFinding: false, location: null },
+    { name: 'Cardiomegaly', probability: 3, severity: 'None', primaryFinding: false, location: null },
+    { name: 'Pulmonary Edema', probability: 2, severity: 'None', primaryFinding: false, location: null },
+    { name: 'Atelectasis', probability: 2, severity: 'None', primaryFinding: false, location: null }
   ];
+
+  // Set initial active condition
+  React.useEffect(() => {
+    const primaryCondition = findingDetails.find(c => c.primaryFinding);
+    setActiveCondition(primaryCondition?.name || findingDetails[0]?.name);
+  }, [findingDetails]);
+
+  // Create SVG heatmap overlay
+  const createHeatmapMask = () => {
+    // Only show conditions with a location and probability > 20
+    const displayableConditions = findingDetails.filter(c => c.location && c.probability > 20);
+    
+    if (displayableConditions.length === 0) return null;
+    
+    const maskSvg = `
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          ${displayableConditions.map((condition, idx) => `
+            <radialGradient id="heatGradient${idx}" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+              <stop offset="0%" stop-color="${getColorForCondition(condition)}" stop-opacity="${condition.probability/100 * 0.7}" />
+              <stop offset="70%" stop-color="${getColorForCondition(condition)}" stop-opacity="${condition.probability/100 * 0.4}" />
+              <stop offset="100%" stop-color="${getColorForCondition(condition)}" stop-opacity="0" />
+            </radialGradient>
+          `).join('')}
+        </defs>
+        ${displayableConditions.map((condition, idx) => `
+          <ellipse 
+            cx="${condition.location.x}%" 
+            cy="${condition.location.y}%" 
+            rx="${condition.location.radius}%" 
+            ry="${condition.location.radius}%" 
+            fill="url(#heatGradient${idx})" 
+          />
+        `).join('')}
+      </svg>
+    `;
+    
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(maskSvg)}`;
+  };
+
+  // Get appropriate color based on condition severity and type
+  const getColorForCondition = (condition) => {
+    if (condition.severity === 'Severe') return '#FF3366'; // Red for severe conditions
+    if (condition.severity === 'Moderate') return '#FFCC00'; // Yellow for moderate
+    return '#00CCFF'; // Blue for mild/none
+  };
+
+  const handleConditionClick = (condition) => {
+    setActiveCondition(condition.name);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
@@ -191,42 +243,65 @@ const AnalysisDetail = () => {
             
             {/* Right Column */}
             <div className="md:col-span-7 space-y-8">
-              {/* Image Viewer */}
+              {/* Image Viewer with AI Heatmap */}
               <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
                 <div className="p-5 border-b border-gray-800 flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-white">{analysis.type} Image</h2>
+                  <h2 className="text-lg font-semibold text-white">{analysis.type} Analysis</h2>
                   <div className="flex space-x-2">
+                    <button 
+                      onClick={() => setShowHeatmap(!showHeatmap)}
+                      className={`px-3 py-1.5 rounded text-xs ${showHeatmap 
+                        ? 'bg-purple-800 text-purple-100'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'} 
+                        transition-colors flex items-center`}
+                    >
+                      <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      {showHeatmap ? 'Hide AI Overlay' : 'Show AI Overlay'}
+                    </button>
                     <button className="px-3 py-1.5 bg-gray-800 rounded text-xs text-gray-300 hover:bg-gray-700 transition-colors flex items-center">
                       <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                       </svg>
                       Zoom
                     </button>
-                    <button className="px-3 py-1.5 bg-gray-800 rounded text-xs text-gray-300 hover:bg-gray-700 transition-colors flex items-center">
-                      <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                      </svg>
-                      Contrast
-                    </button>
-                    <button className="px-3 py-1.5 bg-gray-800 rounded text-xs text-gray-300 hover:bg-gray-700 transition-colors flex items-center">
-                      <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                      </svg>
-                      Annotate
-                    </button>
                   </div>
                 </div>
+                
                 <div className="bg-black flex justify-center items-center p-2 relative overflow-hidden">
+                  {/* Background gradient */}
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-indigo-900/30"></div>
-                  <img 
-                    src={analysis.image} 
-                    alt={analysis.type} 
-                    className="w-full max-h-[400px] object-contain relative z-10" 
-                  />
-                  {analysis.result === 'Abnormal' && (
-                    <div className="absolute top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-red-500/70 shadow-[0_0_15px_rgba(239,68,68,0.5)] animate-pulse"></div>
-                  )}
+                  
+                  {/* Base Image */}
+                  <div className="relative w-full max-h-[400px] flex justify-center z-10">
+                    <img  
+                      src={analysis.image}  
+                      alt={analysis.type}  
+                      className="max-h-[400px] object-contain"
+                    />
+                    
+                    {/* Heatmap Overlay */}
+                    {showHeatmap && createHeatmapMask() && (
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center mix-blend-screen"
+                        style={{ 
+                          backgroundImage: `url("${createHeatmapMask()}")`,
+                        }}
+                      />
+                    )}
+                    
+                    {/* AI Status Indicator */}
+                    {showHeatmap && findingDetails.some(c => c.location) && (
+                      <div className="absolute top-2 right-2 bg-black/70 text-white text-sm px-3 py-1 rounded-full flex items-center z-20">
+                        <span className="h-2 w-2 rounded-full bg-green-500 mr-2 pulse-animation"></span>
+                        <span>AI Analysis Complete</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                
                 <div className="p-3 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-center text-sm text-gray-400">
                   {analysis.type} - {analysis.date}
                 </div>
@@ -242,21 +317,24 @@ const AnalysisDetail = () => {
                     {findingDetails.map((finding, index) => (
                       <div 
                         key={index}
-                        className={`p-3 rounded-lg flex items-start transition-all duration-300 ${
-                          finding.primaryFinding 
+                        className={`p-3 rounded-lg flex items-start transition-all duration-300 cursor-pointer ${
+                          activeCondition === finding.name || finding.primaryFinding 
                             ? 'bg-purple-900/20 border-l-2 border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.15)]' 
                             : 'bg-gray-800/50 hover:bg-gray-800'
                         }`}
+                        onClick={() => handleConditionClick(finding)}
                       >
                         <div className="pt-1">
-                          <div className={`h-3 w-3 rounded-full ${
-                            finding.probability > 50 ? 'bg-red-500' : 
-                            finding.probability > 20 ? 'bg-yellow-500' : 'bg-green-500'
-                          }`}></div>
+                          <div 
+                            className="h-3 w-3 rounded-full"
+                            style={{ 
+                              backgroundColor: getColorForCondition(finding)
+                            }}
+                          ></div>
                         </div>
                         <div className="ml-4 flex-grow">
                           <div className="flex justify-between">
-                            <span className="text-white font-medium">{finding.condition}</span>
+                            <span className="text-white font-medium">{finding.name}</span>
                             <span className={`text-sm ${
                               finding.severity === 'None' ? 'text-green-400' :
                               finding.severity === 'Mild' ? 'text-yellow-400' :
@@ -268,12 +346,11 @@ const AnalysisDetail = () => {
                           <div className="mt-2 flex items-center">
                             <div className="w-full bg-gray-700 rounded-full h-1.5 mr-3">
                               <div 
-                                className={`h-1.5 rounded-full ${
-                                  finding.probability > 50 ? 'bg-gradient-to-r from-red-500 to-red-600' : 
-                                  finding.probability > 20 ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 
-                                  'bg-gradient-to-r from-green-500 to-green-600'
-                                }`}
-                                style={{ width: `${finding.probability}%` }}
+                                className="h-1.5 rounded-full"
+                                style={{ 
+                                  width: `${finding.probability}%`,
+                                  background: `linear-gradient(to right, ${getColorForCondition(finding)}99, ${getColorForCondition(finding)})`
+                                }}
                               ></div>
                             </div>
                             <span className="text-xs text-gray-300 w-10">{finding.probability}%</span>
