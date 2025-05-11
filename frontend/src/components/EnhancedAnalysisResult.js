@@ -118,7 +118,7 @@ const EnhancedAnalysisResult = ({
       'Vascular Lesion': 'An abnormal cluster of blood vessels that can appear as a red or purple mark on the skin. Common types include hemangiomas and port-wine stains.',
       'Angioma': 'A benign tumor made up of small blood vessels. These appear as small, bright red spots on the skin, commonly known as cherry angiomas.',
       'Dermatitis': 'Inflammation of the skin that can cause an itchy rash, swelling, and redness. There are many types, including eczema and contact dermatitis.',
-      'Psoriasis': 'A chronic skin condition that causes cells to build up rapidly on the skin's surface, forming red, scaly patches that can be itchy and painful.',
+      'Psoriasis': 'A chronic skin condition that causes cells to build up rapidly on the skin\'s surface, forming red, scaly patches that can be itchy and painful.',
       'Rosacea': 'A chronic skin condition that causes redness, visible blood vessels, and sometimes small, red, pus-filled bumps on the face.'
     };
     
