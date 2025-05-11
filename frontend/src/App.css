@@ -74,6 +74,54 @@
     @apply text-lg font-semibold text-white;
     font-family: 'Readex Pro', sans-serif;
   }
+
+  /* Button styles */
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200 inline-block text-center;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  .btn-white {
+    @apply bg-white text-gray-900 hover:bg-gray-100;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  .btn-outline {
+    @apply border border-current bg-transparent transition-colors;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  /* Section Tags */
+  .section-tag-dark {
+    @apply inline-block px-4 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm font-medium border border-purple-500/30;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  .section-tag-light {
+    @apply inline-block px-4 py-1 rounded-full bg-white/20 text-white text-sm font-medium border border-white/30;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  /* Section Headings */
+  .section-heading-light {
+    @apply text-4xl font-bold text-white;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  .section-heading-dark {
+    @apply text-4xl font-bold text-gray-900;
+    font-family: 'Readex Pro', sans-serif;
+  }
+
+  .section-subheading {
+    @apply text-xl max-w-3xl mx-auto;
+    font-family: 'Readex Pro', sans-serif;
+  }
   
   /* Analysis result text styles with consistent Readex Pro font */
   .analysis-text {
@@ -91,7 +139,69 @@
     @apply font-medium;
     font-family: 'Readex Pro', sans-serif;
   }
+
+  /* Case Study Components */
+  .case-study {
+    @apply relative;
+  }
+
+  .case-study-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent;
+  }
+
+  .case-study-content {
+    @apply absolute bottom-0 left-0 right-0 p-6;
+  }
+
+  /* Testimonial Cards */
+  .testimonial-card-dark {
+    @apply bg-gradient-to-br from-gray-900 to-gray-900/80 p-6 rounded-xl shadow-xl relative;
+  }
+
+  .testimonial-card-light {
+    @apply bg-white p-6 rounded-xl shadow-xl relative;
+  }
+
+  /* Background gradients */
+  .dark-purple-gradient {
+    @apply bg-gradient-to-br from-gray-900 via-black to-purple-900/30;
+  }
+  
+  .bg-gradient-primary {
+    @apply bg-gradient-to-br from-purple-900 to-indigo-900;
+  }
+
+  /* Map point animation */
+  .map-point {
+    @apply h-4 w-4 rounded-full bg-purple-500 border-2 border-white shadow-lg;
+    box-shadow: 0 0 0 rgba(168, 85, 247, 0.4);
+    animation: mapPulse 2s infinite;
+  }
+
+  /* Analysis Findings */
+  .analysis-finding {
+    @apply flex items-center;
+  }
+
+  .analysis-finding-primary {
+    @apply font-medium;
+  }
+
+  .analysis-finding-secondary {
+    @apply opacity-70;
+  }
 }
+
+/* Utilities */
+.xray-zoom {
+  animation: xrayZoom 20s infinite alternate ease-in-out;
+}
+
+.hero-animate-pulse {
+  animation: heroPulse 5s infinite alternate ease-in-out;
+}
+
+/* Keyframe Animations */
 
 @keyframes pulse {
   0% {
@@ -103,6 +213,71 @@
   100% {
     box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
   }
+}
+
+@keyframes xrayZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes heroPulse {
+  0% {
+    opacity: 0.3;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(30px, 20px) scale(1.2);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes mapPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(168, 85, 247, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+  }
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) rotate(3deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(3deg);
+  }
+  100% {
+    transform: translateY(0) rotate(3deg);
+  }
+}
+
+.float-up {
+  animation: float-up 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out forwards;
 }
 
 /* Rest of your existing CSS */
@@ -181,35 +356,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
-}
-
-/* Animations */
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out forwards;
-}
-
-.animate-slide-in {
-  animation: slideIn 0.3s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 /* Graph color palette */
