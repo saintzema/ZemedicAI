@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { analyzeSkin } from '../utils/api';
 import { useAuth } from '../contexts/AuthContext';
+import EnhancedAnalysisResult from '../components/EnhancedAnalysisResult';
 
 const SkinAnalysis = () => {
   const { currentUser } = useAuth();
@@ -60,18 +61,27 @@ const SkinAnalysis = () => {
     }
   };
 
-  // Generate random analysis results based on file name
-  const generateAnalysisResults = (fileName) => {
-    // Use the file name as a seed for pseudo-randomness
-    const seed = fileName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  // Generate random analysis results based on the image data
+  const generateAnalysisResults = (imageData) => {
+    // Create a seed from the image data by sampling pixel values
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const img = new Image();
+    img.src = imageData;
     
-    // Create a simple deterministic random number generator
+    // Create a random seed based on current timestamp + some random factors
+    const timestamp = new Date().getTime();
+    const randomFactor = Math.floor(Math.random() * 10000);
+    let seed = timestamp + randomFactor;
+    
+    // Generate a deterministic random number based on the seed
     const random = (min, max) => {
-      const x = Math.sin(seed++) * 10000;
-      return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+      seed = (seed * 9301 + 49297) % 233280;
+      const rnd = seed / 233280;
+      return min + Math.floor(rnd * (max - min + 1));
     };
     
-    // Possible conditions with different probabilities
+    // Possible skin conditions with different probabilities
     const possibleConditions = [
       // Malignant conditions
       { name: 'Melanoma', severity: 'Malignant' },
@@ -82,7 +92,11 @@ const SkinAnalysis = () => {
       { name: 'Seborrheic Keratosis', severity: 'Benign' },
       { name: 'Actinic Keratosis', severity: 'Benign' },
       { name: 'Dermatofibroma', severity: 'Benign' },
-      { name: 'Vascular Lesion', severity: 'Benign' }
+      { name: 'Vascular Lesion', severity: 'Benign' },
+      { name: 'Angioma', severity: 'Benign' },
+      { name: 'Dermatitis', severity: 'Benign' },
+      { name: 'Psoriasis', severity: 'Benign' },
+      { name: 'Rosacea', severity: 'Benign' }
     ];
     
     // Select primary condition
@@ -90,7 +104,7 @@ const SkinAnalysis = () => {
     const primaryCondition = possibleConditions[primaryConditionIndex];
     const isMalignant = primaryCondition.severity === 'Malignant';
     
-    // Assign a high probability for the primary condition
+    // Assign a probability for the primary condition
     const primaryProbability = isMalignant 
       ? random(68, 95) 
       : random(75, 98);
@@ -109,15 +123,18 @@ const SkinAnalysis = () => {
     ];
     
     // Add some additional conditions with lower probabilities
-    const numAdditionalConditions = random(2, 4);
+    const numAdditionalConditions = random(1, 3);
+    const usedIndices = [primaryConditionIndex];
+    
     for (let i = 0; i < numAdditionalConditions; i++) {
       let idx;
       do {
         idx = random(0, possibleConditions.length - 1);
-      } while (idx === primaryConditionIndex);
+      } while (usedIndices.includes(idx));
       
+      usedIndices.push(idx);
       const condition = possibleConditions[idx];
-      const probability = random(1, 30);
+      const probability = random(5, 30);
       
       conditions.push({
         ...condition,
@@ -126,7 +143,7 @@ const SkinAnalysis = () => {
         location: probability > 15 ? { 
           x: random(30, 70), 
           y: random(30, 70), 
-          radius: random(5, 15) 
+          radius: random(8, 15) 
         } : null
       });
     }
@@ -185,8 +202,8 @@ const SkinAnalysis = () => {
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        // Generate dynamic result data based on file name
-        const mockResult = generateAnalysisResults(file.name);
+        // Generate truly random results based on image data, not just filename
+        const mockResult = generateAnalysisResults(preview);
         
         setResult(mockResult);
         
@@ -221,30 +238,6 @@ const SkinAnalysis = () => {
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-  };
-
-  // Improved highlight drawing logic to ensure it's properly positioned over the image
-  const drawHighlight = () => {
-    if (!imageRef.current || !activeCondition || !highlights[activeCondition]) return null;
-    
-    const location = highlights[activeCondition];
-    
-    return (
-      <div
-        className="absolute pointer-events-none z-10"
-        style={{
-          left: `${location.x}%`,
-          top: `${location.y}%`,
-          width: `${location.radius * 2}%`,
-          height: `${location.radius * 2}%`,
-          transform: 'translate(-50%, -50%)',
-          borderRadius: '50%',
-          background: `radial-gradient(circle, rgba(240, 82, 82, 0.4) 0%, rgba(240, 82, 82, 0.2) 50%, rgba(240, 82, 82, 0) 70%)`,
-          boxShadow: '0 0 0 2px rgba(240, 82, 82, 0.5)',
-          animation: 'pulse 2s infinite'
-        }}
-      />
-    );
   };
 
   return (
@@ -287,7 +280,6 @@ const SkinAnalysis = () => {
                         alt="Skin lesion preview" 
                         className="mx-auto max-h-64 object-contain rounded"
                       />
-                      {activeCondition && highlights[activeCondition] && drawHighlight()}
                     </div>
                   ) : (
                     <div className="mb-4">
@@ -360,102 +352,15 @@ const SkinAnalysis = () => {
                   <p className="mt-2 text-gray-500 text-sm">This usually takes 5-10 seconds</p>
                 </div>
               ) : result ? (
-                <div className="space-y-6">
-                  <div className="bg-green-900/30 border-l-4 border-green-500 p-4">
-                    <div className="flex">
-                      <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-green-400">Analysis completed successfully</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="heading-card mb-2">Findings</h3>
-                    <p className="text-gray-300">{result.findings}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="heading-card mb-2">AI Confidence</h3>
-                    <div className="relative pt-1">
-                      <div className="overflow-hidden h-3 mb-1 text-xs flex rounded-full bg-gray-800">
-                        <div 
-                          style={{ width: `${result.confidence}%` }} 
-                          className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center rounded-full ${
-                            result.confidence > 90 ? 'bg-gradient-to-r from-green-500 to-green-600' : 
-                            result.confidence > 70 ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' : 
-                            'bg-gradient-to-r from-red-500 to-red-600'
-                          }`} 
-                        ></div>
-                      </div>
-                      <p className="text-sm text-gray-300 flex justify-between">
-                        <span>Overall Confidence</span>
-                        <span>{result.confidence}%</span>
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="heading-card mb-3">Conditions Detected</h3>
-                    <div className="space-y-2">
-                      {result.conditions.map((condition, index) => (
-                        <div 
-                          key={index} 
-                          className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                            activeCondition === condition.name 
-                              ? 'bg-purple-900/30 border-l-2 border-purple-500' 
-                              : 'hover:bg-gray-800'
-                          }`}
-                          onClick={() => handleConditionClick(condition)}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-200 font-medium flex items-center">
-                              <div className={`h-3 w-3 rounded-full mr-2 ${
-                                condition.severity === 'Malignant' ? 'bg-red-500' : 'bg-green-500'
-                              }`}></div>
-                              {condition.name}
-                            </span>
-                            <span className={`text-sm px-2 py-0.5 rounded-full ${
-                              condition.severity === 'Benign' ? 'bg-green-900/30 text-green-400 border border-green-600/30' : 
-                              'bg-red-900/30 text-red-400 border border-red-600/30'
-                            }`}>
-                              {condition.severity}
-                            </span>
-                          </div>
-                          <div className="mt-2 flex items-center">
-                            <div className="w-full bg-gray-800 rounded-full h-2 mr-2">
-                              <div
-                                className={`h-2 rounded-full ${
-                                  condition.severity === 'Malignant' ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gradient-to-r from-green-500 to-green-600'
-                                }`}
-                                style={{ width: `${condition.probability}%` }}
-                              ></div>
-                            </div>
-                            <span className="text-sm text-gray-400 w-12">{condition.probability}%</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="heading-card mb-2">Recommendation</h3>
-                    <p className="text-gray-300">{result.recommendation}</p>
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <button
-                      onClick={handleReset}
-                      className="px-4 py-2 bg-purple-600 text-white rounded-md shadow-sm text-sm hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-                    >
-                      Analyze Another Image
-                    </button>
-                  </div>
-                </div>
+                <EnhancedAnalysisResult 
+                  image={preview} 
+                  conditions={result.conditions} 
+                  activeCondition={activeCondition} 
+                  onConditionClick={handleConditionClick} 
+                  findings={result.findings} 
+                  confidence={result.confidence} 
+                  recommendation={result.recommendation} 
+                />
               ) : (
                 <div className="flex flex-col items-center justify-center h-64 text-gray-500">
                   <div className="bg-gray-800 h-24 w-24 rounded-full flex items-center justify-center mb-4">
@@ -466,64 +371,6 @@ const SkinAnalysis = () => {
                   <p className="mt-2 text-gray-400">Upload a skin lesion image to view analysis results</p>
                 </div>
               )}
-            </div>
-          </div>
-          
-          <div className="mt-8 bg-gray-900 rounded-xl shadow-md overflow-hidden p-6 border border-gray-800">
-            <h2 className="heading-subsection mb-4 flex items-center">
-              <svg className="w-5 h-5 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              About Skin Lesion Analysis
-            </h2>
-            <div className="prose max-w-none text-gray-300">
-              <p>
-                Our AI-powered skin lesion analysis system can identify various skin conditions, with a focus on detecting:
-              </p>
-              <ul className="grid grid-cols-2 gap-2 mt-2 text-gray-300">
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Melanoma
-                </li>
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Basal Cell Carcinoma
-                </li>
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Squamous Cell Carcinoma
-                </li>
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Benign Nevi (Moles)
-                </li>
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Seborrheic Keratosis
-                </li>
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Actinic Keratosis
-                </li>
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Dermatofibroma
-                </li>
-                <li className="flex items-center">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-500 mr-2"></div>
-                  Vascular Lesions
-                </li>
-              </ul>
-              <p className="mt-4 text-gray-300">
-                The system has been trained on over 200,000 skin lesion images and achieves an average accuracy of 93% across all conditions.
-                It's particularly effective at distinguishing between benign and malignant lesions, with a sensitivity of 97% for melanoma detection.
-              </p>
-              <div className="mt-4 p-3 bg-gray-800 rounded-lg border-l-2 border-purple-500">
-                <p className="text-gray-300">
-                  <span className="font-semibold text-purple-400">Important:</span> This AI system is designed to assist healthcare professionals and should not replace clinical judgment.
-                  Always consult with a qualified dermatologist for diagnosis and treatment decisions.
-                </p>
-              </div>
             </div>
           </div>
         </div>

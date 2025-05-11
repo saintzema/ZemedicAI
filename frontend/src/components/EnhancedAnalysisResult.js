@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 /**
  * Enhanced Analysis Result component with AI heatmap overlay
- * 
+ *  
  * This component displays the analyzed medical image with an AI-generated
  * heatmap overlay showing areas of interest highlighted by color based on
  * condition and confidence.
@@ -73,7 +73,7 @@ const EnhancedAnalysisResult = ({
       {/* Image Viewer with Heatmap */}
       <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
         <div className="p-5 border-b border-gray-800 flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-white">AI Analysis Results</h2>
+          <h2 className="heading-subsection">AI Analysis Results</h2>
           <div className="flex space-x-2">
             <button 
               onClick={() => setShowHeatmap(!showHeatmap)}
@@ -159,20 +159,20 @@ const EnhancedAnalysisResult = ({
       {/* Findings Section */}
       <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
         <div className="p-5 border-b border-gray-800">
-          <h2 className="text-lg font-semibold text-white flex items-center">
+          <h2 className="heading-subsection">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">AI</span>
             <span className="ml-1">Analysis Findings</span>
           </h2>
         </div>
         <div className="p-5">
           <div className="mb-6">
-            <h3 className="text-sm text-purple-400 mb-2">Overall Findings</h3>
+            <h3 className="heading-card mb-2">Overall Findings</h3>
             <p className="text-white">{findings}</p>
           </div>
           
           <div className="mb-6">
             <div className="flex justify-between mb-1">
-              <h3 className="text-sm text-purple-400">AI Confidence</h3>
+              <h3 className="heading-card">AI Confidence</h3>
               <span className="text-sm text-gray-400">{confidence}%</span>
             </div>
             <div className="w-full bg-gray-800 rounded-full h-2.5">
@@ -192,7 +192,7 @@ const EnhancedAnalysisResult = ({
       {/* Detailed Findings */}
       <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
         <div className="p-5 border-b border-gray-800">
-          <h2 className="text-lg font-semibold text-white">Detailed Findings</h2>
+          <h2 className="heading-subsection">Detailed Findings</h2>
         </div>
         <div className="p-5">
           <div className="space-y-4">
@@ -247,7 +247,7 @@ const EnhancedAnalysisResult = ({
       {recommendation && (
         <div className="bg-gray-900 rounded-2xl shadow-md overflow-hidden border border-gray-800">
           <div className="p-5 border-b border-gray-800">
-            <h2 className="text-lg font-semibold text-white">Recommendations</h2>
+            <h2 className="heading-subsection">Recommendations</h2>
           </div>
           <div className="p-5">
             <div className="bg-gray-800/70 p-4 rounded-lg border-l-2 border-purple-500">
