@@ -109,7 +109,7 @@ const EnhancedAnalysisResult = ({
       
       // Skin conditions
       'Melanoma': 'A serious form of skin cancer that begins in the cells that produce melanin (the pigment that gives skin its color). It often appears as an irregular, dark-colored spot that changes in size, shape, or color.',
-      'Basal Cell Carcinoma': 'The most common type of skin cancer, which rarely spreads to other parts of the body but can cause local damage. It often appears as a pearly or waxy bump, a flat, flesh-colored lesion, or a bleeding or scabbing sore that doesn't heal.',
+      'Basal Cell Carcinoma': 'The most common type of skin cancer, which rarely spreads to other parts of the body but can cause local damage. It often appears as a pearly or waxy bump, a flat, flesh-colored lesion, or a bleeding or scabbing sore that doesn\'t heal.',
       'Squamous Cell Carcinoma': 'A common form of skin cancer that can spread to other parts of the body if left untreated. It often appears as a firm, red nodule or a flat lesion with a scaly, crusted surface.',
       'Benign Nevus': 'A common, non-cancerous mole. These are typically round or oval, with smooth edges and consistent color (often brown, tan, or flesh-colored).',
       'Seborrheic Keratosis': 'A common, non-cancerous skin growth that often appears in older adults. These look like waxy, stuck-on growths and can be brown, black, or tan.',
