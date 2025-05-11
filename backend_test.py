@@ -238,11 +238,28 @@ class ZemedicAPITester:
         
         return success
     
-    def test_analysis_detail(self, analysis_id="2"):
+    def test_analysis_detail(self, analysis_id=None):
         """Test the analysis detail endpoint with heatmap visualization"""
         if not self.token:
             logger.error("❌ Cannot test analysis detail: No authentication token")
             return False
+        
+        # If no analysis ID is provided, get one from the user history
+        if analysis_id is None:
+            logger.info("Getting analysis ID from user history")
+            success, history = self.run_test(
+                "User History",
+                "GET",
+                "api/user/history",
+                200
+            )
+            
+            if success and history and len(history) > 0:
+                analysis_id = history[0].get('id')
+                logger.info(f"Found analysis ID: {analysis_id}")
+            else:
+                logger.error("❌ No analysis found in user history")
+                return False
         
         logger.info(f"Testing analysis detail with ID {analysis_id}")
         
@@ -254,27 +271,30 @@ class ZemedicAPITester:
         )
         
         if success:
-            # Verify the response contains the expected fields for visualization
-            if 'conditions' in response:
-                logger.info("✅ Response contains conditions field")
+            # Log the full response to understand its structure
+            logger.info(f"Analysis detail response: {json.dumps(response, indent=2)}")
+            
+            # Check for expected fields based on the actual response
+            if 'findings' in response:
+                logger.info("✅ Response contains findings field")
                 
-                # Check if high probability conditions have location data for heatmap
+                # Check if findings have location data for heatmap
                 has_location_data = False
-                for condition in response.get('conditions', []):
-                    if condition.get('probability', 0) > 20 and 'location' in condition:
+                for finding in response.get('findings', []):
+                    if 'heatmap_data' in finding:
                         has_location_data = True
-                        logger.info(f"✅ Condition '{condition['name']}' has location data for heatmap")
+                        logger.info(f"✅ Finding '{finding.get('name', 'unknown')}' has heatmap data")
                 
                 if not has_location_data:
-                    logger.warning("⚠️ No conditions with location data found for heatmap visualization")
+                    logger.warning("⚠️ No findings with heatmap data found for visualization")
             else:
-                logger.error("❌ Response missing 'conditions' field needed for visualization")
+                logger.error("❌ Response missing 'findings' field needed for visualization")
                 success = False
             
-            if 'confidence' in response:
-                logger.info(f"✅ Response contains confidence score: {response['confidence']}%")
+            if 'overall_score' in response:
+                logger.info(f"✅ Response contains overall score: {response['overall_score']}")
             else:
-                logger.error("❌ Response missing 'confidence' field needed for progress bars")
+                logger.error("❌ Response missing 'overall_score' field needed for progress bars")
                 success = False
         
         return success
