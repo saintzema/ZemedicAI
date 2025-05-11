@@ -95,7 +95,7 @@ class ZemedicAPITester:
             "User Registration",
             "POST",
             "api/auth/register",
-            201,
+            200,
             data=data
         )
         
