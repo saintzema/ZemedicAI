@@ -74,55 +74,55 @@ const EnhancedAnalysisResult = ({
   const getConditionExplanation = (conditionName) => {
     const explanations = {
       // X-ray conditions
-      'Pneumonia': 'An infection that causes inflammation in the air sacs of your lungs, which can fill with fluid. This appears as white patches or areas of cloudiness on X-rays.',
-      'Pleural Effusion': 'A buildup of excess fluid between the layers of tissue that line your lungs and chest cavity. This appears as a white area at the bottom of the lung on X-rays.',
-      'Cardiomegaly': 'An enlarged heart, which can be caused by various conditions including high blood pressure or heart disease. This appears as an enlarged heart shadow on X-rays.',
-      'Atelectasis': 'A partial or complete collapse of a lung or lobe of a lung. This appears as an area of increased density or whiteness on X-rays.',
-      'Lung Opacity': 'A general term for any area that appears whiter than normal on a chest X-ray, which could indicate inflammation, infection, or fluid.',
-      'Pulmonary Edema': 'Excess fluid in the lungs, often due to heart problems. This appears as increased whiteness throughout the lungs on X-rays.',
-      'Pneumothorax': 'Air trapped between the lung and chest wall, causing the lung to collapse. This appears as a dark area without lung markings on X-rays.',
-      'Tuberculosis': 'A bacterial infection that primarily affects the lungs. On X-rays, it often appears as patchy areas of whiteness, typically in the upper parts of the lungs.',
-      'Lung Nodule': 'A small round or oval-shaped growth in the lung. It appears as a round white spot on X-rays.',
-      'Emphysema': 'A condition that damages the air sacs in your lungs, making it difficult to breathe. X-rays may show increased darkness of the lungs and a flattened diaphragm.',
-      'Fibrosis': 'Scarring of lung tissue, which can be caused by various conditions. It appears as white lines or patches on X-rays.',
-      'Hilar Enlargement': 'Enlargement of the area where blood vessels and airways enter the lungs. This appears as an enlarged white area in the center of the chest on X-rays.',
+      'Pneumonia': "An infection that causes inflammation in the air sacs of your lungs, which can fill with fluid. This appears as white patches or areas of cloudiness on X-rays.",
+      'Pleural Effusion': "A buildup of excess fluid between the layers of tissue that line your lungs and chest cavity. This appears as a white area at the bottom of the lung on X-rays.",
+      'Cardiomegaly': "An enlarged heart, which can be caused by various conditions including high blood pressure or heart disease. This appears as an enlarged heart shadow on X-rays.",
+      'Atelectasis': "A partial or complete collapse of a lung or lobe of a lung. This appears as an area of increased density or whiteness on X-rays.",
+      'Lung Opacity': "A general term for any area that appears whiter than normal on a chest X-ray, which could indicate inflammation, infection, or fluid.",
+      'Pulmonary Edema': "Excess fluid in the lungs, often due to heart problems. This appears as increased whiteness throughout the lungs on X-rays.",
+      'Pneumothorax': "Air trapped between the lung and chest wall, causing the lung to collapse. This appears as a dark area without lung markings on X-rays.",
+      'Tuberculosis': "A bacterial infection that primarily affects the lungs. On X-rays, it often appears as patchy areas of whiteness, typically in the upper parts of the lungs.",
+      'Lung Nodule': "A small round or oval-shaped growth in the lung. It appears as a round white spot on X-rays.",
+      'Emphysema': "A condition that damages the air sacs in your lungs, making it difficult to breathe. X-rays may show increased darkness of the lungs and a flattened diaphragm.",
+      'Fibrosis': "Scarring of lung tissue, which can be caused by various conditions. It appears as white lines or patches on X-rays.",
+      'Hilar Enlargement': "Enlargement of the area where blood vessels and airways enter the lungs. This appears as an enlarged white area in the center of the chest on X-rays.",
       
       // CT scan conditions
-      'Normal Brain': 'The scan shows brain tissue with normal appearance and no significant abnormalities.',
-      'Intracranial Hemorrhage': 'Bleeding inside the skull, which can put pressure on the brain. This appears as a bright white area on CT scans.',
-      'Subarachnoid Hemorrhage': 'Bleeding in the space between the brain and the thin tissues that cover it. This appears as white areas following the brain\'s surface on CT scans.',
-      'Subdural Hematoma': 'A collection of blood between the surface of the brain and its tough outer covering. This appears as a crescent-shaped white area on CT scans.',
-      'Epidural Hematoma': 'A collection of blood between the skull and the tough outer covering of the brain. This appears as a lens-shaped white area on CT scans.',
-      'Intraparenchymal Hemorrhage': 'Bleeding within the brain tissue itself. This appears as an irregular white area within the brain on CT scans.',
-      'Ischemic Stroke': 'A blockage of blood flow to part of the brain, causing that area to die. Early CT scans may look normal, but later scans show a dark area where the stroke occurred.',
-      'Cerebral Infarction': 'An area of dead brain tissue caused by a lack of blood supply. This appears as a dark area on CT scans.',
-      'Cerebral Aneurysm': 'A bulge in a blood vessel in the brain, which could potentially rupture. This may appear as a round area on CT scans with contrast.',
-      'Brain Tumor': 'An abnormal growth of cells in the brain. Depending on the type, it may appear as a white or dark area, often with surrounding swelling on CT scans.',
-      'Mass Effect': 'Pressure on the brain caused by a tumor, bleeding, or swelling, pushing normal brain structures out of position. This appears as a shift in normal brain anatomy on CT scans.',
-      'Midline Shift': 'When structures in the center of the brain are pushed to one side, usually due to pressure from a tumor, bleeding, or swelling. This appears as an asymmetry in the brain\'s center line on CT scans.',
-      'Hydrocephalus': 'A buildup of fluid in the brain\'s ventricles (fluid spaces), putting pressure on the brain. This appears as enlarged, dark fluid spaces on CT scans.',
-      'Brain Atrophy': 'Shrinkage of brain tissue, which can occur with aging or certain diseases. This appears as enlarged dark spaces around and within the brain on CT scans.',
-      'Cerebral Edema': 'Swelling in the brain caused by excess fluid. This appears as areas of decreased density (darker) with loss of the normal gray-white differentiation on CT scans.',
-      'Sinusitis': 'Inflammation of the sinuses, which are air-filled spaces in the skull. This appears as white areas filling normally dark air spaces on CT scans.',
-      'Chronic Microvascular Changes': 'Small changes in the brain\'s tiny blood vessels, often due to high blood pressure or diabetes over time. These appear as small dark spots or areas on specialized CT scans.',
-      'Calcifications': 'Deposits of calcium in brain tissue, which can be normal or caused by various conditions. These appear as very bright white spots on CT scans.',
+      'Normal Brain': "The scan shows brain tissue with normal appearance and no significant abnormalities.",
+      'Intracranial Hemorrhage': "Bleeding inside the skull, which can put pressure on the brain. This appears as a bright white area on CT scans.",
+      'Subarachnoid Hemorrhage': "Bleeding in the space between the brain and the thin tissues that cover it. This appears as white areas following the brain's surface on CT scans.",
+      'Subdural Hematoma': "A collection of blood between the surface of the brain and its tough outer covering. This appears as a crescent-shaped white area on CT scans.",
+      'Epidural Hematoma': "A collection of blood between the skull and the tough outer covering of the brain. This appears as a lens-shaped white area on CT scans.",
+      'Intraparenchymal Hemorrhage': "Bleeding within the brain tissue itself. This appears as an irregular white area within the brain on CT scans.",
+      'Ischemic Stroke': "A blockage of blood flow to part of the brain, causing that area to die. Early CT scans may look normal, but later scans show a dark area where the stroke occurred.",
+      'Cerebral Infarction': "An area of dead brain tissue caused by a lack of blood supply. This appears as a dark area on CT scans.",
+      'Cerebral Aneurysm': "A bulge in a blood vessel in the brain, which could potentially rupture. This may appear as a round area on CT scans with contrast.",
+      'Brain Tumor': "An abnormal growth of cells in the brain. Depending on the type, it may appear as a white or dark area, often with surrounding swelling on CT scans.",
+      'Mass Effect': "Pressure on the brain caused by a tumor, bleeding, or swelling, pushing normal brain structures out of position. This appears as a shift in normal brain anatomy on CT scans.",
+      'Midline Shift': "When structures in the center of the brain are pushed to one side, usually due to pressure from a tumor, bleeding, or swelling. This appears as an asymmetry in the brain's center line on CT scans.",
+      'Hydrocephalus': "A buildup of fluid in the brain's ventricles (fluid spaces), putting pressure on the brain. This appears as enlarged, dark fluid spaces on CT scans.",
+      'Brain Atrophy': "Shrinkage of brain tissue, which can occur with aging or certain diseases. This appears as enlarged dark spaces around and within the brain on CT scans.",
+      'Cerebral Edema': "Swelling in the brain caused by excess fluid. This appears as areas of decreased density (darker) with loss of the normal gray-white differentiation on CT scans.",
+      'Sinusitis': "Inflammation of the sinuses, which are air-filled spaces in the skull. This appears as white areas filling normally dark air spaces on CT scans.",
+      'Chronic Microvascular Changes': "Small changes in the brain's tiny blood vessels, often due to high blood pressure or diabetes over time. These appear as small dark spots or areas on specialized CT scans.",
+      'Calcifications': "Deposits of calcium in brain tissue, which can be normal or caused by various conditions. These appear as very bright white spots on CT scans.",
       
       // Skin conditions
-      'Melanoma': 'A serious form of skin cancer that begins in the cells that produce melanin (the pigment that gives skin its color). It often appears as an irregular, dark-colored spot that changes in size, shape, or color.',
-      'Basal Cell Carcinoma': 'The most common type of skin cancer, which rarely spreads to other parts of the body but can cause local damage. It often appears as a pearly or waxy bump, a flat, flesh-colored lesion, or a bleeding or scabbing sore that doesn\'t heal.',
-      'Squamous Cell Carcinoma': 'A common form of skin cancer that can spread to other parts of the body if left untreated. It often appears as a firm, red nodule or a flat lesion with a scaly, crusted surface.',
-      'Benign Nevus': 'A common, non-cancerous mole. These are typically round or oval, with smooth edges and consistent color (often brown, tan, or flesh-colored).',
-      'Seborrheic Keratosis': 'A common, non-cancerous skin growth that often appears in older adults. These look like waxy, stuck-on growths and can be brown, black, or tan.',
-      'Actinic Keratosis': 'A rough, scaly patch on the skin caused by years of sun exposure. It\'s considered a pre-cancerous growth that may develop into skin cancer if left untreated.',
-      'Dermatofibroma': 'A common, non-cancerous skin growth that often forms after minor injury to the skin. It appears as a small, firm bump that\'s usually pink, gray, red, or brown.',
-      'Vascular Lesion': 'An abnormal cluster of blood vessels that can appear as a red or purple mark on the skin. Common types include hemangiomas and port-wine stains.',
-      'Angioma': 'A benign tumor made up of small blood vessels. These appear as small, bright red spots on the skin, commonly known as cherry angiomas.',
-      'Dermatitis': 'Inflammation of the skin that can cause an itchy rash, swelling, and redness. There are many types, including eczema and contact dermatitis.',
-      'Psoriasis': 'A chronic skin condition that causes cells to build up rapidly on the skin\'s surface, forming red, scaly patches that can be itchy and painful.',
-      'Rosacea': 'A chronic skin condition that causes redness, visible blood vessels, and sometimes small, red, pus-filled bumps on the face.'
+      'Melanoma': "A serious form of skin cancer that begins in the cells that produce melanin (the pigment that gives skin its color). It often appears as an irregular, dark-colored spot that changes in size, shape, or color.",
+      'Basal Cell Carcinoma': "The most common type of skin cancer, which rarely spreads to other parts of the body but can cause local damage. It often appears as a pearly or waxy bump, a flat, flesh-colored lesion, or a bleeding or scabbing sore that doesn't heal.",
+      'Squamous Cell Carcinoma': "A common form of skin cancer that can spread to other parts of the body if left untreated. It often appears as a firm, red nodule or a flat lesion with a scaly, crusted surface.",
+      'Benign Nevus': "A common, non-cancerous mole. These are typically round or oval, with smooth edges and consistent color (often brown, tan, or flesh-colored).",
+      'Seborrheic Keratosis': "A common, non-cancerous skin growth that often appears in older adults. These look like waxy, stuck-on growths and can be brown, black, or tan.",
+      'Actinic Keratosis': "A rough, scaly patch on the skin caused by years of sun exposure. It's considered a pre-cancerous growth that may develop into skin cancer if left untreated.",
+      'Dermatofibroma': "A common, non-cancerous skin growth that often forms after minor injury to the skin. It appears as a small, firm bump that's usually pink, gray, red, or brown.",
+      'Vascular Lesion': "An abnormal cluster of blood vessels that can appear as a red or purple mark on the skin. Common types include hemangiomas and port-wine stains.",
+      'Angioma': "A benign tumor made up of small blood vessels. These appear as small, bright red spots on the skin, commonly known as cherry angiomas.",
+      'Dermatitis': "Inflammation of the skin that can cause an itchy rash, swelling, and redness. There are many types, including eczema and contact dermatitis.",
+      'Psoriasis': "A chronic skin condition that causes cells to build up rapidly on the skin's surface, forming red, scaly patches that can be itchy and painful.",
+      'Rosacea': "A chronic skin condition that causes redness, visible blood vessels, and sometimes small, red, pus-filled bumps on the face."
     };
     
-    return explanations[conditionName] || 'No detailed explanation available for this condition.';
+    return explanations[conditionName] || "No detailed explanation available for this condition.";
   };
 
   const handleConditionHover = (condition) => {
@@ -354,12 +354,12 @@ const EnhancedAnalysisResult = ({
                       <h5 className="font-medium text-gray-300 mb-1">What this means for you:</h5>
                       <p>
                         {condition.severity === 'None' ? 
-                          'This finding is normal and requires no action.' : 
+                          "This finding is normal and requires no action." : 
                           condition.severity === 'Mild' ? 
-                          'This condition is mild and may require monitoring or minor intervention.' :
+                          "This condition is mild and may require monitoring or minor intervention." :
                           condition.severity === 'Moderate' ? 
-                          'This condition requires attention and may need medical intervention.' :
-                          'This is a serious finding that requires prompt medical attention.'}
+                          "This condition requires attention and may need medical intervention." :
+                          "This is a serious finding that requires prompt medical attention."}
                       </p>
                     </div>
                   </div>
