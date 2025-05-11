@@ -72,8 +72,8 @@ const BeforeAfterSlider = ({ beforeImage, afterImage, title, description }) => {
       <div 
         ref={containerRef}
         className="relative h-[400px] overflow-hidden rounded-lg mb-4 cursor-ew-resize" 
-        onMouseMove={isDragging ? handleMouseMove : null}
-        onTouchMove={isDragging ? handleTouchMove : null}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
       >
         {/* Before Image (Bottom Layer) */}
         <div 

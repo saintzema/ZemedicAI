@@ -5,11 +5,11 @@ import Footer from '../components/Footer';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 
 const HowItWorks = () => {
-  // Image paths for the before/after sliders using Google Drive direct links
-  const cxrBeforeImage = "https://drive.google.com/uc?id=1ELYxKuwsb2IxdJcbQ-qAIhfoYIDAi03q";
-  const cxrAfterImage = "https://drive.google.com/uc?id=1FLfPBFN4lDmHqDrDf2BnANi6QfoQi63T";
-  const cthBeforeImage = "https://drive.google.com/uc?id=1BgiqY5L5Fl6Eh1b7n1lg1LUJ8bOQoVUC";
-  const cthAfterImage = "https://drive.google.com/uc?id=131jroiTRrVbDIVnhVq1C16TI6IGu9tal";
+  // Using local image paths instead of Google Drive URLs
+  const cxrBeforeImage = "/images/cxr-before.jpg";
+  const cxrAfterImage = "/images/cxr-after.jpg";
+  const cthBeforeImage = "/images/cth-before.jpg";
+  const cthAfterImage = "/images/cth-after.jpg";
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
