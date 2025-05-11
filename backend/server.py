@@ -630,7 +630,16 @@ async def analyze_ct_scan_image(
                 "date": datetime.utcnow(),
                 "image_url": image_url,
                 "predictions": analysis_result["predictions"],
-                "recommendations": analysis_result["recommendations"]
+                "recommendations": analysis_result["recommendations"],
+                # Add location data for heatmap visualization
+                "condition_locations": {
+                    pred["label"]: {
+                        "x": 45,  # Default position for brain scan
+                        "y": 35 if pred["label"] == "Normal Findings" else 45,
+                        "radius": 20,
+                        "severity": "Moderate" if pred["confidence"] > 0.7 else ("Mild" if pred["confidence"] > 0.4 else "None")
+                    } for pred in analysis_result["predictions"] if pred["confidence"] > 0.3
+                }
             }
             
             db.analyses.insert_one(analysis_doc)
