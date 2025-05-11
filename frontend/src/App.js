@@ -15,6 +15,7 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import Partners from './pages/Partners';
 import HowItWorks from './pages/HowItWorks';
+import Preorder from './pages/Preorder';
 
 // Solutions Pages
 import Solutions from './pages/Solutions';
@@ -47,6 +48,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/preorder" element={<Preorder />} />
             
             {/* Analysis Pages */}
             <Route path="/analyze/xray" element={<XrayAnalysis />} />

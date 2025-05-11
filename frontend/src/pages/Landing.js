@@ -5,6 +5,7 @@ import SolutionsSection from '../components/SolutionsSection';
 import HowItWorksSection from '../components/HowItWorksSection';
 import AfricanMapSection from '../components/AfricanMapSection';
 import SolarBoothSection from '../components/SolarBoothSection';
+import PreorderSection from '../components/PreorderSection';
 import PartnersSection from '../components/PartnersSection';
 import Footer from '../components/Footer';
 
@@ -12,7 +13,7 @@ const Landing = () => {
   useEffect(() => {
     // Scroll to top when landing page is loaded
     window.scrollTo(0, 0);
-     
+      
     // Set page title
     document.title = 'ZemedicAI - AI-Powered Medical Diagnostics for Africa';
   }, []);
@@ -26,6 +27,7 @@ const Landing = () => {
         <HowItWorksSection />
         <AfricanMapSection />
         <SolarBoothSection />
+        <PreorderSection />
         <PartnersSection />
       </main>
       <Footer />
