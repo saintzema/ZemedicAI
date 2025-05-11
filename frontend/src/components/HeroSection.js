@@ -47,7 +47,7 @@ const HeroSection = () => {
             </motion.div>
           </div>
           
-          {/* Right Column - X-ray Animation - Now styled like annalise.ai */}
+          {/* Right Column - X-ray Animation */}
           <motion.div 
             className="z-10 relative"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -55,7 +55,7 @@ const HeroSection = () => {
             transition={{ duration: 0.7 }}
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-700 bg-black diagnostic-ui">
-              {/* Header with patient info - like annalise.ai interface */}
+              {/* Header with patient info */}
               <div className="px-4 py-3 bg-black border-b border-gray-800 flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <div className="text-purple-500">

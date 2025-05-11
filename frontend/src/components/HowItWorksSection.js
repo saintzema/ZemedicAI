@@ -148,7 +148,7 @@ const HowItWorksSection = () => {
         <div className="mt-10 text-center">
           <Link 
             to="/demo" 
-            className="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg font-medium inline-block"
+            className="btn btn-primary px-8 py-3 rounded-lg font-medium inline-block"
           >
             Try It Yourself
           </Link>

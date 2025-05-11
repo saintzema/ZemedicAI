@@ -79,10 +79,10 @@ const Navbar = () => {
             </Link>
             
             <div className="flex items-center space-x-4">
-              <Link to="/demo" className="btn-outline text-sm py-1.5 px-5 border border-purple-500 text-purple-400 hover:bg-purple-600/10 rounded-md transition-colors">
+              <Link to="/demo" className="btn btn-outline text-sm py-1.5 px-5 border border-purple-500 text-purple-400 hover:bg-purple-600/10 rounded-md transition-colors">
                 Web Demo
               </Link>
-              <Link to="/contact" className="btn-primary text-sm py-1.5 px-5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-md transition-colors">
+              <Link to="/contact" className="btn btn-primary text-sm py-1.5 px-5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-md transition-colors">
                 Contact Us
               </Link>
             </div>
