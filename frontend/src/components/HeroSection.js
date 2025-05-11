@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 // Custom typing animation component
 const TypedText = ({ phrases }) => {
@@ -78,13 +79,13 @@ const HeroSection = () => {
           {/* Left Column - Text Content */}
           <div className="z-10">
             <motion.h1 
-              className="heading-primary mb-8"
+              className="mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="block mb-4">We're on a mission to redefine</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400">
+              <span className="block mb-4 text-5xl font-bold text-white">We're on a mission to <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500">redefine</span></span>
+              <span className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400">
                 <TypedText phrases={missionPhrases} />
               </span>
             </motion.h1>
@@ -104,12 +105,18 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <a href="#" className="btn btn-white text-center uppercase tracking-wide text-sm">
+              <Link 
+                to="/contact" 
+                className="btn btn-white text-center uppercase tracking-wide text-sm hover:bg-purple-100 hover:text-purple-700 transition-all duration-300"
+              >
                 Speak with our experts
-              </a>
-              <a href="#solutions" className="btn btn-outline border-white text-white hover:bg-white/10 text-center uppercase tracking-wide text-sm">
+              </Link>
+              <Link 
+                to="/demo" 
+                className="btn btn-outline border-white text-white hover:bg-white hover:text-gray-900 text-center uppercase tracking-wide text-sm transition-all duration-300"
+              >
                 Explore Solutions
-              </a>
+              </Link>
             </motion.div>
           </div>
           
