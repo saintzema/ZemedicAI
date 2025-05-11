@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .page-transition {
+    @apply animate-fadeIn;
+  }
+}
+
 :root {
   --primary: #7c3aed;
   --primary-light: #8b5cf6;
