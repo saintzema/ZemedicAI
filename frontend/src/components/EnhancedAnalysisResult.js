@@ -114,7 +114,7 @@ const EnhancedAnalysisResult = ({
       'Benign Nevus': 'A common, non-cancerous mole. These are typically round or oval, with smooth edges and consistent color (often brown, tan, or flesh-colored).',
       'Seborrheic Keratosis': 'A common, non-cancerous skin growth that often appears in older adults. These look like waxy, stuck-on growths and can be brown, black, or tan.',
       'Actinic Keratosis': 'A rough, scaly patch on the skin caused by years of sun exposure. It's considered a pre-cancerous growth that may develop into skin cancer if left untreated.',
-      'Dermatofibroma': 'A common, non-cancerous skin growth that often forms after minor injury to the skin. It appears as a small, firm bump that's usually pink, gray, red, or brown.',
+      'Dermatofibroma': 'A common, non-cancerous skin growth that often forms after minor injury to the skin. It appears as a small, firm bump that\'s usually pink, gray, red, or brown.',
       'Vascular Lesion': 'An abnormal cluster of blood vessels that can appear as a red or purple mark on the skin. Common types include hemangiomas and port-wine stains.',
       'Angioma': 'A benign tumor made up of small blood vessels. These appear as small, bright red spots on the skin, commonly known as cherry angiomas.',
       'Dermatitis': 'Inflammation of the skin that can cause an itchy rash, swelling, and redness. There are many types, including eczema and contact dermatitis.',
