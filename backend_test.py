@@ -369,8 +369,24 @@ def main():
         # Test CT scan analysis with heatmap visualization
         tester.test_ct_scan_analysis()
         
-        # Test analysis detail with heatmap visualization
-        tester.test_analysis_detail("6820303a231c4726615aaaea")
+        # Test user history to get valid analysis IDs
+        success, history = tester.run_test(
+            "User History",
+            "GET",
+            "api/user/history",
+            200
+        )
+        
+        if success and history and len(history) > 0:
+            logger.info(f"User history: {json.dumps(history, indent=2)}")
+            
+            # Test analysis detail with heatmap visualization
+            if len(history) > 0 and 'id' in history[0]:
+                tester.test_analysis_detail(history[0]['id'])
+            else:
+                logger.warning("⚠️ No valid analysis ID found in user history")
+        else:
+            logger.warning("⚠️ Could not retrieve user history")
     else:
         logger.error("❌ Registration failed, skipping login and analysis tests")
         return 1
