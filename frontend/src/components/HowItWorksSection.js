@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BeforeAfterSlider from './BeforeAfterSlider';
+import EnhancedBeforeAfterSlider from './EnhancedBeforeAfterSlider';
 
 const HowItWorksSection = () => {
   // Using local image paths instead of Google Drive URLs
@@ -8,6 +9,69 @@ const HowItWorksSection = () => {
   const cxrAfterImage = "/images/cxr-after.jpg";
   const cthBeforeImage = "/images/cth-before.jpg";
   const cthAfterImage = "/images/cth-after.jpg";
+
+  // AI Detection box data for CT brain scan
+  const brainAIDetections = [
+    {
+      x: 60,
+      y: 40,
+      width: 30,
+      height: 30,
+      color: '#FFCC00', // Yellow
+      label: 'Temporal Lobe Lesion',
+      confidence: 96,
+      description: 'Abnormal tissue density detected in right temporal lobe',
+      labelPosition: { x: -5, y: -5 }
+    },
+    {
+      x: 72,
+      y: 45,
+      width: 15,
+      height: 15,
+      color: '#00CCFF', // Blue
+      label: 'Mass Effect',
+      confidence: 92,
+      description: 'Indicates pressure on surrounding tissue',
+      labelPosition: { x: 5, y: 8 }
+    },
+    {
+      x: 55,
+      y: 52,
+      width: 12,
+      height: 12,
+      color: '#FF3366', // Red
+      label: 'Edema',
+      confidence: 88,
+      description: 'Fluid accumulation in surrounding tissue',
+      labelPosition: { x: -8, y: 5 }
+    }
+  ];
+
+  // AI Detection box data for chest X-ray
+  const chestAIDetections = [
+    {
+      x: 35,
+      y: 30,
+      width: 25,
+      height: 25,
+      color: '#FF3366', // Red
+      label: 'Infiltrate',
+      confidence: 94,
+      description: 'Abnormal opacity in left upper lobe',
+      labelPosition: { x: 0, y: -5 }
+    },
+    {
+      x: 40,
+      y: 55,
+      width: 20,
+      height: 20,
+      color: '#FFCC00', // Yellow
+      label: 'Consolidation',
+      confidence: 89,
+      description: 'Consolidation in lower left lobe',
+      labelPosition: { x: 5, y: 2 }
+    }
+  ];
 
   return (
     <section className="py-16 bg-black">
@@ -28,18 +92,20 @@ const HowItWorksSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <BeforeAfterSlider 
+          <EnhancedBeforeAfterSlider 
             beforeImage={cxrBeforeImage}
             afterImage={cxrAfterImage}
             title="Chest X-Ray Analysis"
             description="See how our AI identifies and highlights abnormalities in chest X-rays, providing diagnostic guidance for clinicians."
+            aiBoundingBoxes={chestAIDetections}
           />
           
-          <BeforeAfterSlider 
+          <EnhancedBeforeAfterSlider 
             beforeImage={cthBeforeImage}
             afterImage={cthAfterImage}
             title="Brain CT Scan Interpretation"
-            description="Our AI detects critical findings in brain CT scans with precise region highlighting for accurate diagnosis."
+            description="Our AI detects critical findings in brain CT scans with precise region highlighting and confidence scoring for accurate diagnosis."
+            aiBoundingBoxes={brainAIDetections}
           />
         </div>
 

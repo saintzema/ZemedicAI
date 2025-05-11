@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import BeforeAfterSlider from '../components/BeforeAfterSlider';
+import EnhancedBeforeAfterSlider from '../components/EnhancedBeforeAfterSlider';
 
 const HowItWorks = () => {
   // Using local image paths instead of Google Drive URLs
@@ -10,6 +10,69 @@ const HowItWorks = () => {
   const cxrAfterImage = "/images/cxr-after.jpg";
   const cthBeforeImage = "/images/cth-before.jpg";
   const cthAfterImage = "/images/cth-after.jpg";
+
+  // AI Detection box data for CT brain scan
+  const brainAIDetections = [
+    {
+      x: 60,
+      y: 40,
+      width: 30,
+      height: 30,
+      color: '#FFCC00', // Yellow
+      label: 'Temporal Lobe Lesion',
+      confidence: 96,
+      description: 'Abnormal tissue density detected in right temporal lobe',
+      labelPosition: { x: -5, y: -5 }
+    },
+    {
+      x: 72,
+      y: 45,
+      width: 15,
+      height: 15,
+      color: '#00CCFF', // Blue
+      label: 'Mass Effect',
+      confidence: 92,
+      description: 'Indicates pressure on surrounding tissue',
+      labelPosition: { x: 5, y: 8 }
+    },
+    {
+      x: 55,
+      y: 52,
+      width: 12,
+      height: 12,
+      color: '#FF3366', // Red
+      label: 'Edema',
+      confidence: 88,
+      description: 'Fluid accumulation in surrounding tissue',
+      labelPosition: { x: -8, y: 5 }
+    }
+  ];
+
+  // AI Detection box data for chest X-ray
+  const chestAIDetections = [
+    {
+      x: 35,
+      y: 30,
+      width: 25,
+      height: 25,
+      color: '#FF3366', // Red
+      label: 'Infiltrate',
+      confidence: 94,
+      description: 'Abnormal opacity in left upper lobe',
+      labelPosition: { x: 0, y: -5 }
+    },
+    {
+      x: 40,
+      y: 55,
+      width: 20,
+      height: 20,
+      color: '#FFCC00', // Yellow
+      label: 'Consolidation',
+      confidence: 89,
+      description: 'Consolidation in lower left lobe',
+      labelPosition: { x: 5, y: 2 }
+    }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
@@ -67,7 +130,7 @@ const HowItWorks = () => {
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-2">Results Generation</h3>
                     <p className="text-gray-300">
-                      Detailed diagnostic insights are generated, including confidence scores and visual indications of detected conditions.
+                      Detailed diagnostic insights are generated, including confidence scores and visual heatmap indications of detected conditions.
                     </p>
                   </div>
                 </div>
@@ -121,9 +184,9 @@ const HowItWorks = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-4">Transfer Learning</h3>
+                <h3 className="text-xl font-semibold mb-4">Heat Map Visualization</h3>
                 <p className="text-gray-300">
-                  We leverage transfer learning techniques to adapt models trained on millions of global images while fine-tuning them for African patient populations.
+                  Our AI generates multi-colored heat maps that highlight regions of interest with varying colors to indicate different finding types and confidence levels.
                 </p>
               </div>
               
@@ -145,22 +208,24 @@ const HowItWorks = () => {
           <div className="mb-20">
             <h2 className="text-3xl font-bold mb-10 text-center">See The Difference</h2>
             <p className="text-center text-gray-300 mb-10 max-w-3xl mx-auto">
-              Drag the slider to compare raw medical images with ZemedicAI's enhanced diagnostic visualization. See how our AI highlights areas of interest and provides visual diagnostic guidance.
+              Drag the slider to compare raw medical images with ZemedicAI's enhanced diagnostic visualization. See how our AI highlights areas of interest with colored heatmaps and provides detailed findings.
             </p>
             
             <div className="grid md:grid-cols-2 gap-8">
-              <BeforeAfterSlider 
+              <EnhancedBeforeAfterSlider 
                 beforeImage={cxrBeforeImage}
                 afterImage={cxrAfterImage}
                 title="Chest X-Ray Analysis"
                 description="See how ZemedicAI identifies and highlights lung opacities, nodules, and other abnormalities in chest X-rays, providing detailed localization of findings."
+                aiBoundingBoxes={chestAIDetections}
               />
               
-              <BeforeAfterSlider 
+              <EnhancedBeforeAfterSlider 
                 beforeImage={cthBeforeImage}
                 afterImage={cthAfterImage}
                 title="Brain CT Scan Interpretation"
                 description="Observe how our AI detects and visualizes hemorrhages, infarcts, and other critical conditions in brain CT scans with precise region highlighting."
+                aiBoundingBoxes={brainAIDetections}
               />
             </div>
             
@@ -171,6 +236,63 @@ const HowItWorks = () => {
               >
                 Try The Demo
               </Link>
+            </div>
+          </div>
+          
+          {/* How AI Detection Works */}
+          <div className="mb-20">
+            <h2 className="text-3xl font-bold mb-6 text-center">Understanding AI Heatmaps</h2>
+            <p className="text-center text-gray-300 mb-10 max-w-3xl mx-auto">
+              Our AI generates multicolored heatmaps to highlight potential areas of concern, with different colors representing different findings.
+            </p>
+            
+            <div className="bg-gray-900 rounded-xl p-8 border border-gray-800">
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-lg" style={{ background: 'radial-gradient(circle, rgba(255,51,102,0.8) 0%, rgba(255,51,102,0.4) 50%, rgba(255,51,102,0.1) 100%)' }}></div>
+                  <h3 className="text-lg font-semibold mb-2 text-white">Red Regions</h3>
+                  <p className="text-gray-300 text-sm">
+                    Indicate high-priority findings that may require immediate attention, such as hemorrhages, pneumothorax, or severe infections.
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-lg" style={{ background: 'radial-gradient(circle, rgba(255,204,0,0.8) 0%, rgba(255,204,0,0.4) 50%, rgba(255,204,0,0.1) 100%)' }}></div>
+                  <h3 className="text-lg font-semibold mb-2 text-white">Yellow Regions</h3>
+                  <p className="text-gray-300 text-sm">
+                    Highlight moderate-priority findings such as nodules, masses, consolidations, or moderate tissue abnormalities.
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-lg" style={{ background: 'radial-gradient(circle, rgba(0,204,255,0.8) 0%, rgba(0,204,255,0.4) 50%, rgba(0,204,255,0.1) 100%)' }}></div>
+                  <h3 className="text-lg font-semibold mb-2 text-white">Blue Regions</h3>
+                  <p className="text-gray-300 text-sm">
+                    Show secondary findings or associated effects, like edema, mild opacities, or anatomical variations.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-8 border-t border-gray-700 pt-6">
+                <h3 className="text-xl font-semibold mb-4 text-center">Color Intensity Indicates Confidence</h3>
+                <p className="text-gray-300 text-center mb-6">
+                  The brightness and opacity of the colored regions correspond to the AI's confidence level in the detected abnormality.
+                </p>
+                <div className="flex justify-center items-center gap-2 md:gap-8">
+                  <div className="text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-lg opacity-30" style={{ background: '#FFCC00' }}></div>
+                    <p className="text-xs text-gray-400">Low Confidence<br/>(50-70%)</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-lg opacity-60" style={{ background: '#FFCC00' }}></div>
+                    <p className="text-xs text-gray-400">Medium Confidence<br/>(70-90%)</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-lg opacity-90" style={{ background: '#FFCC00' }}></div>
+                    <p className="text-xs text-gray-400">High Confidence<br/>(90-100%)</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -249,7 +371,7 @@ const HowItWorks = () => {
             <div className="bg-gradient-to-r from-purple-900/30 to-indigo-900/30 rounded-xl p-8 border border-purple-500/20 relative">
               <div className="absolute -top-5 -left-5 text-6xl text-purple-500 opacity-50">"</div>
               <p className="text-xl text-gray-200 mb-6 relative z-10">
-                What impresses me most about ZemedicAI is not just the accuracy, but how it highlights exactly where to look. When it detects a subtle pneumothorax or early tuberculosis, it shows me precisely where the finding is located and why it made that determination. It's like having a tireless expert assistant, especially valuable in our understaffed rural clinics.
+                What impresses me most about ZemedicAI is not just the accuracy, but how it highlights exactly where to look with the colored heatmaps. When it detects a subtle pneumothorax or early tuberculosis, it shows me precisely where the finding is located, with different colors indicating the type of abnormality. It's like having a tireless expert assistant, especially valuable in our understaffed rural clinics.
               </p>
               <footer>
                 <div className="flex items-center">
