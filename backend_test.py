@@ -99,6 +99,11 @@ class ZemedicAPITester:
             data=data
         )
         
+        if success and 'access_token' in response:
+            self.token = response['access_token']
+            logger.info("✅ Registration successful, token obtained")
+            return True
+        
         return success
     
     def login_user(self):
