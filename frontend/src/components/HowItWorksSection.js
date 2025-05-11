@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import BeforeAfterSlider from './BeforeAfterSlider';
 
 const HowItWorksSection = () => {
-  // Image paths for the before/after sliders
-  const cxrBeforeImage = "https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";
-  const cxrAfterImage = "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";
-  const cthBeforeImage = "https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1380&q=80";
-  const cthAfterImage = "https://images.unsplash.com/photo-1530684788657-1c93be20ff66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";
+  // Image paths for the before/after sliders using Google Drive direct links
+  const cxrBeforeImage = "https://drive.google.com/uc?id=1ELYxKuwsb2IxdJcbQ-qAIhfoYIDAi03q";
+  const cxrAfterImage = "https://drive.google.com/uc?id=1FLfPBFN4lDmHqDrDf2BnANi6QfoQi63T";
+  const cthBeforeImage = "https://drive.google.com/uc?id=1BgiqY5L5Fl6Eh1b7n1lg1LUJ8bOQoVUC";
+  const cthAfterImage = "https://drive.google.com/uc?id=131jroiTRrVbDIVnhVq1C16TI6IGu9tal";
 
   return (
     <section className="py-16 bg-black">
