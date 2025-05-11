@@ -61,7 +61,7 @@
   }
 
   .heading-section {
-    @apply text-3xl font-bold mb-10 text-center text-white;
+    @apply text-4xl font-bold mb-10 text-center text-white;
     font-family: 'Readex Pro', sans-serif;
   }
 
@@ -190,6 +190,11 @@
   .analysis-finding-secondary {
     @apply opacity-70;
   }
+  
+  /* Typing animation cursor */
+  .cursor-blink {
+    animation: blink 1s step-end infinite;
+  }
 }
 
 /* Utilities */
@@ -260,6 +265,15 @@
   }
   100% {
     transform: translateY(0) rotate(3deg);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 

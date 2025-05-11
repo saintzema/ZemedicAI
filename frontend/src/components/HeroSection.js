@@ -1,7 +1,70 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
+// Custom typing animation component
+const TypedText = ({ phrases }) => {
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [currentText, setCurrentText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(100);
+
+  useEffect(() => {
+    const typeText = () => {
+      const currentPhrase = phrases[currentPhraseIndex];
+      const fullText = currentPhrase;
+      
+      // Set typing speed based on action
+      if (isDeleting) {
+        setTypingSpeed(50); // faster when deleting
+      } else {
+        setTypingSpeed(100); // slower when typing
+      }
+      
+      // Handle typing and deleting
+      if (!isDeleting && currentText === fullText) {
+        // Pause at the end of the text before deleting
+        setTimeout(() => setIsDeleting(true), 1500);
+        return;
+      } else if (isDeleting && currentText === '') {
+        // Move to the next phrase after fully deleted
+        setIsDeleting(false);
+        setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+        return;
+      }
+      
+      // Calculate next text
+      const nextText = isDeleting
+        ? fullText.substring(0, currentText.length - 1)
+        : fullText.substring(0, currentText.length + 1);
+      
+      setCurrentText(nextText);
+    };
+
+    const timer = setTimeout(typeText, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [currentText, currentPhraseIndex, isDeleting, phrases, typingSpeed]);
+
+  return (
+    <span>
+      {currentText}
+      <span className="cursor-blink">|</span>
+    </span>
+  );
+};
+
 const HeroSection = () => {
+  // Mission phrases that reflect ZemedicAI's work
+  const missionPhrases = [
+    "Intelligent diagnosis...anywhere.",
+    "AI for accessible healthcare in Africa.",
+    "Democratizing medical imaging expertise.",
+    "Bridging diagnostic gaps worldwide.",
+    "Expert analysis where it's needed most.",
+    "Empowering rural healthcare with AI.",
+    "Healthcare innovation for every clinic.",
+    "Transforming medical imaging forever."
+  ];
+
   return (
     <section className="dark-purple-gradient text-white overflow-hidden py-24 md:py-36">
       <div className="container-custom relative">
@@ -20,7 +83,10 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              We're on a mission to redefine AI in medical imaging
+              <span className="block mb-4">We're on a mission to redefine</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400">
+                <TypedText phrases={missionPhrases} />
+              </span>
             </motion.h1>
             
             <motion.p 
