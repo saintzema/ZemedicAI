@@ -58,153 +58,139 @@ const CTScanAnalysis = () => {
     }
   };
 
-  // Generate random analysis results based on file name
-  const generateCTResults = (fileName) => {
-    // Use the file name as a seed for pseudo-randomness
-    const seed = fileName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  // Generate random analysis results based on image data
+  const generateCTResults = (imageData) => {
+    // Create a random seed based on current timestamp + some random factors
+    const timestamp = new Date().getTime();
+    const randomFactor = Math.floor(Math.random() * 10000);
+    let seed = timestamp + randomFactor;
     
-    // Create a simple deterministic random number generator
+    // Generate a deterministic random number based on the seed
     const random = (min, max) => {
-      const x = Math.sin(seed++) * 10000;
-      return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+      seed = (seed * 9301 + 49297) % 233280;
+      const rnd = seed / 233280;
+      return min + Math.floor(rnd * (max - min + 1));
     };
     
-    // Decide if this should show a major finding or be relatively normal
-    const hasMajorFinding = random(1, 10) <= 7;  // 70% chance of major finding
-    
-    // Possible major and minor findings for CT scans
-    let conditions = [];
-    
-    if (hasMajorFinding) {
-      // Choose one major finding
-      const majorFindings = [
-        {
-          name: 'Subdural hematoma',
-          probability: random(85, 95),
-          severity: 'Moderate',
-          location: { x: random(30, 40), y: random(40, 50), radius: random(15, 25) }
-        },
-        {
-          name: 'Intraparenchymal hemorrhage',
-          probability: random(82, 94),
-          severity: 'Severe',
-          location: { x: random(40, 50), y: random(40, 50), radius: random(10, 20) }
-        },
-        {
-          name: 'Ischemic stroke',
-          probability: random(80, 92),
-          severity: 'Moderate',
-          location: { x: random(45, 55), y: random(35, 45), radius: random(12, 22) }
-        },
-        {
-          name: 'Mass lesion',
-          probability: random(75, 90),
-          severity: 'Moderate',
-          location: { x: random(35, 60), y: random(30, 50), radius: random(15, 25) }
-        }
-      ];
+    // Possible brain conditions with various severities
+    const possibleConditions = [
+      // Normal findings
+      { name: 'Normal Brain', severity: 'None', isCritical: false, isNormal: true },
       
-      const selectedMajorFinding = majorFindings[random(0, majorFindings.length - 1)];
-      conditions.push(selectedMajorFinding);
+      // Hemorrhage types
+      { name: 'Intracranial Hemorrhage', severity: 'Severe', isCritical: true, isNormal: false, location: { x: random(35, 65), y: random(35, 65), radius: random(15, 25) } },
+      { name: 'Subarachnoid Hemorrhage', severity: 'Severe', isCritical: true, isNormal: false, location: { x: random(35, 65), y: random(35, 65), radius: random(10, 20) } },
+      { name: 'Subdural Hematoma', severity: 'Severe', isCritical: true, isNormal: false, location: { x: random(25, 75), y: random(30, 50), radius: random(15, 30) } },
+      { name: 'Epidural Hematoma', severity: 'Severe', isCritical: true, isNormal: false, location: { x: random(30, 70), y: random(30, 50), radius: random(15, 25) } },
+      { name: 'Intraparenchymal Hemorrhage', severity: 'Severe', isCritical: true, isNormal: false, location: { x: random(40, 60), y: random(40, 60), radius: random(10, 20) } },
       
-      // Add associated findings based on the major finding
-      if (selectedMajorFinding.name === 'Subdural hematoma' || selectedMajorFinding.name === 'Intraparenchymal hemorrhage') {
-        // Add midline shift with higher probability
-        conditions.push({
-          name: 'Midline shift',
-          probability: random(60, 85),
-          severity: 'Moderate',
-          location: { x: 50, y: 45, radius: 5 }
-        });
-        // Add mass effect
-        conditions.push({
-          name: 'Mass effect',
-          probability: random(70, 90),
-          severity: 'Moderate',
-          location: { x: selectedMajorFinding.location.x + 5, y: selectedMajorFinding.location.y, radius: 10 }
-        });
-      } else if (selectedMajorFinding.name === 'Mass lesion') {
-        // Add edema
-        conditions.push({
-          name: 'Perilesional edema',
-          probability: random(65, 85),
-          severity: 'Moderate',
-          location: { 
-            x: selectedMajorFinding.location.x + random(-5, 5), 
-            y: selectedMajorFinding.location.y + random(-5, 5), 
-            radius: selectedMajorFinding.location.radius + 5 
-          }
-        });
-        // Possible mass effect
-        if (random(1, 10) > 4) {
-          conditions.push({
-            name: 'Mass effect',
-            probability: random(50, 80),
-            severity: 'Moderate',
-            location: { x: 50, y: 45, radius: 8 }
-          });
-        }
-      }
-    } else {
-      // Normal or minor findings
-      conditions.push({
-        name: 'Normal findings',
-        probability: random(85, 97),
-        severity: 'None',
-        location: null
-      });
-    }
-    
-    // Add some additional low-probability findings regardless
-    const minorFindings = [
-      { name: 'Sinusitis', probability: random(0, 25), severity: random(1, 10) > 7 ? 'Mild' : 'None', location: random(1, 10) > 7 ? { x: 30, y: 30, radius: 10 } : null },
-      { name: 'Chronic microvascular changes', probability: random(0, 30), severity: 'Mild', location: null },
-      { name: 'Age-related atrophy', probability: random(0, 35), severity: 'Mild', location: null },
-      { name: 'Calcified granuloma', probability: random(0, 15), severity: 'None', location: null }
+      // Stroke and vascular conditions
+      { name: 'Ischemic Stroke', severity: 'Moderate', isCritical: true, isNormal: false, location: { x: random(30, 70), y: random(30, 70), radius: random(15, 25) } },
+      { name: 'Cerebral Infarction', severity: 'Moderate', isCritical: false, isNormal: false, location: { x: random(30, 70), y: random(30, 70), radius: random(10, 20) } },
+      { name: 'Cerebral Aneurysm', severity: 'Moderate', isCritical: false, isNormal: false, location: { x: random(40, 60), y: random(40, 60), radius: random(5, 10) } },
+      
+      // Mass lesions
+      { name: 'Brain Tumor', severity: 'Moderate', isCritical: false, isNormal: false, location: { x: random(30, 70), y: random(30, 70), radius: random(10, 20) } },
+      { name: 'Mass Effect', severity: 'Moderate', isCritical: false, isNormal: false, location: { x: random(30, 70), y: random(30, 70), radius: random(15, 25) } },
+      { name: 'Midline Shift', severity: 'Moderate', isCritical: false, isNormal: false },
+      
+      // Brain structure abnormalities
+      { name: 'Hydrocephalus', severity: 'Moderate', isCritical: false, isNormal: false, location: { x: 50, y: 50, radius: 35 } },
+      { name: 'Brain Atrophy', severity: 'Mild', isCritical: false, isNormal: false },
+      { name: 'Cerebral Edema', severity: 'Moderate', isCritical: false, isNormal: false, location: { x: random(30, 70), y: random(30, 70), radius: random(20, 30) } },
+      
+      // Secondary findings
+      { name: 'Sinusitis', severity: 'Mild', isCritical: false, isNormal: false, location: { x: random(30, 70), y: random(70, 85), radius: random(10, 15) } },
+      { name: 'Chronic Microvascular Changes', severity: 'Mild', isCritical: false, isNormal: false },
+      { name: 'Calcifications', severity: 'Mild', isCritical: false, isNormal: false, location: { x: random(35, 65), y: random(35, 65), radius: random(5, 10) } }
     ];
     
-    // Add 2-3 minor findings with non-zero probability
-    for (let i = 0; i < random(2, 3); i++) {
-      const finding = minorFindings[random(0, minorFindings.length - 1)];
-      if (finding.probability > 0) {
-        conditions.push(finding);
-      }
-    }
+    // Determine if we should show normal or abnormal findings
+    const showNormal = random(1, 10) <= 3; // 30% chance of normal findings
     
-    // Filter to remove duplicates and sort by probability
-    conditions = conditions.filter((condition, index, self) => 
-      index === self.findIndex(c => c.name === condition.name)
-    );
-    conditions.sort((a, b) => b.probability - a.probability);
+    let primaryCondition;
+    const conditions = [];
     
-    // Generate findings text and recommendation
-    let findings, recommendation;
-    const primaryCondition = conditions[0];
-    
-    if (hasMajorFinding) {
-      if (primaryCondition.name === 'Subdural hematoma') {
-        findings = `${random(1, 2) === 1 ? 'Mild' : 'Moderate'} ${random(1, 2) === 1 ? 'right' : 'left'}-sided subdural hematoma in the ${random(1, 2) === 1 ? 'frontoparietal' : 'temporoparietal'} region. ${conditions.some(c => c.name === 'Midline shift') ? 'Mild midline shift present.' : 'No significant midline shift.'} Ventricles are ${random(1, 3) === 1 ? 'mildly compressed' : 'normal in size and shape'}. No evidence of intraparenchymal hemorrhage.`;
-        recommendation = `Neurosurgical consultation recommended. Follow-up scan in ${random(24, 48)} hours to assess for progression. Monitor neurological status closely.`;
-      } else if (primaryCondition.name === 'Intraparenchymal hemorrhage') {
-        findings = `Acute intraparenchymal hemorrhage in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'frontal' : random(1, 2) === 1 ? 'parietal' : 'temporal'} lobe, measuring approximately ${random(1, 3)}.${random(0, 9)} cm in maximal dimension. ${conditions.some(c => c.name === 'Midline shift') ? 'Associated midline shift of approximately ' + random(2, 5) + ' mm.' : 'No significant midline shift.'} No evidence of intraventricular extension.`;
-        recommendation = `Immediate neurosurgical evaluation required. Consider repeat imaging in 6-12 hours. Close monitoring in intensive care setting recommended.`;
-      } else if (primaryCondition.name === 'Ischemic stroke') {
-        findings = `Evidence of acute/subacute ischemic infarct in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'middle cerebral artery' : random(1, 2) === 1 ? 'anterior cerebral artery' : 'posterior cerebral artery'} territory. No hemorrhagic transformation. No significant mass effect or midline shift.`;
-        recommendation = `Neurological consultation recommended. Consider vascular imaging to evaluate for arterial occlusion or stenosis. Initiate appropriate stroke management and secondary prevention.`;
-      } else if (primaryCondition.name === 'Mass lesion') {
-        findings = `${random(1, 3) === 1 ? 'Well-defined' : random(1, 2) === 1 ? 'Irregular' : 'Heterogeneous'} mass lesion in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'frontal' : random(1, 2) === 1 ? 'parietal' : 'temporal'} lobe, measuring approximately ${random(2, 4)}.${random(0, 9)} cm. ${conditions.some(c => c.name === 'Perilesional edema') ? 'Moderate surrounding edema present.' : 'Minimal surrounding edema.'} ${conditions.some(c => c.name === 'Mass effect') ? 'Associated mass effect with ' + (random(1, 2) === 1 ? 'mild' : 'moderate') + ' ventricular compression.' : 'No significant mass effect.'}`;
-        recommendation = `Contrast-enhanced MRI recommended for further characterization. Neurosurgical consultation advised for potential biopsy planning. Clinical correlation with patient history suggested.`;
+    if (showNormal) {
+      primaryCondition = possibleConditions.find(c => c.isNormal);
+      primaryCondition.probability = random(85, 98);
+      conditions.push({ ...primaryCondition });
+      
+      // Maybe add some incidental minor findings
+      if (random(1, 3) === 1) {
+        const minorCondition = possibleConditions.find(c => c.name === 'Sinusitis' || c.name === 'Calcifications');
+        if (minorCondition) {
+          minorCondition.probability = random(10, 25);
+          conditions.push({ ...minorCondition });
+        }
       }
     } else {
-      findings = `No acute intracranial hemorrhage, mass effect, or midline shift. Ventricles and cisterns are normal in size and shape. Gray-white matter differentiation is preserved. No evidence of acute territorial infarct. ${
-        conditions.some(c => c.name === 'Sinusitis' && c.probability > 15) ? 'Incidental note of ' + (random(1, 2) === 1 ? 'right' : 'left') + '-sided ' + (random(1, 2) === 1 ? 'maxillary' : 'ethmoid') + ' sinusitis.' : ''
-      } ${
-        conditions.some(c => c.name === 'Chronic microvascular changes' && c.probability > 15) ? 'Mild chronic microvascular changes, appropriate for patient age.' : ''
-      }`;
-      recommendation = `No acute intracranial abnormality identified. No follow-up imaging is required based on these findings.`;
+      // Select an abnormal condition as primary
+      const abnormalConditions = possibleConditions.filter(c => !c.isNormal);
+      const primaryIndex = random(0, abnormalConditions.length - 1);
+      primaryCondition = abnormalConditions[primaryIndex];
+      primaryCondition.probability = random(65, 95);
+      conditions.push({ ...primaryCondition });
+      
+      // Add secondary conditions
+      const numSecondaryConditions = random(1, 3);
+      const usedIndices = [primaryIndex];
+      
+      for (let i = 0; i < numSecondaryConditions; i++) {
+        let idx;
+        do {
+          idx = random(0, abnormalConditions.length - 1);
+        } while (usedIndices.includes(idx));
+        
+        usedIndices.push(idx);
+        const condition = { ...abnormalConditions[idx] };
+        
+        // Related conditions get higher probability
+        const isRelated = (primaryCondition.name.includes('Hemorrhage') && condition.name.includes('Hemorrhage')) || 
+                          (primaryCondition.name.includes('Stroke') && condition.name.includes('Infarction')) ||
+                          (primaryCondition.name === 'Mass Effect' && condition.name === 'Midline Shift');
+        
+        condition.probability = isRelated ? random(40, 70) : random(10, 40);
+        conditions.push(condition);
+      }
     }
     
-    // Calculate overall confidence
+    // Sort by probability
+    conditions.sort((a, b) => b.probability - a.probability);
+    
+    // Generate findings text
+    let findings = '';
+    let recommendation = '';
+    
+    if (showNormal) {
+      findings = `No acute intracranial hemorrhage, mass effect, or midline shift. Ventricles and cisterns are normal in size and shape. Gray-white matter differentiation is preserved. No evidence of acute territorial infarct. ${ 
+        conditions.some(c => c.name === 'Sinusitis' && c.probability > 15) ? 'Incidental note of ' + (random(1, 2) === 1 ? 'right' : 'left') + '-sided ' + (random(1, 2) === 1 ? 'maxillary' : 'ethmoid') + ' sinusitis.' : '' 
+      } ${ 
+        conditions.some(c => c.name === 'Chronic Microvascular Changes' && c.probability > 15) ? 'Mild chronic microvascular changes, appropriate for patient age.' : '' 
+      }`;
+      recommendation = `No acute intracranial abnormality identified. No follow-up imaging is required based on these findings.`;
+    } else if (primaryCondition.isCritical) {
+      if (primaryCondition.name.includes('Hemorrhage') || primaryCondition.name.includes('Hematoma')) {
+        findings = `Acute ${primaryCondition.name.toLowerCase()} identified in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'frontal' : random(1, 2) === 1 ? 'parietal' : 'temporal'} region, measuring approximately ${random(1, 5)}.${random(0, 9)} cm in maximal dimension. ${conditions.some(c => c.name === 'Midline shift') ? 'Associated midline shift of approximately ' + random(2, 7) + ' mm.' : 'No significant midline shift.'} ${conditions.some(c => c.name === 'Mass effect') ? 'Mass effect on adjacent structures.' : ''} Ventricles are ${random(1, 3) === 1 ? 'compressed' : 'normal in size and configuration'}.`;
+        recommendation = `Neurosurgical consultation recommended. Follow-up scan in ${random(12, 48)} hours to assess for progression. Clinical correlation suggested.`;
+      } else if (primaryCondition.name === 'Ischemic Stroke') {
+        findings = `Evidence of acute/subacute ischemic infarct in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'middle cerebral artery' : random(1, 2) === 1 ? 'anterior cerebral artery' : 'posterior cerebral artery'} territory. No hemorrhagic transformation identified. ${conditions.some(c => c.name === 'Mass effect') ? 'Mild mass effect on adjacent structures.' : 'No significant mass effect.'} ${conditions.some(c => c.name === 'Midline shift') ? 'Minimal midline shift noted.' : 'No midline shift.'}`;
+        recommendation = `Neurological consultation recommended. Consider vascular imaging to evaluate for arterial occlusion or stenosis. Stroke protocol management advised.`;
+      }
+    } else {
+      if (primaryCondition.name === 'Brain Tumor') {
+        findings = `${random(1, 2) === 1 ? 'Well-circumscribed' : 'Irregular'} ${random(1, 2) === 1 ? 'hyperdense' : 'heterogeneous'} mass identified in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'frontal' : random(1, 2) === 1 ? 'parietal' : 'temporal'} lobe, measuring approximately ${random(2, 5)}.${random(0, 9)} cm in maximal dimension. ${conditions.some(c => c.name === 'Perilesional edema') ? 'Moderate surrounding edema present.' : 'Minimal surrounding edema.'} ${conditions.some(c => c.name === 'Mass effect') ? 'Associated mass effect with ' + (random(1, 2) === 1 ? 'mild' : 'moderate') + ' ventricular compression.' : 'No significant mass effect.'}`;
+        recommendation = `Contrast-enhanced MRI recommended for further characterization. Neurosurgical consultation advised for potential biopsy planning.`;
+      } else if (primaryCondition.name === 'Hydrocephalus') {
+        findings = `Ventricular enlargement consistent with ${random(1, 2) === 1 ? 'communicating' : 'non-communicating'} hydrocephalus. ${random(1, 2) === 1 ? 'Moderate' : 'Significant'} dilatation of the ${random(1, 2) === 1 ? 'lateral and third' : 'lateral, third, and fourth'} ventricles. ${conditions.some(c => c.name === 'Periventricular edema') ? 'Periventricular edema noted, suggesting transependymal CSF flow.' : 'No evident periventricular edema.'} ${conditions.some(c => c.name === 'Mass effect') ? 'Mass effect on adjacent brain parenchyma.' : ''}`;
+        recommendation = `Neurosurgical consultation recommended for evaluation and potential CSF diversion procedure. Clinical correlation with symptoms of increased intracranial pressure advised.`;
+      } else {
+        findings = `Findings consistent with ${primaryCondition.name.toLowerCase()}. ${conditions.some(c => c.name === 'Mass effect') ? 'Associated mass effect present.' : 'No significant mass effect.'} ${conditions.some(c => c.name === 'Midline shift') ? 'Mild midline shift noted.' : 'No midline shift present.'} Ventricles are ${random(1, 3) === 1 ? 'mildly enlarged' : 'normal in size and configuration'}.`;
+        recommendation = `Clinical correlation recommended. Consider follow-up imaging in ${random(1, 3)} ${random(1, 2) === 1 ? 'weeks' : 'months'} to assess for changes.`;
+      }
+    }
+    
+    // Overall confidence
     const confidence = Math.min(97, Math.max(85, primaryCondition.probability + random(-5, 5)));
     
     return {
@@ -235,8 +221,8 @@ const CTScanAnalysis = () => {
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        // Generate dynamic results based on file name
-        const mockResult = generateCTResults(file.name);
+        // Generate dynamic results based on image preview data
+        const mockResult = generateCTResults(preview);
         
         setResult(mockResult);
         setActiveCondition(mockResult.conditions[0].name);

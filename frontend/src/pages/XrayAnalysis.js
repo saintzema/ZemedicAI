@@ -58,56 +58,84 @@ const XrayAnalysis = () => {
     }
   };
 
-  // Generate random analysis results based on file name
-  const generateXrayResults = (fileName) => {
-    // Use the file name as a seed for pseudo-randomness
-    const seed = fileName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  // Generate random analysis results based on image data
+  const generateXrayResults = (imageData) => {
+    // Create a random seed based on current timestamp + some random factors
+    const timestamp = new Date().getTime();
+    const randomFactor = Math.floor(Math.random() * 10000);
+    let seed = timestamp + randomFactor;
     
-    // Create a simple deterministic random number generator
+    // Generate a deterministic random number based on the seed
     const random = (min, max) => {
-      const x = Math.sin(seed++) * 10000;
-      return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
+      seed = (seed * 9301 + 49297) % 233280;
+      const rnd = seed / 233280;
+      return min + Math.floor(rnd * (max - min + 1));
     };
     
     // Possible findings for X-rays with different probabilities
     const possibleConditions = [
-      { name: 'Focal airspace opacity', probability: random(85, 95), severity: 'Moderate', location: { x: random(55, 75), y: random(45, 65), radius: random(15, 25) } },
-      { name: 'Multifocal airspace opacity', probability: random(5, 25), severity: 'Mild', location: null },
-      { name: 'Diffuse lower airspace opacity', probability: random(3, 15), severity: 'None', location: null },
-      { name: 'Basal interstitial thickening', probability: random(2, 10), severity: 'None', location: null },
-      { name: 'Lower zone fibrotic volume loss', probability: random(5, 20), severity: 'None', location: null },
-      { name: 'Pleural effusion', probability: random(5, 30), severity: random(1, 10) > 8 ? 'Moderate' : 'Mild', location: random(1, 10) > 8 ? { x: 80, y: 60, radius: 15 } : null },
-      { name: 'Pneumothorax', probability: random(1, 5), severity: 'None', location: null },
-      { name: 'Cardiomegaly', probability: random(1, 10) > 8 ? random(60, 85) : random(3, 10), severity: random(1, 10) > 8 ? 'Moderate' : 'None', location: random(1, 10) > 8 ? { x: 50, y: 65, radius: 20 } : null },
+      { name: 'Pneumonia', severity: random(1, 3) === 1 ? 'Moderate' : 'Mild', location: { x: random(45, 55), y: random(45, 55), radius: random(15, 25) } },
+      { name: 'Pleural Effusion', severity: random(1, 10) > 8 ? 'Moderate' : 'Mild', location: { x: random(30, 40), y: random(60, 70), radius: random(10, 20) } },
+      { name: 'Cardiomegaly', severity: random(1, 4) === 1 ? 'Moderate' : 'Mild', location: { x: random(40, 60), y: random(55, 65), radius: random(15, 25) } },
+      { name: 'Atelectasis', severity: 'Mild', location: { x: random(35, 65), y: random(40, 60), radius: random(10, 20) } },
+      { name: 'Lung Opacity', severity: random(1, 10) > 7 ? 'Moderate' : 'Mild', location: { x: random(30, 70), y: random(30, 70), radius: random(10, 20) } },
+      { name: 'Pulmonary Edema', severity: 'Moderate', location: { x: random(40, 60), y: random(40, 60), radius: random(20, 30) } },
+      { name: 'Pneumothorax', severity: 'Severe', location: { x: random(25, 35), y: random(30, 50), radius: random(15, 25) } },
+      { name: 'Tuberculosis', severity: 'Moderate', location: { x: random(40, 60), y: random(35, 45), radius: random(15, 25) } },
+      { name: 'Lung Nodule', severity: 'Mild', location: { x: random(35, 65), y: random(35, 65), radius: random(5, 15) } },
+      { name: 'Emphysema', severity: 'Mild', location: { x: random(30, 70), y: random(30, 70), radius: random(15, 30) } },
+      { name: 'Fibrosis', severity: 'Moderate', location: { x: random(40, 60), y: random(50, 70), radius: random(15, 25) } },
+      { name: 'Hilar Enlargement', severity: 'Mild', location: { x: random(45, 55), y: random(40, 50), radius: random(10, 15) } }
     ];
     
-    // Filter to keep probabilities > 0
-    const conditions = possibleConditions.filter(c => c.probability > 0);
+    // Select primary condition
+    const primaryConditionIndex = random(0, possibleConditions.length - 1);
+    const primaryCondition = possibleConditions[primaryConditionIndex];
+    
+    // Set probability for primary condition
+    primaryCondition.probability = random(65, 95);
+    
+    // Select secondary conditions
+    const conditions = [primaryCondition];
+    const usedIndices = [primaryConditionIndex];
+    const numAdditionalConditions = random(1, 4);
+    
+    for (let i = 0; i < numAdditionalConditions; i++) {
+      let idx;
+      do {
+        idx = random(0, possibleConditions.length - 1);
+      } while (usedIndices.includes(idx));
+      
+      usedIndices.push(idx);
+      const condition = { ...possibleConditions[idx] };
+      condition.probability = random(5, 40);
+      conditions.push(condition);
+    }
     
     // Sort by probability descending
     conditions.sort((a, b) => b.probability - a.probability);
     
-    // Keep max 5 conditions
-    const topConditions = conditions.slice(0, 5);
-    
-    // Generate findings text
-    const primaryCondition = topConditions[0];
+    // Generate findings text based on conditions
     let findings = '';
     
-    if (primaryCondition.name === 'Focal airspace opacity') {
-      findings = `Focal airspace opacity observed in the right ${random(1, 2) === 1 ? 'lower' : 'middle'} lobe. No pleural effusion. Heart size within normal limits.`;
-    } else if (primaryCondition.name === 'Pleural effusion') {
-      findings = `Small to moderate right-sided pleural effusion noted. No focal consolidation or pneumothorax identified. Heart size is ${random(1, 5) > 3 ? 'mildly enlarged' : 'within normal limits'}.`;
+    if (primaryCondition.name === 'Pneumonia') {
+      findings = `${random(1, 2) === 1 ? 'Focal' : 'Multifocal'} opacities seen in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'upper' : (random(1, 2) === 1 ? 'middle' : 'lower')} lobe consistent with pneumonia. ${conditions.some(c => c.name === 'Pleural Effusion') ? 'Small pleural effusion noted.' : 'No pleural effusion seen.'} Heart size ${conditions.some(c => c.name === 'Cardiomegaly') ? 'is enlarged' : 'appears normal'}.`;
+    } else if (primaryCondition.name === 'Pleural Effusion') {
+      findings = `${random(1, 2) === 1 ? 'Small' : 'Moderate'} ${random(1, 2) === 1 ? 'right-sided' : 'left-sided'} pleural effusion noted. No focal consolidation identified. ${conditions.some(c => c.name === 'Cardiomegaly') ? 'Heart is enlarged with cardiothoracic ratio of approximately ' + random(55, 65) + '%.' : 'Heart size is within normal limits.'}`;
     } else if (primaryCondition.name === 'Cardiomegaly') {
-      findings = `Cardiomegaly is present with cardiothoracic ratio of approximately ${random(52, 65)}%. No focal consolidation. No evidence of pleural effusion or pneumothorax.`;
+      findings = `Cardiomegaly is present with cardiothoracic ratio of approximately ${random(55, 65)}%. ${conditions.some(c => c.name === 'Pleural Effusion') ? (random(1, 2) === 1 ? 'Right-sided' : 'Left-sided') + ' pleural effusion noted.' : 'No pleural effusion seen.'} ${conditions.some(c => c.name === 'Pulmonary Edema') ? 'Signs of pulmonary edema present.' : 'No signs of pulmonary edema.'}`;
+    } else if (primaryCondition.name === 'Lung Opacity') {
+      findings = `${random(1, 2) === 1 ? 'Focal' : 'Diffuse'} lung opacity in the ${random(1, 2) === 1 ? 'right' : 'left'} ${random(1, 3) === 1 ? 'upper' : (random(1, 2) === 1 ? 'middle' : 'lower')} zone. No significant pleural effusion. Heart size within normal limits.`;
     } else {
-      findings = `${primaryCondition.name} observed. No significant additional findings. Heart size within normal limits. No pleural effusion or pneumothorax identified.`;
+      findings = `Findings consistent with ${primaryCondition.name.toLowerCase()}. ${conditions.some(c => c.name === 'Pleural Effusion') ? (random(1, 2) === 1 ? 'Right-sided' : 'Left-sided') + ' pleural effusion noted.' : 'No pleural effusion seen.'} Heart size ${conditions.some(c => c.name === 'Cardiomegaly') ? 'is mildly enlarged' : 'appears normal'}.`;
     }
     
     // Generate recommendation
     let recommendation = '';
-    if (primaryCondition.severity === 'Moderate' || primaryCondition.probability > 80) {
-      recommendation = `Follow-up imaging recommended in ${random(2, 4)}-${random(5, 8)} weeks to monitor resolution of ${primaryCondition.name.toLowerCase()}. Consider antibiotic therapy if clinically indicated.`;
+    if (primaryCondition.severity === 'Severe' || primaryCondition.probability > 85) {
+      recommendation = `Clinical correlation recommended. Consider ${primaryCondition.name === 'Pneumonia' ? 'antibiotic therapy and' : ''} follow-up imaging in ${random(1, 4)}-${random(5, 8)} weeks to monitor resolution of findings.`;
+    } else if (primaryCondition.severity === 'Moderate' || primaryCondition.probability > 70) {
+      recommendation = `Follow-up recommended in ${random(4, 12)} weeks to ensure resolution of findings. ${random(1, 2) === 1 ? 'Clinical correlation suggested.' : ''}`;
     } else {
       recommendation = 'No urgent intervention required based on these findings. Clinical correlation recommended.';
     }
@@ -119,7 +147,7 @@ const XrayAnalysis = () => {
       success: true,
       findings,
       confidence,
-      conditions: topConditions,
+      conditions,
       recommendation
     };
   };
@@ -143,8 +171,8 @@ const XrayAnalysis = () => {
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        // Generate dynamic results based on file name
-        const mockResult = generateXrayResults(file.name);
+        // Generate dynamic results based on image preview data
+        const mockResult = generateXrayResults(preview);
         
         setResult(mockResult);
         setActiveCondition(mockResult.conditions[0].name);
