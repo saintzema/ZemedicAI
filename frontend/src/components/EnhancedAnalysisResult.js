@@ -100,7 +100,7 @@ const EnhancedAnalysisResult = ({
       'Brain Tumor': 'An abnormal growth of cells in the brain. Depending on the type, it may appear as a white or dark area, often with surrounding swelling on CT scans.',
       'Mass Effect': 'Pressure on the brain caused by a tumor, bleeding, or swelling, pushing normal brain structures out of position. This appears as a shift in normal brain anatomy on CT scans.',
       'Midline Shift': 'When structures in the center of the brain are pushed to one side, usually due to pressure from a tumor, bleeding, or swelling. This appears as an asymmetry in the brain\'s center line on CT scans.',
-      'Hydrocephalus': 'A buildup of fluid in the brain's ventricles (fluid spaces), putting pressure on the brain. This appears as enlarged, dark fluid spaces on CT scans.',
+      'Hydrocephalus': 'A buildup of fluid in the brain\'s ventricles (fluid spaces), putting pressure on the brain. This appears as enlarged, dark fluid spaces on CT scans.',
       'Brain Atrophy': 'Shrinkage of brain tissue, which can occur with aging or certain diseases. This appears as enlarged dark spaces around and within the brain on CT scans.',
       'Cerebral Edema': 'Swelling in the brain caused by excess fluid. This appears as areas of decreased density (darker) with loss of the normal gray-white differentiation on CT scans.',
       'Sinusitis': 'Inflammation of the sinuses, which are air-filled spaces in the skull. This appears as white areas filling normally dark air spaces on CT scans.',
